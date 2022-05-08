@@ -1,4 +1,4 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@*<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">Projeto_ES</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -27,7 +27,41 @@
     </nav>
 </div>
 
-@code {
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Active</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Link</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Link</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#">Disabled</a>
+  </li>
+</ul>
+*@
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark ps-5 justify-content-between">
+  <!-- Brand/logo -->
+  <a class="navbar-brand" href="/">Logo</a>
+  
+  <!-- Links -->
+  <ul class="navbar-nav pe-5">
+    <li class="nav-item">
+      <a class="nav-link" href="/">About</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/counter">Sign Up</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/fetchdata">Login</a>
+    </li>
+  </ul>
+</nav>
+
+@*@code {
     private bool collapseNavMenu = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
@@ -36,4 +70,4 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
-}
+}*@
