@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Projeto_ES", "Projeto_ES\Projeto_ES.csproj", "{A3A99AF5-CAE0-4A60-849B-9F1CEE693687}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "projeto_livraria", "projeto_livraria\projeto_livraria.csproj", "{29118FCE-EEE8-46A7-8848-C10BDBCBA904}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A3A99AF5-CAE0-4A60-849B-9F1CEE693687}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3A99AF5-CAE0-4A60-849B-9F1CEE693687}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3A99AF5-CAE0-4A60-849B-9F1CEE693687}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29118FCE-EEE8-46A7-8848-C10BDBCBA904}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29118FCE-EEE8-46A7-8848-C10BDBCBA904}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29118FCE-EEE8-46A7-8848-C10BDBCBA904}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29118FCE-EEE8-46A7-8848-C10BDBCBA904}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
