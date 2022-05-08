@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace projeto_livraria
 {
-    public class User
+    public class User : ICreditCard
     {
 
         public string userName { get; set; }
@@ -18,10 +18,19 @@ namespace projeto_livraria
 
         public string youtubeAccount { get; set; }
 
-        //public PlanPayment plan { get; set; }
-        public int maxPlaylist { get; set; }   
+        public PlanPayment Plan { get; set; }
 
-    
+
+        //Interface variables 
+        public int maxPlaylist { get; set; }
+        public int number { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string holderName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string expirationDate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int pin { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public double balance { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public User( PlanPayment plan ) => Plan = plan;
+
         public void changeBiography( )
         {
             Console.WriteLine( "Changing bio" );
@@ -39,8 +48,10 @@ namespace projeto_livraria
             Console.WriteLine( "Canceling plan" );
         }
 
-
-        
-    
+        //Interface Method
+        public void payment()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

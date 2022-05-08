@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace projeto_livraria
 {
-    enum PlanPayment
+    public enum PlanPayment
     {
         FREE,
         PREMIUM,
