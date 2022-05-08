@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace projeto_livraria
 {
-    enum PlaylistType
+    enum EnumPlaylistType
     {
         PUBLIC,
         PRIVATE
