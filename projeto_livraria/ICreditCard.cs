@@ -6,10 +6,7 @@
 
         string holderName { get; set; }
 
-        string expirationDate
-        {
-            get; set; 
-        }
+        string expirationDate { get; set; }
 
         int pin { get; set; }
 
