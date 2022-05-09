@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.57.0.2665" />
+    <PackageReference Include="Microsoft.TeamFoundationServer.ExtendedClient" Version="16.170.0" />
   </ItemGroup>
 
 </Project>

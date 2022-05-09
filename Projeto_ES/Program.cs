@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Projeto_ES.Data;
+using Google.Apis.Services;
+using Google.Apis.YouTube.v3;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+
+builder.Services.AddSingleton(new YouTubeService(new BaseClientService.Initializer()
+{
+    ApiKey = "AIzaSyC1iWH5NiEltxAAftVDqCFgqhfaWYUOgcI",
+    ApplicationName = "APPLICATION_NAME"
+}));
 
 var app = builder.Build();
 
