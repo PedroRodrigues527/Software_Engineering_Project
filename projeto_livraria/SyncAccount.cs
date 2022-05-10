@@ -8,8 +8,14 @@ namespace projeto_livraria
 {
     public class SyncAccount
     {
-        private string email { get; set; }
-        private string password { get; set; }
+        private string _email { get; set; }
+        private string _password { get; set; }
+
+        public SyncAccount( string _email , string _password )
+        {
+            _email = _email;
+            _password = _password;
+        }
 
         public void changePassword()
         {
