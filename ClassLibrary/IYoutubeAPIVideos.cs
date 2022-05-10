@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace projeto_livraria
+namespace ClassLibrary
 {
     interface IYoutubeAPIVideos
     {
         string title { get; }
 
-        public string SarchVideo( string title );
+        public string SearchVideo( string title );
 
         public string SearchPlaylist(string title);
     

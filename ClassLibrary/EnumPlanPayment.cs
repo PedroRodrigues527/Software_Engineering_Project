@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace projeto_livraria
+namespace ClassLibrary
 {
-    enum EnumPlaylistType
+    public enum PlanPayment
     {
-        PUBLIC,
-        PRIVATE
+        FREE,
+        PREMIUM,
+        PREMIUMPLUS
     }
 }

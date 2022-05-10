@@ -1,4 +1,4 @@
-﻿namespace projeto_livraria
+﻿namespace ClassLibrary
 {
     interface ICreditCard
     {
