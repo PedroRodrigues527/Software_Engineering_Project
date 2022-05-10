@@ -25,33 +25,33 @@ namespace projeto_livraria
 
         //NAO CHAMAR DIRETAMENTE new Playlist() FAZER
         //TALVEZ FACTORY PATTERN!
-        public Playlist createPlaylist()
+        public Playlist CreatePlaylist()
         {
             Console.WriteLine( "Removing videos..." );
             return new Playlist( 0 , 10 , "NEW_PLAYLIST_TESTE" , "10/5/2022" );
         }
 
-        public void deletePlaylist()
+        public void DeletePlaylist()
         {
             Console.WriteLine( "Deleting playlist..." );
         }
 
-        public void orderVideos()
+        public void OrderVideos()
         {
             Console.WriteLine( "Ordering videos..." );
         }
 
-        public void playPlaylist()
+        public void PlayPlaylist()
         {
             Console.WriteLine( "Playing playlist..." );
         }
 
-        public void addVideo()
+        public void AddVideo()
         {
             Console.WriteLine( "Adding videos..." );
         }
 
-        public void removeVideos()
+        public void RemoveVideos()
         {
             Console.WriteLine( "Removing videos..." );
         }

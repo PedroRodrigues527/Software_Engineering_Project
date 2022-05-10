@@ -10,9 +10,9 @@ namespace projeto_livraria
     {
         string title { get; }
 
-        public string searchVideo( string title );
+        public string SarchVideo( string title );
 
-        public string searchPlaylist(string title);
+        public string SearchPlaylist(string title);
     
     }
 }

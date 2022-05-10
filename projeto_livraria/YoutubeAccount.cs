@@ -19,17 +19,17 @@ namespace projeto_livraria
             _password = _password;
         }
 
-        public void changeAcccount()
+        public void ChangeAcccount()
         {
             throw new NotImplementedException();
         }
 
-        public void searchAccount()
+        public void SearchAccount()
         {
             throw new NotImplementedException();
         }
 
-        public void syncronize()
+        public void Syncronize()
         {
             throw new NotImplementedException();
         }

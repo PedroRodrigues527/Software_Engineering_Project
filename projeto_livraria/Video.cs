@@ -14,12 +14,12 @@ namespace projeto_livraria
         public string url { get; set; }
         public string title => throw new NotImplementedException();
 
-        public string searchPlaylist(string title)
+        public string SearchPlaylist(string title)
         {
             throw new NotImplementedException();
         }
 
-        public string searchVideo(string title)
+        public string SearchVideo(string title)
         {
             throw new NotImplementedException();
         }

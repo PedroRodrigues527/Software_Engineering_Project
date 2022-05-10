@@ -12,11 +12,11 @@ namespace projeto_livraria
         string _email { get; }
         string _password { set; }
 
-        public void changeAcccount();
+        public void ChangeAcccount();
 
-        public void syncronize();
+        public void Syncronize();
 
-        public void searchAccount();
+        public void SearchAccount();
 
     }
 }

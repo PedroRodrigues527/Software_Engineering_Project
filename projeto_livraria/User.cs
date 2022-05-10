@@ -40,25 +40,25 @@ namespace projeto_livraria
             _Plan = plan;
         }
 
-        public void changeBiography( )
+        public void ChangeBiography( )
         {
             Console.WriteLine( "Changing bio" );
         } 
-        public void changePassword( )
+        public void ChangePassword( )
         {
             Console.WriteLine( "Changing bio" );
         }
-        public void updatePlan( )
+        public void UpdatePlan( )
         {
             Console.WriteLine( "Updating plan" );
         }
-        public void canclePlan( )
+        public void CanclePlan( )
         {
             Console.WriteLine( "Canceling plan" );
         }
 
         //Interface Method
-        public void payment()
+        public void Payment()
         {
             throw new NotImplementedException();
         }

@@ -12,7 +12,7 @@
 
         double balance { get; set; }
 
-        public void payment();
+        public void Payment();
 
     }
 }

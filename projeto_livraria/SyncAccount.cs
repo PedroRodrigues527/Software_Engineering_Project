@@ -17,12 +17,12 @@ namespace projeto_livraria
             _password = _password;
         }
 
-        public void changePassword()
+        public void ChangePassword()
         {
             Console.WriteLine( "Changing password from SyncAccount" );
         }
 
-        public void syncronize()
+        public void Syncronize()
         {
             Console.WriteLine( "Syncronize account from SyncAccount" );
         }
