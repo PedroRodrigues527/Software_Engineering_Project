@@ -9,17 +9,16 @@ namespace projeto_livraria
     public class User : ICreditCard
     {
 
-        public string userName { get; set; }
+        public string _userName { get; set; }
         
-        public string email { get; set; }
-        public string password { get; set; }
+        public string _email { get; set; }
+        public string _password { get; set; }
 
-        public string biography { get; set; }
+        public string _biography { get; set; }
 
-        public string youtubeAccount { get; set; }
+        public string _youtubeAccount { get; set; }
 
-        public PlanPayment Plan { get; set; }
-
+        public PlanPayment _Plan { get; set; }
 
         //Interface variables 
         public int maxPlaylist { get; set; }
@@ -29,7 +28,17 @@ namespace projeto_livraria
         public int pin { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public double balance { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public User( PlanPayment plan ) => Plan = plan;
+        //public User( PlanPayment plan ) => _Plan = plan;
+
+        public User(string userName, string email, string password, string biography, string youtubeAccount, PlanPayment plan)
+        {
+            _userName = userName;
+            _email = email;
+            _password = password;
+            _biography = biography;
+            _youtubeAccount = youtubeAccount;
+            _Plan = plan;
+        }
 
         public void changeBiography( )
         {
