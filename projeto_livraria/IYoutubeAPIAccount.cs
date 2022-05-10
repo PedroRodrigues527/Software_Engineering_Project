@@ -9,8 +9,8 @@ namespace projeto_livraria
     interface IYoutubeAPIAccount
     {
 
-        string email { get; }
-        string password { set; }
+        string _email { get; }
+        string _password { set; }
 
         public void changeAcccount();
 
