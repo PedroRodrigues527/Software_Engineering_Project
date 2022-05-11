@@ -1,4 +1,6 @@
 ﻿@page "/"
+@inject NavigationManager NavigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 <style>
     body {
@@ -46,3 +48,34 @@
     </div>
 
 </div>
+
+
+@code
+{
+    string usernamelogged;
+    /*
+    protected override async Task OnInitializedAsync()
+    {
+        usernamelogged = await sessionStorage.GetItemAsync<string>("UsernameLogged");
+        if(usernamelogged!=null)
+        {
+            //Redirect to account menu page
+            NavigationManager.NavigateTo("/account/menu");
+        }
+    }
+    */
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            usernamelogged = await sessionStorage.GetItemAsync<string>("UsernameLogged");
+            if(usernamelogged!=null)
+            {
+                //Redirect to account menu page
+                NavigationManager.NavigateTo("/account/menu");
+            }
+
+            StateHasChanged();
+        }
+    }
+}

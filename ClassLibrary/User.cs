@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassLibrary
 {
-    public class User : ICreditCard
+    public class User : IUser
     {
         [Required]
         [StringLength(16, ErrorMessage = "Username must be 16 characters or less.")]
@@ -37,6 +37,7 @@ namespace ClassLibrary
         public PlanPayment Plan { get; set; }
 
         //Interface variables 
+        /*
         public int MaxPlaylist { get; set; }
         public int Number { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string HolderName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -57,27 +58,29 @@ namespace ClassLibrary
         }
         */
 
-        public void ChangeBiography( )
+        public void ChangeBiography()
         {
-            Console.WriteLine( "Changing bio" );
-        } 
-        public void ChangePassword( )
-        {
-            Console.WriteLine( "Changing bio" );
+            Console.WriteLine("Changing bio");
         }
-        public void UpdatePlan( )
+        public void ChangePassword()
         {
-            Console.WriteLine( "Updating plan" );
+            Console.WriteLine("Changing bio");
         }
-        public void CanclePlan( )
+        public void UpdatePlan()
         {
-            Console.WriteLine( "Canceling plan" );
+            Console.WriteLine("Updating plan");
+        }
+        public void CancelPlan()
+        {
+            Console.WriteLine("Canceling plan");
         }
 
         //Interface Method
+        /*
         public void Payment()
         {
             throw new NotImplementedException();
         }
+        */
     }
 }

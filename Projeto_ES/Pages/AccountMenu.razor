@@ -11,22 +11,24 @@
 
 <PageTitle>Account Menu</PageTitle>
 
-<p @onload="GetAccountSession">
-    @if(userlogged!=null)
-    {
-        <label>@userlogged.Username</label>
-    }
-    else
-    {
-        //Redirect to login page
-        NavigationManager.NavigateTo("/login");
-    }
+<p>
+    <label>@usernamelogged</label>
 </p>
 
 @code {
-    User userlogged;
-    public async Task GetAccountSession()
+    string usernamelogged;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        userlogged = await sessionStorage.GetItemAsync<User>("UserLogged");
+        if (firstRender)
+        {
+            usernamelogged = await sessionStorage.GetItemAsync<string>("UsernameLogged");
+            if(usernamelogged==null)
+            {
+                //Redirect to login page
+                NavigationManager.NavigateTo("/login");
+            }
+
+            StateHasChanged();
+        }
     }
 }

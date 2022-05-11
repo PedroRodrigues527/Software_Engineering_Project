@@ -1,5 +1,6 @@
 ﻿@page "/signup"
 @inject NavigationManager NavigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject IUserData _db
 @inject IJSRuntime JsRuntime
 
@@ -11,7 +12,6 @@
 </style>
 
 <PageTitle>SignUp</PageTitle>
-
           <div class="card-body p-md-3">
             <div class="row justify-content-center">
               <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
@@ -77,10 +77,22 @@
 @code {
     private List<User> users;
     private User user = new() { };
+    string usernamelogged;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        users = await _db.GetUsers();
+        if (firstRender)
+        {
+            users = await _db.GetUsers();
+            usernamelogged = await sessionStorage.GetItemAsync<string>("UsernameLogged");
+            if(usernamelogged!=null)
+            {
+                //Redirect to account menu page
+                NavigationManager.NavigateTo("/account/menu");
+            }
+
+            StateHasChanged();
+        }
     }
 
     private async void HandleValidSubmit()
@@ -90,7 +102,7 @@
             bool isUsernameUnique = true;
             foreach(var usercolumn in users)
             {
-                if(usercolumn.Username.Trim().ToLower() == user.Username.Trim().ToLower())
+                if(usercolumn.Username.Trim() == user.Username.Trim())
                 {
                     isUsernameUnique = false;
                     break;

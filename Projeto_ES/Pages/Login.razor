@@ -1,6 +1,8 @@
 ﻿@page "/login"
 @inject NavigationManager NavigationManager
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject IUserData _db
+@inject IJSRuntime JsRuntime
 
 <style>
     body {
@@ -11,13 +13,6 @@
 
 <PageTitle>Login</PageTitle>
 
-@if(userlogged!=null)
-{
-    //Redirect to login page
-    NavigationManager.NavigateTo("/account/menu");
-}
-else
-{
     <div class="card-body p-md-3">
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
@@ -56,25 +51,52 @@ else
             </div>
         </div>
     </div>
-}
 
 @code {
     private User user = new() { };
+    private List<User> users;
+    string usernamelogged;
 
-    User userlogged;
-    public async Task GetAccountSession()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        userlogged = await sessionStorage.GetItemAsync<User>("UserLogged");
+        if (firstRender)
+        {
+            users = await _db.GetUsers();
+            usernamelogged = await sessionStorage.GetItemAsync<string>("UsernameLogged");
+            if(usernamelogged!=null)
+            {
+                //Redirect to account menu page
+                NavigationManager.NavigateTo("/account/menu");
+            }
+
+            StateHasChanged();
+        }
     }
 
-    private void HandleValidSubmit()
+    private async void HandleValidSubmit()
     {
         // Process to validate user database
+        bool isUserValid = false;
+        foreach(var usercolumn in users)
+        {
+            if(usercolumn.Username.Trim() == user.Username.Trim() && usercolumn.Password.Trim() == user.Password.Trim())
+            {
+                isUserValid = true;
+                break;
+            }
+        }
 
-        //Add session validation
-        sessionStorage.SetItemAsync("UserLogged", user);
+        if(isUserValid)
+        {
+            //Add session validation
+            await sessionStorage.SetItemAsync("UsernameLogged", user.Username);
 
-        //Redirect to account menu page
-        NavigationManager.NavigateTo("/account/menu");
+            //Redirect to account menu page
+            NavigationManager.NavigateTo("/account/menu");
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Incorrect Username or Password!");
+        }
     }
 }
