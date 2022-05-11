@@ -26,8 +26,7 @@ namespace ClassLibrary
         [Compare("Password", ErrorMessage = "The Password Confirmation does not match.")]
         public string ConfirmPassword { get; set; }
         [Required]
-        [Range(typeof(bool), "true", "true",
-        ErrorMessage = "Please accept the Terms of Service.")]
+        [Range(typeof(bool), "true", "true")]
         public bool IsValid { get; set; }
 
         public string Biography { get; set; }
