@@ -9,8 +9,8 @@ namespace ClassLibrary
     interface IYoutubeAPIAccount
     {
 
-        string _email { get; }
-        string _password { set; }
+        string  Email { get; }
+        string  Password { set; }
 
         public void ChangeAcccount();
 

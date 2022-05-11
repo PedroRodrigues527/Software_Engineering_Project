@@ -9,17 +9,17 @@ namespace ClassLibrary
     public class Playlist
     {
 
-        public int _numberOfVideos { get; set; }
-        public int _maximumOfVideos { get; set; }
-        public string _title { get; set; }
-        public string _dataCreation { get; set; }
+        public int NumberOfVideos { get; set; }
+        public int MaximumOfVideos { get; set; }
+        public string Title { get; set; }
+        public string DataCreation { get; set; }
 
         public Playlist( int numberOfVideos , int maximumOfVideos , string title , string dataCreation)
         {
-            _numberOfVideos = numberOfVideos;
-            _maximumOfVideos = maximumOfVideos;
-            _title = title;
-            _dataCreation = dataCreation;
+            NumberOfVideos = numberOfVideos;
+            MaximumOfVideos = maximumOfVideos;
+            Title = title;
+            DataCreation = dataCreation;
         }
 
 
