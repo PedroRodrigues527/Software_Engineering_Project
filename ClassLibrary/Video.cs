@@ -9,10 +9,10 @@ namespace ClassLibrary
     public class Video : IYoutubeAPIVideos
     {
 
-        public string artist { get; set; }
-        public string dataCreating { get; set; }
-        public string url { get; set; }
-        public string title => throw new NotImplementedException();
+        public string Artist { get; set; }
+        public string DataCreating { get; set; }
+        public string Url { get; set; }
+        public string Title => throw new NotImplementedException();
 
         public string SearchPlaylist(string title)
         {

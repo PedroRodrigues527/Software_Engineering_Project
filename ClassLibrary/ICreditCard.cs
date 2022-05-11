@@ -2,15 +2,15 @@
 {
     interface ICreditCard
     {
-        int number { get; set; }
+        int Number { get; set; }
 
-        string holderName { get; set; }
+        string HolderName { get; set; }
 
-        string expirationDate { get; set; }
+        string ExpirationDate { get; set; }
 
-        int pin { get; set; }
+        int Pin { get; set; }
 
-        double balance { get; set; }
+        double Balance { get; set; }
 
         public void Payment();
 

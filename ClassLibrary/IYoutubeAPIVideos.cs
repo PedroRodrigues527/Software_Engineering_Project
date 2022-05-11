@@ -8,7 +8,7 @@ namespace ClassLibrary
 {
     interface IYoutubeAPIVideos
     {
-        string title { get; }
+        string Title { get; }
 
         public string SearchVideo( string title );
 

@@ -9,15 +9,24 @@ namespace ClassLibrary
     public class YoutubeAccount : SyncAccount ,  IYoutubeAPIAccount
     {
 
-        public string _email => throw new NotImplementedException();
-
-        public string _password { set => throw new NotImplementedException(); }
-        
-        public YoutubeAccount(string _email, string _password) : base(_email, _password)
+        public string Email
         {
-            _email = _email;
-            _password = _password;
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
+
+        public  string Password
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
+
+        public YoutubeAccount(string email, string password) : base( email, password )
+        {
+            Email = email;
+            Password = password;
+        }
+        
 
         public void ChangeAcccount()
         {

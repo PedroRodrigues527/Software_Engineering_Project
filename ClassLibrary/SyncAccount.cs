@@ -8,13 +8,13 @@ namespace ClassLibrary
 {
     public class SyncAccount
     {
-        private string _email { get; set; }
-        private string _password { get; set; }
+        private string email { get; set; }
+        private string password { get; set; }
 
         public SyncAccount( string _email , string _password )
         {
-            _email = _email;
-            _password = _password;
+            email = _email;
+            password = _password;
         }
 
         public void ChangePassword()

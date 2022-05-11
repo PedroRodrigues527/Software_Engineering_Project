@@ -36,12 +36,12 @@ namespace ClassLibrary
         public PlanPayment Plan { get; set; }
 
         //Interface variables 
-        public int maxPlaylist { get; set; }
-        public int number { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string holderName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string expirationDate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int pin { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public double balance { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int MaxPlaylist { get; set; }
+        public int Number { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string HolderName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string ExpirationDate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int Pin { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public double Balance { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         //public User( PlanPayment plan ) => _Plan = plan;
         /*
