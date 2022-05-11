@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Components.Web;
 using Projeto_ES.Data;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
-
+using Blazored.SessionStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 builder.Services.AddSingleton(new YouTubeService(new BaseClientService.Initializer()

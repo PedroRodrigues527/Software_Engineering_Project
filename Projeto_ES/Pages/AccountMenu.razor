@@ -1,0 +1,32 @@
+﻿@page "/account/menu"
+@inject NavigationManager NavigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<style>
+    body {
+        background: linear-gradient( rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4) ), url("images/image1.png") no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
+
+<PageTitle>Account Menu</PageTitle>
+
+<p @onload="GetAccountSession">
+    @if(userlogged!=null)
+    {
+        <label>@userlogged.Username</label>
+    }
+    else
+    {
+        //Redirect to login page
+        NavigationManager.NavigateTo("/login");
+    }
+</p>
+
+@code {
+    User userlogged;
+    public async Task GetAccountSession()
+    {
+        userlogged = await sessionStorage.GetItemAsync<User>("UserLogged");
+    }
+}
