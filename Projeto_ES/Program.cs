@@ -4,6 +4,7 @@ using Projeto_ES.Data;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using Blazored.SessionStorage;
+using ClassLibrary;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
+builder.Services.AddTransient<IUserData, UserData>();
+
 
 builder.Services.AddSingleton(new YouTubeService(new BaseClientService.Initializer()
 {

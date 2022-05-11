@@ -1,5 +1,7 @@
 ﻿@page "/signup"
 @inject NavigationManager NavigationManager
+@inject IUserData _db
+@inject IJSRuntime JsRuntime
 
 <style>
     body {
@@ -16,7 +18,7 @@
 
                 <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
 
-                <EditForm Model="@user" OnSubmit="@HandleValidSubmit" class="mx-1 mx-md-4">
+                <EditForm Model="@user" OnValidSubmit="@HandleValidSubmit" class="mx-1 mx-md-4">
                   <DataAnnotationsValidator />
 
                   <div class="d-flex flex-row align-items-center mb-4">
@@ -73,16 +75,43 @@
           </div>
 
 @code {
+    private List<User> users;
     private User user = new() { };
 
-    private void HandleValidSubmit()
+    protected override async Task OnInitializedAsync()
+    {
+        users = await _db.GetUsers();
+    }
+
+    private async void HandleValidSubmit()
     {
         if (user.Password.Equals(user.ConfirmPassword))
         {
-            // Process to save user data
+            bool isUsernameUnique = true;
+            foreach(var usercolumn in users)
+            {
+                if(usercolumn.Username.Trim().ToLower() == user.Username.Trim().ToLower())
+                {
+                    isUsernameUnique = false;
+                    break;
+                }
+            }
 
-            //Redirect to login page
-            NavigationManager.NavigateTo("/login");
+            if (isUsernameUnique)
+            {
+                // Process to save user data
+                await _db.InsertUser(user);
+                users.Add(user);
+
+                await JsRuntime.InvokeVoidAsync("alert", "Signup successfull!");
+
+                //Redirect to login page
+                NavigationManager.NavigateTo("/login");
+            }
+            else
+            {
+                await JsRuntime.InvokeVoidAsync("alert", "Username already taken!");
+            }
         }
     }
 }
