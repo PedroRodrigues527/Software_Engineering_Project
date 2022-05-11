@@ -1,48 +1,70 @@
 ﻿@page "/login"
+@inject NavigationManager NavigationManager
 
-<PageTitle>Weather forecast</PageTitle>
+<PageTitle>SignUp</PageTitle>
 
-@using Projeto_ES.Data
-@inject WeatherForecastService ForecastService
+<section class="vh-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-11">
+        <div class="card text-black" style="border-radius: 25px;">
+          <div class="card-body p-md-5">
+            <div class="row justify-content-center">
+              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-<h1>Weather forecast</h1>
+                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
 
-<p>This component demonstrates fetching data from a service.</p>
+                <EditForm Model="@user"  class="mx-1 mx-md-4">
+                  <DataAnnotationsValidator />
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <img src="https://avatars.dicebear.com/api/identicon/@(user.Username).svg" class="img-fluid rounded mx-auto d-block" alt="Avatar Image" width="100" height="100">
+                  </div>
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <InputText id="form3Example1c" class="form-control" placeholder="Username" required maxlength="16" @bind-Value="user.Username"/>
+                    </div>
+                  </div>
+
+                   <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <InputText type="password" id="form3Example4c" class="form-control" placeholder="Password" required maxlength="16" @bind-Value="user.Password"/>
+                    </div>
+                  </div>   
+                  
+                   <div class="form-check d-flex justify-content-center mb-5">
+                    <InputCheckbox class="form-check-input me-2" type="checkbox" id="form2Example3c" required @bind-Value="user.IsValid"/>
+                    <label class="form-check-label" for="form2Example3">
+                      Don´t have an account?<br /> <a href="/signup">Sign up HERE!</a>
+                    </label>
+                  </div>
+
+                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                  </div>
+
+                  <ValidationSummary />
+
+                </EditForm>
+
+              </div>
+              <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+
+                <img src="https://cdn.dribbble.com/users/3592960/screenshots/8221649/isometric.png"
+                  class="img-fluid" alt="SignUp Image Representation">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private User user = new() { };
 
-    protected override async Task OnInitializedAsync()
-    {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
-    }
+
 }
