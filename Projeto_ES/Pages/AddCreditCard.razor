@@ -1,0 +1,71 @@
+﻿@page "/AddCreditCard"
+@inject NavigationManager NavigationManager
+
+<PageTitle>AddCreditCard</PageTitle>
+
+
+<section class="vh-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-6">
+        <div class="card text-black" style="border-radius: 25px;">
+          <div class="card-body p-md-5">
+            <div class="row justify-content-center">
+             
+                <EditForm Model="@user"  class="mx-1 mx-md-4">
+                  <DataAnnotationsValidator />
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <img src="https://avatars.dicebear.com/api/identicon/@(user.Username).svg" class="img-fluid rounded mx-auto d-block" alt="Avatar Image" width="100" height="100">
+                  </div>
+
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                    <div class="col-md-6 pr-md-n3" >
+                          <InputText id="form3Example1c" class="form-control" placeholder="First Name" required maxlength="16" @bind-Value="user.Username"/>
+                    </div>
+                    <div class="col-md-6 col pl-md-n3" >
+                          <InputText id="form3Example1c" class="form-control" placeholder="Last Name" required maxlength="16" @bind-Value="user.Username"/>
+                    </div>
+                  </div>
+
+
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <InputText id="form3Example1c" class="form-control" placeholder="Card number" required maxlength="16" @bind-Value="user.Username"/>
+                    </div>
+                  </div>
+
+
+
+                  
+                   <div class="form-check d-flex justify-content-center mb-5">
+                    <InputCheckbox class="form-check-input me-2" type="checkbox" id="form2Example3c" required @bind-Value="user.IsValid"/>
+                    <label class="form-check-label" for="form2Example3">
+                      Don´t have an account?<br /> <a href="/signup">Sign up HERE!</a>
+                    </label>
+                  </div>
+
+                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                  </div>
+
+                  <ValidationSummary />
+
+                </EditForm>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+
+@code {
+    private User user = new() { };
+
+
+}
