@@ -29,5 +29,12 @@ namespace ClassLibrary
 
             return _db.SaveData(sql, user);
         }
+
+        public Task<List<User>> GetUser(string username)
+        {
+            string sql = $"select * from dbo.[User] where [Username] = {username};";
+
+            return _db.LoadData<User, dynamic>(sql, new { });
+        }
     }
 }

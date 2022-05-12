@@ -1,6 +1,7 @@
 ﻿@page "/account/menu"
 @inject NavigationManager NavigationManager
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject IUserData _db
 
 <style>
     body {
@@ -11,12 +12,20 @@
 
 <PageTitle>Account Menu</PageTitle>
 
-<p>
-    <label>@usernamelogged</label>
-</p>
+<div>
+    @if (userlogged != null)
+    {
+        <label>@userlogged.Email</label>
+    }
+    else
+    {
+        <p> Loading... </p>
+    }
+</div>
 
 @code {
     string usernamelogged;
+    User userlogged;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -26,6 +35,11 @@
             {
                 //Redirect to login page
                 NavigationManager.NavigateTo("/login");
+            }
+            else
+            {
+                //Get User in Database
+                userlogged = (await _db.GetUser(usernamelogged)).First();
             }
 
             StateHasChanged();
