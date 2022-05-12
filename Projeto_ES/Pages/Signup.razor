@@ -111,14 +111,21 @@
 
             if (isUsernameUnique)
             {
-                // Process to save user data
-                await _db.InsertUser(user);
-                users.Add(user);
+                if (user.Username.Trim().Length > 0)
+                {
+                    // Process to save user data
+                    await _db.InsertUser(user);
+                    users.Add(user);
 
-                await JsRuntime.InvokeVoidAsync("alert", "Signup successfull!");
+                    await JsRuntime.InvokeVoidAsync("alert", "Signup successfull!");
 
-                //Redirect to login page
-                NavigationManager.NavigateTo("/login");
+                    //Redirect to login page
+                    NavigationManager.NavigateTo("/login");
+                }
+                else
+                {
+                    await JsRuntime.InvokeVoidAsync("alert", "Username must have at least one character!");
+                }
             }
             else
             {

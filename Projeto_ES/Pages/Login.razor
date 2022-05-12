@@ -77,6 +77,7 @@
     {
         // Process to validate user database
         bool isUserValid = false;
+        users = await _db.GetUsers();
         foreach(var usercolumn in users)
         {
             if(usercolumn.Username.Trim() == user.Username.Trim() && usercolumn.Password.Trim() == user.Password.Trim())
@@ -92,7 +93,7 @@
             await sessionStorage.SetItemAsync("UsernameLogged", user.Username);
 
             //Redirect to account menu page
-            NavigationManager.NavigateTo("/account/menu");
+            NavigationManager.NavigateTo("/account/menu", true);
         }
         else
         {

@@ -1,17 +1,74 @@
-﻿<nav class="navbar navbar-expand-sm bg-dark navbar-dark ps-5 justify-content-between">
+﻿@inject NavigationManager NavigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject IJSRuntime JsRuntime
+
+<link rel="stylesheet" href="css/font-awesome/css/fontawesome.min.css" />
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark ps-5 justify-content-between">
+@if (usernamelogged == null)
+    {
   <!-- Brand/logo -->
-  <a class="navbar-brand" href="/">Logo</a>
-  
-  <!-- Links -->
-  <ul class="navbar-nav pe-5">
-    <li class="nav-item">
-      <a class="nav-link" href="/">Home</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/signup">Sign Up</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/login">Login</a>
-    </li>
-  </ul>
+    <a class="navbar-brand" href="/">Logo</a>
+        <!-- Links -->
+        <ul class="navbar-nav pe-5">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/signup">Sign Up</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+        </ul>
+    }
+    else
+    {
+    <a class="navbar-brand" href="/account/menu">Logo</a>
+        <ul class="navbar-nav pe-5">
+            <li class="nav-item">
+                <button type="button" @onclick="Logout" class="btn btn-danger">
+                    <span class="oi oi-account-logout" aria-hidden="true"></span>
+                    Logout
+                </button>
+            </li>
+            <li class="nav-item">
+                <button type="button" href="/account/settings" class="btn btn-secondary">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
+                </button>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" >@usernamelogged</a>
+            </li>
+            <li class="nav-item">
+                <img src="https://avatars.dicebear.com/api/identicon/@(usernamelogged).svg" class="img-fluid rounded mx-auto d-block align-items-center" alt="Avatar Image" width="25" height="25">
+            </li>
+        </ul>
+    }
 </nav>
+
+@code {
+    string usernamelogged;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            usernamelogged = await sessionStorage.GetItemAsync<string>("UsernameLogged");
+
+            StateHasChanged();
+        }
+    }
+    private async void Logout()
+    {
+        bool confirmlogout = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to logout?");
+        if(confirmlogout == true)
+        {
+            //Remove session validation
+            await sessionStorage.RemoveItemAsync("UsernameLogged");
+
+            //Redirect to login page
+            NavigationManager.NavigateTo("/login", true);
+        }
+    }
+}
