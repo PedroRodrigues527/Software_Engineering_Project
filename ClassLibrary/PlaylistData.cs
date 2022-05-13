@@ -32,7 +32,7 @@ namespace ClassLibrary
 
         public Task<List<Playlist>> GetClientPlaylists(User user)
         {
-            string sql = $"SELECT * FROM dbo.[Playlist] WHERE [PersonUsername]='{user.Username.Trim()}';";
+            string sql = $"SELECT * FROM dbo.[Playlist] WHERE [PersonUsername]='{user.Username.Trim()}' COLLATE SQL_Latin1_General_CP1_CS_AS;";
 
             return _db.LoadData<Playlist, dynamic>(sql, new { });
         }
