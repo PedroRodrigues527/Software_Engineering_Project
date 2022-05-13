@@ -8,8 +8,8 @@ namespace ClassLibrary
 {
     public enum PlanPayment
     {
-        FREE,
-        PREMIUM,
-        PREMIUMPLUS
+        FREE=10,
+        PREMIUM=50,
+        PREMIUMPLUS=100
     }
 }

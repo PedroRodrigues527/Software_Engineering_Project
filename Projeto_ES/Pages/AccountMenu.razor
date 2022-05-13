@@ -43,10 +43,10 @@
                         }
                         else
                         {
-                            <p>No Playlists Created. Create one now!</p>
+                            <p>No playlists created. Create one now!</p>
                         }
                     </ul>
-                    <button type="button" class="btn btn-success mt-3" aria-label="Create">
+                    <button type="button" class="btn btn-success mt-3" aria-label="Create" @onclick="() => CreatePlaylist(userlogged)">
                         <span class="oi oi-plus" aria-hidden="true"></span>
                         Create Playlist
                     </button>
@@ -102,7 +102,7 @@
         //Add playlist in session storage
         await sessionStorage.SetItemAsync("PlaylistChosen", playlistedit.Id);
         //Redirect to edit playlist page
-        NavigationManager.NavigateTo("/account/playlist/create");
+        NavigationManager.NavigateTo("/account/playlist/edit");
     }
 
     private async void RemovePlaylist(Playlist playlistremoved)
@@ -116,5 +116,10 @@
 
             NavigationManager.NavigateTo("/account/menu", true);
         }
+    }
+
+    private async void CreatePlaylist(User userlogged)
+    {
+        
     }
 }

@@ -3,6 +3,7 @@
     [Title]     NCHAR (16)   COLLATE Latin1_General_CS_AS NOT NULL,
     [PersonId]    INT  NOT NULL,
     [DataCreation] NCHAR(10) NOT NULL, 
+    [Type] NCHAR(16) NOT NULL DEFAULT 'PRIVATE', 
     CONSTRAINT [PK_Playlist] PRIMARY KEY CLUSTERED ([ID] ASC),
     CONSTRAINT [UC_Playlist] UNIQUE NONCLUSTERED ([Title] ASC), 
 );

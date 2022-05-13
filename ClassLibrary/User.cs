@@ -36,7 +36,10 @@ namespace ClassLibrary
 
         public string YoutubeAccount { get; set; }
 
-        public PlanPayment Plan { get; set; }
+        public PlanPayment Plan { get; set; } = PlanPayment.FREE;
+        public int MaxVideos() => (int) Plan;
+        public int MaxPlaylists() => ((int)Plan) * 10;
+
 
         //Interface variables 
         /*

@@ -23,6 +23,8 @@ namespace ClassLibrary
         [Required]
         [DataType(DataType.Text)]
         public string DataCreation { get; set; }
+        [Required]
+        public EnumPlaylistType Type { get; set; } = EnumPlaylistType.PRIVATE;
 
         public Playlist() { }
         public Playlist( int numberOfVideos , int maximumOfVideos , string title , string dataCreation)
@@ -31,6 +33,11 @@ namespace ClassLibrary
             MaximumOfVideos = maximumOfVideos;
             Title = title;
             DataCreation = dataCreation;
+        }
+
+        public bool isOpen()
+        {
+            return Type == EnumPlaylistType.PUBLIC;
         }
 
 

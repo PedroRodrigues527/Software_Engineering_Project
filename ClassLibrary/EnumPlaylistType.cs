@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    enum EnumPlaylistType
+    public enum EnumPlaylistType
     {
         PUBLIC,
         PRIVATE
