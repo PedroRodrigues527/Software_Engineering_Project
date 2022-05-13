@@ -22,7 +22,7 @@ namespace ClassLibrary
         public string PersonUsername { get; set; }
         [Required]
         [DataType(DataType.Text)]
-        public string DataCreation { get; set; }
+        public string DateCreation { get; set; }
         [Required]
         public EnumPlaylistType Type { get; set; } = EnumPlaylistType.PRIVATE;
 
@@ -32,7 +32,7 @@ namespace ClassLibrary
             NumberOfVideos = numberOfVideos;
             MaximumOfVideos = maximumOfVideos;
             Title = title;
-            DataCreation = dataCreation;
+            DateCreation = dataCreation;
         }
 
         public bool isOpen()

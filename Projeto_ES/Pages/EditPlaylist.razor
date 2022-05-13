@@ -1,0 +1,66 @@
+﻿@page "/account/playlist/edit"
+@inject NavigationManager NavigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject IJSRuntime JsRuntime
+@inject IUserData _db
+@inject IPlaylistData _dbp
+
+<style>
+    body {
+        background: linear-gradient( rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4) ), url("images/image1.png") no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
+
+<PageTitle>Manage Playlist</PageTitle>
+
+<div>
+    @if (playlistEdit != null)
+    {
+        <p>@playlistEdit.Title - @playlistEdit.Id</p>
+    }
+    else
+    {
+        <p> Loading... </p>
+    }
+</div>
+
+@code {
+    int usernameIdlogged = 0;
+    User? userlogged;
+    Playlist? playlistEdit;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            usernameIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
+            if(usernameIdlogged==0)
+            {
+                //Redirect to account menu page
+                NavigationManager.NavigateTo("/login");
+            }
+            else
+            {
+                //Get User in Database
+                userlogged = (await _db.GetUser(usernameIdlogged)).First();
+                //Get Playlist in Database
+                int playlistStorage = await sessionStorage.GetItemAsync<int>("PlaylistChosen");
+                if(playlistStorage == 0)
+                {
+                    //Create Playlist
+                    Playlist playlistWithId = (await _dbp.GetLatestPlaylistInserted(new Playlist(), userlogged)).First();
+                    await _dbp.UpdateTitle(playlistWithId);
+                    playlistEdit = (await _dbp.GetPlaylist(playlistWithId.Id)).First();
+                }
+                else
+                {
+                    //Edit Playlist
+                    playlistEdit = (await _dbp.GetPlaylist(playlistStorage)).First();
+                }
+            }
+
+            StateHasChanged();
+        }
+    }
+}

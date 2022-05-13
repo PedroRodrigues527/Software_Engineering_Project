@@ -25,7 +25,7 @@ namespace ClassLibrary
         public Task InsertPlaylist(Playlist playlist, User user)
         {
             string localDate = DateTime.Now.Date.ToString("yyyyMMdd");
-            string sql = $"insert into dbo.[Playlist] (Title, PersonId, DataCreation) values ({playlist.Title}, {user.Id}, {localDate});";
+            string sql = $"insert into dbo.[Playlist] (Title, PersonId, DateCreation) values ('{playlist.Title}', '{user.Id}', '{localDate}');";
 
             return _db.SaveData(sql, playlist);
         }
@@ -37,11 +37,34 @@ namespace ClassLibrary
             return _db.LoadData<Playlist, dynamic>(sql, new { });
         }
 
-        public Task<List<Playlist>> DeletePlaylist(Playlist playlist)
+        public Task<List<Playlist>> GetPlaylist(int playlistId)
+        {
+            string sql = $"SELECT * FROM dbo.[Playlist] WHERE [Title] = '{playlistId}';";
+
+            return _db.LoadData<Playlist, dynamic>(sql, new { });
+        }
+
+        public Task DeletePlaylist(Playlist playlist)
         {
             string sql = $"DELETE FROM dbo.[Playlist] WHERE [ID]='{playlist.Id}';";
 
+            return _db.SaveData(sql, playlist);
+        }
+
+        public Task<List<Playlist>> GetLatestPlaylistInserted(Playlist playlist, User user)
+        {
+            string localDate = DateTime.Now.Date.ToString("yyyyMMdd");
+            string sql = $"insert into dbo.[Playlist] (Title, PersonId, DateCreation) values ('{playlist.Title}', '{user.Id}', '{localDate}');\n" +
+                $"SELECT * FROM dbo.[Playlist] WHERE [ID] = SCOPE_IDENTITY();";
+
             return _db.LoadData<Playlist, dynamic>(sql, new { });
+        }
+
+        public Task UpdateTitle(Playlist playlist)
+        {
+            string sql = $"UPDATE dbo.[Playlist] SET [Title] = '{playlist.Id}' WHERE [ID] = '{playlist.Id}';";
+
+            return _db.SaveData(sql, playlist);
         }
     }
 }

@@ -12,7 +12,9 @@
 
         double Balance { get; set; }
 
-        public void Payment();
+        bool IsPaymentPositive(double amount);
+
+        void Payment(double price);
 
     }
 }

@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Projeto_ES.Data;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using Blazored.SessionStorage;
