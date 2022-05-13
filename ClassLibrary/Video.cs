@@ -8,7 +8,6 @@ namespace ClassLibrary
 {
     public class Video : IYoutubeAPIVideos
     {
-
         public string Artist { get; set; }
         public string DataCreating { get; set; }
         public string Url { get; set; }

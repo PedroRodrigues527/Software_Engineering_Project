@@ -75,9 +75,9 @@
           </div>
 
 @code {
-    private List<User> users;
+    private List<User>? users;
     private User user = new() { };
-    string usernamelogged;
+    string? usernamelogged;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

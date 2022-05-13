@@ -14,6 +14,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddTransient<IUserData, UserData>();
+builder.Services.AddTransient<IPlaylistData, PlaylistData>();
 
 
 builder.Services.AddSingleton(new YouTubeService(new BaseClientService.Initializer()

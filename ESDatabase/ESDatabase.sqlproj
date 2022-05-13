@@ -67,4 +67,7 @@
     <Build Include="dbo\Tables\Video.sql" />
     <Build Include="dbo\Tables\PlaylistVideo.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="ESDatabase.refactorlog" />
+  </ItemGroup>
 </Project>

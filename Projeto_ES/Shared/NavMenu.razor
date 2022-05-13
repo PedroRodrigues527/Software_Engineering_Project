@@ -8,7 +8,7 @@
 @if (usernamelogged == null)
     {
   <!-- Brand/logo -->
-    <a class="navbar-brand" href="/">Logo</a>
+    <a class="navbar-brand" href="/">- CreateToView -</a>
         <!-- Links -->
         <ul class="navbar-nav pe-5">
             <li class="nav-item">
@@ -24,11 +24,11 @@
     }
     else
     {
-    <a class="navbar-brand" href="/account/menu">Logo</a>
+    <a class="navbar-brand" href="/account/menu">- CreateToView -</a>
         <ul class="navbar-nav pe-5">
             <li class="nav-item pe-2">
                 <button type="button" @onclick="Logout" class="btn btn-danger">
-                    <span class="oi oi-account-logout" aria-hidden="true"></span>
+                    <i class="fa fa-sign-out"></i>
                     Logout
                 </button>
             </li>
@@ -66,6 +66,7 @@
         {
             //Remove session validation
             await sessionStorage.RemoveItemAsync("UsernameLogged");
+            await sessionStorage.RemoveItemAsync("PlaylistChosen");
 
             //Redirect to login page
             NavigationManager.NavigateTo("/login", true);

@@ -22,6 +22,13 @@ namespace ClassLibrary
             return _db.LoadData<User, dynamic>(sql, new { });
         }
 
+        public Task<List<User>> GetUser(string username)
+        {
+            string sql = $"select * from dbo.[User] where [Username] = {username};";
+
+            return _db.LoadData<User, dynamic>(sql, new { });
+        }
+
         public Task InsertUser(User user)
         {
             string sql = @"insert into dbo.[User] (Username, Email, Password)
@@ -30,11 +37,12 @@ namespace ClassLibrary
             return _db.SaveData(sql, user);
         }
 
-        public Task<List<User>> GetUser(string username)
+        public Task ChangePassword(User user)
         {
-            string sql = $"select * from dbo.[User] where [Username] = {username};";
+            string sql = @"update dbo.[User] set dbo.[User].[Password] = @Password
+                           where [Username] = @Username;";
 
-            return _db.LoadData<User, dynamic>(sql, new { });
+            return _db.SaveData(sql, user);
         }
     }
 }

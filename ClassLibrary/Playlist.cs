@@ -3,17 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassLibrary
 {
     public class Playlist
     {
-
         public int NumberOfVideos { get; set; }
         public int MaximumOfVideos { get; set; }
+        [Required]
+        [DataType(DataType.Text)]
         public string Title { get; set; }
+        [Required]
+        [DataType(DataType.Text)]
+        public string PersonUsername { get; set; }
+        [Required]
+        [DataType(DataType.Text)]
         public string DataCreation { get; set; }
 
+        public Playlist() { }
         public Playlist( int numberOfVideos , int maximumOfVideos , string title , string dataCreation)
         {
             NumberOfVideos = numberOfVideos;
