@@ -36,5 +36,12 @@ namespace ClassLibrary
 
             return _db.LoadData<Playlist, dynamic>(sql, new { });
         }
+
+        public Task<List<Playlist>> DeletePlaylist(Playlist playlist)
+        {
+            string sql = $"DELETE FROM dbo.[Playlist] WHERE [Title]='{playlist.Title.Trim()}';";
+
+            return _db.LoadData<Playlist, dynamic>(sql, new { });
+        }
     }
 }

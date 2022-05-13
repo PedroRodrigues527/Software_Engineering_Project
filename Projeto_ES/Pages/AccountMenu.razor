@@ -1,6 +1,7 @@
 ﻿@page "/account/menu"
 @inject NavigationManager NavigationManager
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject IJSRuntime JsRuntime
 @inject IUserData _db
 @inject IPlaylistData _dbp
 
@@ -19,12 +20,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 justify-content-center text-center">
-                    <ul class="list-unstyled mt-2">
+                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Your playlists</p>
+                    <ul class="list-group">
                         @if (userplaylists.Count > 0)
                         {
                             @for (int i = 0; i < userplaylists.Count; i++)
                             {
                                 var j = i;
+                                <!--
                                 <li class="list-item">
                                     <div class="form-check">
                                         <label class="form-check-label" for="item-@j">@userplaylists[j].Title</label>
@@ -33,23 +36,34 @@
                                         <button class="btn btn-secondary btn-sm" aria-label="Edit" @onclick="() => EditPlaylist(userplaylists[j])">
                                             <span class="oi oi-pencil" aria-hidden="true"></span>
                                         </button>
-                                        <!--
+                                        
                                         <button class="btn btn-danger btn-sm" aria-label="Delete" @onclick="() => DeleteItem(userplaylists[j])">
                                         <span class="oi oi-trash" aria-hidden="true"></span>
                                         </button>
-                                        -->
+                                        
                                 </div>
+                                </li>
+                                -->
+                                <li class="list-group-item-primary d-flex justify-content-between align-items-center ps-5 pe-5">
+                                @userplaylists[j].Title.Trim()
+                                <span class="badge badge-primary badge-pill">@userplaylists[j].DataCreation</span>
+                                <button class="btn btn-secondary btn-sm" aria-label="Edit" @onclick="() => EditPlaylist(userplaylists[j])">
+                                    <span class="oi oi-pencil" aria-hidden="true"></span>
+                                </button>
+                                <button class="btn btn-secondary btn-sm" aria-label="Delete" @onclick="() => RemovePlaylist(userplaylists[j])">
+                                    <span class="oi oi-trash" aria-hidden="true"></span>
+                                </button>
                                 </li>
                             }
                         }
                         else
                         {
-                            <p>No Playlists Created. Create now!</p>
+                            <p>No Playlists Created. Create one now!</p>
                         }
                     </ul>
                 </div>
                 <div class="col-md-6 justify-content-center text-center">
-                    TWO
+                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Search playlists</p>
                 </div>
             </div>
         </div>
@@ -92,5 +106,18 @@
         await sessionStorage.SetItemAsync("PlaylistChosen", playlistedit);
         //Redirect to edit playlist page
         NavigationManager.NavigateTo("/account/playlist/create");
+    }
+
+    private async void RemovePlaylist(Playlist playlistremoved)
+    {
+        bool confirmlogout = await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete playlist {playlistremoved.Title.Trim()}?");
+        if(confirmlogout == true)
+        {
+            //Remove playlist 
+            await _dbp.DeletePlaylist(playlistremoved);
+            userplaylists.Remove(playlistremoved);
+
+            NavigationManager.NavigateTo("/account/menu", true);
+        }
     }
 }
