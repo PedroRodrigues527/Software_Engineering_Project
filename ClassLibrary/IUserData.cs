@@ -3,7 +3,8 @@ namespace ClassLibrary
 {
     public interface IUserData
     {
-        Task<List<User>> GetUser(string username);
+        Task ChangePassword(User user);
+        Task<List<User>> GetUser(int usernameId);
         Task<List<User>> GetUsers();
         Task InsertUser(User user);
     }

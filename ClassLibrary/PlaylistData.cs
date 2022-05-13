@@ -25,21 +25,21 @@ namespace ClassLibrary
         public Task InsertPlaylist(Playlist playlist, User user)
         {
             string localDate = DateTime.Now.Date.ToString("yyyyMMdd");
-            string sql = $"insert into dbo.[Playlist] (Title, PersonUsername, DataCreation) values ({playlist.Title}, {user.Username}, {localDate});";
+            string sql = $"insert into dbo.[Playlist] (Title, PersonId, DataCreation) values ({playlist.Title}, {user.Id}, {localDate});";
 
             return _db.SaveData(sql, playlist);
         }
 
         public Task<List<Playlist>> GetClientPlaylists(User user)
         {
-            string sql = $"SELECT * FROM dbo.[Playlist] WHERE [PersonUsername]='{user.Username.Trim()}' COLLATE SQL_Latin1_General_CP1_CS_AS;";
+            string sql = $"SELECT * FROM dbo.[Playlist] WHERE [PersonId] = '{user.Id}';";
 
             return _db.LoadData<Playlist, dynamic>(sql, new { });
         }
 
         public Task<List<Playlist>> DeletePlaylist(Playlist playlist)
         {
-            string sql = $"DELETE FROM dbo.[Playlist] WHERE [Title]='{playlist.Title.Trim()}';";
+            string sql = $"DELETE FROM dbo.[Playlist] WHERE [ID]='{playlist.Id}';";
 
             return _db.LoadData<Playlist, dynamic>(sql, new { });
         }

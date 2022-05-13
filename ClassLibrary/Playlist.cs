@@ -8,8 +8,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassLibrary
 {
-    public class Playlist
+    public class Playlist : IItem
     {
+        [Required]
+        public int Id { get; set; }
         public int NumberOfVideos { get; set; }
         public int MaximumOfVideos { get; set; }
         [Required]

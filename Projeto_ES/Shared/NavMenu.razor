@@ -1,11 +1,12 @@
 ﻿@inject NavigationManager NavigationManager
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject IJSRuntime JsRuntime
+@inject IUserData _db
 
 <link rel="stylesheet" href="css/font-awesome/css/fontawesome.min.css" />
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark ps-5 justify-content-between">
-@if (usernamelogged == null)
+@if (userlogged == null)
     {
     <!-- Brand/logo -->
     <a class="navbar-brand" href="/">- CreateToView -</a>
@@ -39,22 +40,27 @@
                 </button>
             </li>
             <li class="nav-item">
-                <a class="nav-link" >@usernamelogged</a>
+                <a class="nav-link" >@userlogged.Username</a>
             </li>
             <li class="nav-item">
-                <img src="https://avatars.dicebear.com/api/identicon/@(usernamelogged).svg" class="img-fluid rounded mx-auto d-block" alt="Avatar Image" width="37" height="37">
+                <img src="https://avatars.dicebear.com/api/identicon/@(userlogged.Username).svg" class="img-fluid rounded mx-auto d-block" alt="Avatar Image" width="37" height="37">
             </li>
         </ul>
     }
 </nav>
 
 @code {
-    string usernamelogged;
+    int userIdlogged = 0;
+    User userlogged;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            usernamelogged = await sessionStorage.GetItemAsync<string>("UsernameLogged");
+            userIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
+            if (userIdlogged != 0)
+            {
+                userlogged = (await _db.GetUser(userIdlogged)).First();
+            }
 
             StateHasChanged();
         }

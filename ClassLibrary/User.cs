@@ -8,8 +8,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassLibrary
 {
-    public class User : IUser
+    public class User : IUser, IItem
     {
+        [Required]
+        public int Id { get; set; }
         [Required]
         [StringLength(16, ErrorMessage = "Username must be 16 characters or less.")]
         [DataType(DataType.Text)]

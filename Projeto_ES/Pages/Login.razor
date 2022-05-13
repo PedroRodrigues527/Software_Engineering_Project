@@ -55,15 +55,15 @@
 @code {
     private User user = new() { };
     private List<User> users;
-    string usernamelogged;
+    int? usernameIdlogged = 0;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             users = await _db.GetUsers();
-            usernamelogged = await sessionStorage.GetItemAsync<string>("UsernameLogged");
-            if(usernamelogged!=null)
+            usernameIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
+            if(usernameIdlogged!=0)
             {
                 //Redirect to account menu page
                 NavigationManager.NavigateTo("/account/menu");
@@ -76,21 +76,21 @@
     private async void HandleValidSubmit()
     {
         // Process to validate user database
-        bool isUserValid = false;
+        User isUserValid = null;
         users = await _db.GetUsers();
         foreach(var usercolumn in users)
         {
             if(usercolumn.Username.Trim() == user.Username.Trim() && usercolumn.Password.Trim() == user.Password.Trim())
             {
-                isUserValid = true;
+                isUserValid = usercolumn;
                 break;
             }
         }
 
-        if(isUserValid)
+        if(isUserValid != null)
         {
             //Add session validation
-            await sessionStorage.SetItemAsync("UsernameLogged", user.Username);
+            await sessionStorage.SetItemAsync("UsernameLogged", isUserValid.Id);
 
             //Redirect to account menu page
             NavigationManager.NavigateTo("/account/menu", true);

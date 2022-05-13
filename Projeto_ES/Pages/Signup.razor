@@ -77,15 +77,15 @@
 @code {
     private List<User>? users;
     private User user = new() { };
-    string? usernamelogged;
+    int? usernameIdlogged = 0;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             users = await _db.GetUsers();
-            usernamelogged = await sessionStorage.GetItemAsync<string>("UsernameLogged");
-            if(usernamelogged!=null)
+            usernameIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
+            if(usernameIdlogged!=0)
             {
                 //Redirect to account menu page
                 NavigationManager.NavigateTo("/account/menu");

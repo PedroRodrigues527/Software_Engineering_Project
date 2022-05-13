@@ -61,14 +61,14 @@
 
 @code {
     private List<Playlist>? userplaylists;
-    string? usernamelogged;
+    int usernameIdlogged = 0;
     User? userlogged;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            usernamelogged = await sessionStorage.GetItemAsync<string>("UsernameLogged");
-            if(usernamelogged==null)
+            usernameIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
+            if(usernameIdlogged==0)
             {
                 //Redirect to login page
                 NavigationManager.NavigateTo("/login");
@@ -76,7 +76,7 @@
             else
             {
                 //Get User in Database
-                userlogged = (await _db.GetUser(usernamelogged)).First();
+                userlogged = (await _db.GetUser(usernameIdlogged)).First();
                 //Get User's Playlists
                 userplaylists = await _dbp.GetClientPlaylists(userlogged);
             }
@@ -88,7 +88,7 @@
     private async void EditPlaylist(Playlist playlistedit)
     {
         //Add playlist in session storage
-        await sessionStorage.SetItemAsync("PlaylistChosen", playlistedit);
+        await sessionStorage.SetItemAsync("PlaylistChosen", playlistedit.Id);
         //Redirect to edit playlist page
         NavigationManager.NavigateTo("/account/playlist/create");
     }
