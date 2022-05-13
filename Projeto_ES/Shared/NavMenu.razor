@@ -68,7 +68,7 @@
     private async void Logout()
     {
         bool confirmlogout = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to logout?");
-        if(confirmlogout == true)
+        if(confirmlogout)
         {
             //Remove session validation
             await sessionStorage.RemoveItemAsync("UsernameLogged");
