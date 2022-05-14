@@ -39,6 +39,7 @@ namespace ClassLibrary
         public PlanPayment Plan { get; set; } = PlanPayment.FREE;
         public int MaxVideos() => (int) Plan;
         public int MaxPlaylists() => ((int)Plan) * 10;
+        public string DateExpirationPlan { get; set; }
 
 
         //Interface variables 

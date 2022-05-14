@@ -44,5 +44,12 @@ namespace ClassLibrary
 
             return _db.SaveData(sql, user);
         }
+
+        public Task PlanFinished(int usernameId)
+        {
+            string sql = $"update dbo.[User] set dbo.[User].[Plan] = 'FREE' AND dbo.[User].[DateExpirationPlan] = NULL where [Id] = '{usernameId}';";
+
+            return _db.SaveData(sql, new { });
+        }
     }
 }
