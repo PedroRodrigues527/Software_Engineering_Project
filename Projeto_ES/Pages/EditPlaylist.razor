@@ -180,7 +180,11 @@
         }
 
         if (newVideoId == string.Empty) return;
-        if (listVideos.Count() >= userlogged.MaxVideos()) await JsRuntime.InvokeVoidAsync("alert", "Maximum number of videos reached!");
+        if (listVideos.Count() >= userlogged.MaxVideos())
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Maximum number of videos reached!");
+            return;
+        }
 
         var macro = new MacroCommand();
         var command1 = new CommandCreateListVideo(newVideo, listVideos.Count());
