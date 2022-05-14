@@ -8,12 +8,13 @@ namespace ClassLibrary.Commands
 {
     public class CommandAddListVideo : ICommand
     {
-        public List<string> Playlist { get; }
-        public string UrlVideo;
+        public List<Video> Playlist { get; }
+        public Video UrlVideo;
         
-        public CommandAddListVideo(string _UrlVideo)
+        public CommandAddListVideo(List<Video> playlist, Video urlVideo)
         {
-            UrlVideo = _UrlVideo;
+            UrlVideo = urlVideo ?? throw new ArgumentNullException(nameof(UrlVideo));
+            Playlist = playlist;
         }
 
         public void Execute()
