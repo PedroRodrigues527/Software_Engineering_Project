@@ -21,6 +21,10 @@ namespace ClassLibrary.Commands
         {
             //Add video to playlist
             Playlist.Add(UrlVideo);
+            for (int i = 0; i < Playlist.Count(); i++)
+            {
+                Playlist[i].Order = i;
+            }
         }
 
         public void Redo()
@@ -33,6 +37,10 @@ namespace ClassLibrary.Commands
         {
             //Remove video from playlist
             Playlist.Remove(UrlVideo);
+            for (int i = 0; i < Playlist.Count(); i++)
+            {
+                Playlist[i].Order = i;
+            }
         }
     }
 }
