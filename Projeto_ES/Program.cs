@@ -2,6 +2,7 @@ using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using Blazored.SessionStorage;
 using ClassLibrary;
+using ClassLibrary.Commands_Pattern;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddTransient<IUserData, UserData>();
 builder.Services.AddTransient<IPlaylistData, PlaylistData>();
+builder.Services.AddSingleton<CommandManager>();
 
 
 builder.Services.AddSingleton(new YouTubeService(new BaseClientService.Initializer()

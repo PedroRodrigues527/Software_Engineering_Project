@@ -6,7 +6,7 @@
 @inject IJSRuntime JsRuntime
 @inject IUserData _db
 @inject IPlaylistData _dbp
-<!-- inject CommandManager CommandManager -->
+@inject CommandManager CommandManager
 
 <style>
     body {
@@ -21,7 +21,7 @@
     @if (listVideos != null && playlistEdit != null)
     {
         <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Edit Playlist: @(playlistEdit.Title)</p>
-        <!--
+        
         <div class="btn-group mb-2">
             <button class="btn btn-secondary" disabled="@(!canUndo)" @onclick="Undo">
                 <span class="oi oi-action-undo" aria-hidden="true"></span> Undo
@@ -30,7 +30,7 @@
                 <span class="oi oi-action-redo" aria-hidden="true"></span> Redo
             </button>
         </div>
-        -->
+        
         <div class="text-dark">Count: @listVideos.Count() videos</div>
 
         <form @onsubmit="AddVideo">
@@ -80,10 +80,19 @@
 
     private bool canUndo;
     private bool canRedo;
-    //var macro = new MacroCommand();
 
-    //private void Undo() => CommandManager.Undo();
-    //private void Redo() => CommandManager.Redo();
+    private void Undo() => CommandManager.Undo();
+    private void Redo() => CommandManager.Redo();
+
+    protected override void OnInitialized()
+    {
+        CommandManager.Reset();
+        CommandManager.Notify += (s, e) =>
+        {
+            canUndo = CommandManager.HasUndo;
+            canRedo = CommandManager.HasRedo;
+        };
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -114,16 +123,7 @@
                 {
                     //Edit Playlist
                     playlistEdit = (await _dbp.GetPlaylist(playlistStorage)).First();
-
-                    //Setup Command
-                    /*
-                    CommandManager.Reset();
-                    CommandManager.Notify += (s, e) =>
-                        {
-                        canUndo = CommandManager.HasUndo;
-                        canRedo = CommandManager.HasRedo;
-                    };
-                    */
+                    
 
                     //Get Videos of Playlist
                     List<PlaylistVideos> videosAssociatedPlaylist = await _dbp.VideosIdInPlaylist(playlistEdit);
@@ -168,27 +168,24 @@
             newVideoId = HttpUtility.ParseQueryString(new Uri(newVideo).Query)["v"];
         }
 
-        Console.WriteLine($"id: {newVideoId}");
-
         if (newVideoId == string.Empty) return;
         if (listVideos.Count() >= userlogged.MaxVideos()) return;
 
-        /*
         var macro = new MacroCommand();
-        var command1 = new CommandCreateListItem(newItem);
+        var command1 = new CommandCreateListVideo(newVideo, listVideos.Count());
         command1.Execute();
         macro.Add(command1);
-        var command2 = new CommandAddListItem(items, command1.Item);
+        var command2 = new CommandAddListVideo(listVideos, command1.NewVideo);
         macro.Add(command2);
         CommandManager.Execute(macro);
-        newItem = null;
-        */
+        newVideo = null;
+        
     }
 
     private void DeleteVideo(Video videoToRemove)
     {
         if (videoToRemove == null) return;
-        //var command1 = new CommandDeleteListItem(listVideos, videoToRemove);
-        //CommandManager.Execute(command1);
+        var command1 = new CommandRemoveListVideo(listVideos, videoToRemove);
+        CommandManager.Execute(command1);
     }
 }

@@ -93,11 +93,12 @@
             else
             {
                 //Get User in Database
-                if(userlogged.Plan != PlanPayment.FREE && DateTime.Compare(DateTime.ParseExact(userlogged.DateExpirationPlan,"yyyyMMdd",System.Globalization.CultureInfo.InvariantCulture), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)) <= 0)
-                {
-                    await _db.PlanFinished(usernameIdlogged);
-                }
                 userlogged = (await _db.GetUser(usernameIdlogged)).First();
+                if(userlogged.Plan != PlanPayment.FREE)
+                {
+                    if(DateTime.Compare(DateTime.ParseExact(userlogged.DateExpirationPlan,"yyyyMMdd",System.Globalization.CultureInfo.InvariantCulture), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)) <= 0)
+                        await _db.PlanFinished(usernameIdlogged);
+                }
                 //Get User's Playlists
                 userplaylists = await _dbp.GetClientPlaylists(userlogged);
 
