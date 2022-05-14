@@ -52,11 +52,11 @@
                             <div class="col-sm-10">
                                 @if(userlogged.Biography == null)
                                 {
-                                    <input type="text" readonly class="form-control-plaintext" id="staticBiography" value="">
+                                    <input type="text" readonly class="form-control-plaintext text-center" id="staticBiography" value="">
                                 }
                                 else
                                 {
-                                    <input type="text" readonly class="form-control-plaintext" id="staticBiography" value="@userlogged.Biography">
+                                    <input type="text" readonly class="form-control-plaintext text-center" id="staticBiography" value="@userlogged.Biography">
                                 }
                             </div>
                       </div>
@@ -145,7 +145,7 @@
             await JsRuntime.InvokeVoidAsync("alert", "Biography updated!");
 
             //Redirect to login page
-            NavigationManager.NavigateTo("/account/settings", true);
+            NavigationManager.NavigateTo("/account/settings/bio", true);
         }
         else
         {
