@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassLibrary.Database_Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -65,6 +66,26 @@ namespace ClassLibrary
             string sql = $"UPDATE dbo.[Playlist] SET [Title] = '{playlist.Id}' WHERE [ID] = '{playlist.Id}';";
 
             return _db.SaveData(sql, playlist);
+        }
+
+        public Task<List<PlaylistVideos>> VideosIdInPlaylist(Playlist playlist)
+        {
+            string sql = $"SELECT * FROM dbo.[PlaylistVideo] WHERE [IDPlaylist] = '{playlist.Id}';";
+
+            return _db.LoadData<PlaylistVideos, dynamic>(sql, new { });
+        }
+
+        public Task<List<Video>> VideosPlaylist(List<PlaylistVideos> videosIdList)
+        {
+            string sql = $"SELECT * FROM dbo.[Video] WHERE [ID] IN (";
+            foreach(PlaylistVideos videoInPlaylist in videosIdList)
+            {
+                sql += $"{videoInPlaylist.IdVideo}, ";
+            }
+            sql = sql.Remove(sql.Length-2);
+            sql += ");";
+
+            return _db.LoadData<Video, dynamic>(sql, new { });
         }
     }
 }

@@ -9,9 +9,11 @@ namespace ClassLibrary
     public class Video : IYoutubeAPIVideos
     {
         public string Artist { get; set; }
-        public string DataCreating { get; set; }
+        public string DateCreated { get; set; }
         public string Url { get; set; }
         public string Title { get; set; }
+        public int Order { get; set; }
+        public bool IsDragOver { get; set; }
 
         public string SearchPlaylist(string title)
         {

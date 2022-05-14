@@ -1,4 +1,5 @@
-﻿
+﻿using ClassLibrary.Database_Model;
+
 namespace ClassLibrary
 {
     public interface IPlaylistData
@@ -10,5 +11,7 @@ namespace ClassLibrary
         Task<List<Playlist>> GetLatestPlaylistInserted(Playlist playlist, User user);
         Task<List<Playlist>> GetPlaylist(int playlistId);
         Task UpdateTitle(Playlist playlist);
+        Task<List<PlaylistVideos>> VideosIdInPlaylist(Playlist playlist);
+        Task<List<Video>> VideosPlaylist(List<PlaylistVideos> videosIdList);
     }
 }
