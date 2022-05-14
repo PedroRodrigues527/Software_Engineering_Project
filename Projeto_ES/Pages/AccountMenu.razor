@@ -133,7 +133,7 @@
     private async void CreatePlaylist(User userlogged)
     {
         //Redirect to edit playlist page
-        if (userplaylists.Count() >= userlogged.MaxPlaylists()) return;
+        if (userplaylists.Count() >= userlogged.MaxPlaylists()) await JsRuntime.InvokeVoidAsync("alert", "Maximum number of playlists reached!");
         await sessionStorage.SetItemAsync("PlaylistChosen", -1);
         NavigationManager.NavigateTo("/account/playlist/edit");
     }
