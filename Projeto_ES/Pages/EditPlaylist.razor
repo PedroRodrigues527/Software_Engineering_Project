@@ -108,22 +108,28 @@
             {
                 //Get User in Database
                 userlogged = (await _db.GetUser(usernameIdlogged)).First();
+
+                if(userlogged.Plan != PlanPayment.FREE)
+                {
+                    if(DateTime.Compare(DateTime.ParseExact(userlogged.DateExpirationPlan.Trim(),"yyyyMMdd",System.Globalization.CultureInfo.InvariantCulture), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)) <= 0)
+                        await _db.PlanFinished(usernameIdlogged);
+                }
                 //Get Playlist in Database
                 int playlistStorage = await sessionStorage.GetItemAsync<int>("PlaylistChosen");
-                if(playlistStorage == 0)
+                if(playlistStorage == -1)
                 {
                     //Create Playlist
                     Playlist playlistWithId = (await _dbp.GetLatestPlaylistInserted(new Playlist(), userlogged)).First();
                     await _dbp.UpdateTitle(playlistWithId);
                     playlistEdit = (await _dbp.GetPlaylist(playlistWithId.Id)).First();
+                    await sessionStorage.SetItemAsync("PlaylistChosen", playlistEdit.Id);
 
                     listVideos = new();
                 }
-                else
+                else if(playlistStorage != 0)
                 {
                     //Edit Playlist
                     playlistEdit = (await _dbp.GetPlaylist(playlistStorage)).First();
-                    
 
                     //Get Videos of Playlist
                     List<PlaylistVideos> videosAssociatedPlaylist = await _dbp.VideosIdInPlaylist(playlistEdit);
@@ -135,6 +141,11 @@
                     {
                         listVideos = await _dbp.VideosPlaylist(videosAssociatedPlaylist);
                     }
+                }
+                else
+                {
+                    //Redirect to account menu page
+                    NavigationManager.NavigateTo("/login");
                 }
             }
 

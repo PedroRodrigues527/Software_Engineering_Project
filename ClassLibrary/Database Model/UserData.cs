@@ -39,15 +39,21 @@ namespace ClassLibrary
 
         public Task ChangePassword(User user)
         {
-            string sql = @"update dbo.[User] set dbo.[User].[Password] = @Password
-                           where [Id] = @ID;";
+            string sql = $"update dbo.[User] set dbo.[User].[Password] = '{user.Password}' where [Id] = '{user.Id}';";
 
-            return _db.SaveData(sql, user);
+            return _db.SaveData(sql, new { });
+        }
+
+        public Task ChangeBiography(User userWithId)
+        {
+            string sql = $"update dbo.[User] set dbo.[User].[Biography] = '{userWithId.Biography}' where [Id] = '{userWithId.Id}';";
+
+            return _db.SaveData(sql, new { });
         }
 
         public Task PlanFinished(int usernameId)
         {
-            string sql = $"update dbo.[User] set dbo.[User].[Plan] = 'FREE' AND dbo.[User].[DateExpirationPlan] = NULL where [Id] = '{usernameId}';";
+            string sql = $"update dbo.[User] set dbo.[User].[Plan] = 'FREE', dbo.[User].[DateExpirationPlan] = NULL WHERE [Id] = '{usernameId}';";
 
             return _db.SaveData(sql, new { });
         }

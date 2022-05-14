@@ -31,7 +31,9 @@ namespace ClassLibrary
         [Required]
         [Range(typeof(bool), "true", "true")]
         public bool IsValid { get; set; }
-
+        [Required]
+        [DataType(DataType.Text)]
+        [StringLength(150, ErrorMessage = "Biography must be 150 characters or less.")]
         public string Biography { get; set; }
 
         public string YoutubeAccount { get; set; }
