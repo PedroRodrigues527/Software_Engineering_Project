@@ -128,6 +128,7 @@
     private async void CreatePlaylist(User userlogged)
     {
         //Redirect to edit playlist page
+        if (userplaylists.Count() >= userlogged.MaxPlaylists()) return;
         NavigationManager.NavigateTo("/account/playlist/edit");
     }
 }
