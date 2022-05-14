@@ -34,7 +34,7 @@
                 </button>
             </li>
             <li class="nav-item">
-                <button type="button" href="/account/settings" class="btn btn-secondary">
+                <button type="button" href="/account/settings" class="btn btn-secondary" @onclick="RedirectToSettings" >
                     <i class="fa-solid fa-gear"></i>
                     Settings
                 </button>
@@ -77,5 +77,10 @@
             //Redirect to login page
             NavigationManager.NavigateTo("/login", true);
         }
+    }
+
+    private async void RedirectToSettings()
+    {
+        NavigationManager.NavigateTo("/account/settings", true);
     }
 }
