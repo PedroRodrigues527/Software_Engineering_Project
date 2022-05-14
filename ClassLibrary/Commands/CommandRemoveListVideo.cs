@@ -8,22 +8,31 @@ namespace ClassLibrary.Commands
 {
     public class CommandRemoveListVideo : ICommand
     {
+        public List<string> Playlist { get; }
+        public string UrlVideo;
+
+        public CommandRemoveListVideo(string _UrlVideo)
+        {
+            UrlVideo = _UrlVideo;
+        }
+
         public void Execute()
         {
             //Remove Video
-            throw new NotImplementedException();
+            Playlist.Remove(UrlVideo);
         }
 
         public void Redo()
         {
             //Remove again from playlist
-            throw new NotImplementedException();
+            Execute();
         }
 
         public void Undo()
         {
             //Add video to playlist
-            throw new NotImplementedException();
+            Playlist.Add(UrlVideo);
         }
+        
     }
 }
