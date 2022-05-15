@@ -16,6 +16,7 @@ namespace ClassLibrary
             _db = db;
         }
 
+
         public Task<List<Playlist>> GetPlaylists()
         {
             string sql = "select * from dbo.[Playlist]";
@@ -94,5 +95,12 @@ namespace ClassLibrary
 
             return _db.LoadData<Video, dynamic>(sql, new { });
         }
+
+        public Task<List<Playlist>> GetResults(string keyword)
+        {
+            string sql = $"Select * From dbo.[Playlist] Where [Title] LIKE '%{keyword}%'";
+            return _db.LoadData<Playlist, dynamic>(sql, new { });
+        }
+
     }
 }
