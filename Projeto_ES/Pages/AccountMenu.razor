@@ -4,6 +4,7 @@
 @inject IJSRuntime JsRuntime
 @inject IUserData _db
 @inject IPlaylistData _dbp
+@inject IModalService modal 
 
 <style>
     body {
@@ -123,7 +124,7 @@
         if(confirmlogout == true)
         {
             //Remove playlist 
-            await _dbp.DeletePlaylist(playlistremoved);
+            _dbp.DeletePlaylist(playlistremoved);
             userplaylists.Remove(playlistremoved);
 
             NavigationManager.NavigateTo("/account/menu", true);

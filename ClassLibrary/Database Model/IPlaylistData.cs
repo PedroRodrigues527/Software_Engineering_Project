@@ -4,7 +4,7 @@ namespace ClassLibrary
 {
     public interface IPlaylistData
     {
-        Task DeletePlaylist(Playlist playlist);
+        void DeletePlaylist(Playlist playlist);
         Task<List<Playlist>> GetClientPlaylists(User user);
         Task<List<Playlist>> GetPlaylists();
         Task<List<Playlist>> GetResults(string keyword);
@@ -13,6 +13,7 @@ namespace ClassLibrary
         Task<List<Playlist>> GetPlaylist(int playlistId);
         Task UpdateTitle(Playlist playlist);
         Task UpdateNewTitle(Playlist playlist);
+        void UpdateType(Playlist playlist, string typePlaylist);
         Task<List<PlaylistVideos>> VideosIdInPlaylist(Playlist playlist);
         Task<List<Video>> VideosPlaylist(List<PlaylistVideos> videosIdList);
     }

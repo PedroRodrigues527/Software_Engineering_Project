@@ -16,7 +16,6 @@ namespace ClassLibrary
             _db = db;
         }
 
-
         public Task<List<Playlist>> GetPlaylists()
         {
             string sql = "select * from dbo.[Playlist]";
@@ -46,11 +45,11 @@ namespace ClassLibrary
             return _db.LoadData<Playlist, dynamic>(sql, new { });
         }
 
-        public Task DeletePlaylist(Playlist playlist)
+        public void DeletePlaylist(Playlist playlist)
         {
             string sql = $"DELETE FROM dbo.[Playlist] WHERE [ID]='{playlist.Id}';";
 
-            return _db.SaveData(sql, playlist);
+            _db.SaveData(sql, playlist);
         }
 
         public Task<List<Playlist>> GetLatestPlaylistInserted(Playlist playlist, User user)
@@ -74,6 +73,13 @@ namespace ClassLibrary
             string sql = $"UPDATE dbo.[Playlist] SET [Title] = '{playlist.Title}' WHERE [ID] = '{playlist.Id}';";
 
             return _db.SaveData(sql, playlist);
+        }
+
+        public void UpdateType(Playlist playlist, string typePlaylist)
+        {
+            string sql = $"UPDATE dbo.[Playlist] SET [Type] = '{typePlaylist}' WHERE [ID] = '{playlist.Id}';";
+
+            _db.SaveData(sql, playlist);
         }
 
         public Task<List<PlaylistVideos>> VideosIdInPlaylist(Playlist playlist)

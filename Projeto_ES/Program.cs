@@ -5,6 +5,7 @@ using ClassLibrary;
 using ClassLibrary.Commands_Pattern;
 using Projeto_ES.Data;
 using Microsoft.Extensions.DependencyInjection;
+using Blazored.Modal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddBlazoredSessionStorage();
+builder.Services.AddBlazoredModal();
 builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddTransient<IUserData, UserData>();
 builder.Services.AddTransient<IPlaylistData, PlaylistData>();

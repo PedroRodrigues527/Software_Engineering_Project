@@ -40,8 +40,21 @@
                             <span class="oi oi-action-redo" aria-hidden="true"></span> Redo
                         </button>
                     </div>
+
+                    <select @onchange="OnValueChanged" class="form-select" aria-label="DefaultSelect">
+                        @foreach (EnumPlaylistType value in Enum.GetValues(typeof(EnumPlaylistType))) {
+                            if (value == playlistEdit.Type)
+                            {
+                                <option value="@value" selected>@value</option>
+                            }
+                            else
+                            {
+                                <option value="@value">@value</option>
+                            }
+                        }
+                    </select>
         
-                    <div class="text-dark">Count: @listVideos.Count() videos</div>
+                    <div class="text-dark mb-1">Count: @listVideos.Count() videos</div>
 
                     <form @onsubmit="AddVideo">
                         <div class="input-group ps-0 justify-content-center form-group has-error has-danger">
@@ -212,6 +225,12 @@
             if (containsItem) return;
             await _dbp.UpdateNewTitle(playlistNewTitle);
         }
+    }
+
+    private void OnValueChanged(ChangeEventArgs e)
+    {
+        var selectedType = e.Value.ToString();
+        _dbp.UpdateType(playlistEdit, selectedType);
     }
 
     private void AddVideo()
