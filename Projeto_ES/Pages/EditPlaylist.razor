@@ -199,6 +199,7 @@
     private void HandleDrop(Video landingModel)
     {//landing model -> where the drop happened
         if (draggingModel is null) return;
+        List<Video> oldListVideos = listVideos;
         int originalOrderLanding = landingModel.Order;//keep the original order for later
                                                       //increase model under by 1
         listVideos.Where(x => x.Order >= landingModel.Order).ToList().ForEach(x => x.Order++);
@@ -209,6 +210,10 @@
             model.Order = ii++;//keep the numbers from 0 to size-1
             model.IsDragOver = false;//remove drag over. 
         }
+
+        //update video placement
+        var command = new CommandChangeOrderListVideo(listVideos, oldListVideos, _dbp, playlistEdit);
+        CommandManager.Execute(command);
     }
 
     private async void EditPlaylistTitle()
