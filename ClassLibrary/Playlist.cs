@@ -19,7 +19,7 @@ namespace ClassLibrary
         public string Title { get; set; }
         [Required]
         [DataType(DataType.Text)]
-        public string PersonUsername { get; set; }
+        public int PersonId { get; set; }
         [Required]
         [DataType(DataType.Text)]
         public string DateCreation { get; set; }

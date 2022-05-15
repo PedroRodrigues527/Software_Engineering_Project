@@ -7,6 +7,7 @@
 @inject IUserData _db
 @inject IPlaylistData _dbp
 @inject CommandManager CommandManager
+@inject IndexModel IndexModel
 
 <style>
     body {
@@ -21,47 +22,62 @@
     @if (listVideos != null && playlistEdit != null)
     {
         <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Edit Playlist: @(playlistEdit.Title)</p>
-        
-        <div class="btn-group mb-2">
-            <button class="btn btn-secondary" disabled="@(!canUndo)" @onclick="Undo">
-                <span class="oi oi-action-undo" aria-hidden="true"></span> Undo
-            </button>
-            <button class="btn btn-secondary" disabled="@(!canRedo)" @onclick="Redo">
-                <span class="oi oi-action-redo" aria-hidden="true"></span> Redo
-            </button>
-        </div>
-        
-        <div class="text-dark">Count: @listVideos.Count() videos</div>
 
-        <form @onsubmit="AddVideo">
-            <div class="input-group ps-0 justify-content-center form-group has-error has-danger">
-                <input class="form-control" type="text" style="width: 70%" @bind="newVideo" placeholder="Add video url to playlist. Example: www.youtube.com/watch?v=8DNgdphLvag" />
-                <button type="submit" class="btn btn-success">
-                <i class="fa-solid fa-video"></i>
-                Add Url
-                </button>
-                <div class="help-block with-errors">
-                </div>
-            </div>
-        </form>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 justify-content-center text-center">
 
-        <ul ondragover="event.preventDefault();" class="list-unstyled mt-2 text-center"
-	        ondragstart="event.dataTransfer.setData('', event.target.id);">
-	        @foreach (var item in listVideos.OrderBy(x => x.Order))
-	        {
-		        <li @ondrop="()=>HandleDrop(item)" @key="item" class="list-video">
-			        <div @ondragleave="@(()=> {item.IsDragOver = false;})"
-				        @ondragenter="@(()=>{item.IsDragOver = true;})"
-				        style="@(item.IsDragOver?"border-style: solid none none none; border-color:red;":"")"
-				        @ondragstart="() => draggingModel = item"
-				        @ondragend="()=> draggingModel = null" draggable="true">@item.Order - @item.Url
-                        <button class="btn btn-danger btn-sm" aria-label="Delete" @onclick="() => DeleteVideo(item)">
-                            <i class="fa fa-trash"></i>
+                    <button class="btn btn-secondary btn-md mb-2" aria-label="Edit Playlist Title" @onclick="() => EditPlaylistTitle()">
+                        <span class="oi oi-pencil" aria-hidden="true"></span> Edit Title
+                    </button>
+        
+                    <div class="btn-group mb-2">
+                        <button class="btn btn-secondary" disabled="@(!canUndo)" @onclick="Undo">
+                            <span class="oi oi-action-undo" aria-hidden="true"></span> Undo
+                        </button>
+                        <button class="btn btn-secondary" disabled="@(!canRedo)" @onclick="Redo">
+                            <span class="oi oi-action-redo" aria-hidden="true"></span> Redo
                         </button>
                     </div>
-		        </li>
-	        }
-        </ul>
+        
+                    <div class="text-dark">Count: @listVideos.Count() videos</div>
+
+                    <form @onsubmit="AddVideo">
+                        <div class="input-group ps-0 justify-content-center form-group has-error has-danger">
+                            <input class="form-control" type="text" style="width: 70%" @bind="newVideo" placeholder="Add video url to playlist. Example: www.youtube.com/watch?v=8DNgdphLvag" />
+                            <button type="submit" class="btn btn-success">
+                            <i class="fa-solid fa-video"></i>
+                            Add Url
+                            </button>
+                            <div class="help-block with-errors">
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="col-md-6 justify-content-center text-center">
+
+                    <ul ondragover="event.preventDefault();" class="list-unstyled list-group list-group-flush mt-2 text-center"
+	                    ondragstart="event.dataTransfer.setData('', event.target.id);">
+	                    @foreach (var item in listVideos.OrderBy(x => x.Order))
+	                    {
+		                    <li @ondrop="()=>HandleDrop(item)" @key="item" class="list-group-item mb-1">
+			                    <div @ondragleave="@(()=> {item.IsDragOver = false;})"
+				                    @ondragenter="@(()=>{item.IsDragOver = true;})"
+				                    style="@(item.IsDragOver?"border-style: solid none none none; border-color:red;":"")"
+				                    @ondragstart="() => draggingModel = item"
+				                    @ondragend="()=> draggingModel = null" draggable="true">@(item.Order) - <img src="@item.Thumbnail"> @item.Title - @item.ChannelName 
+                                    <button class="btn btn-danger btn-sm" aria-label="Delete" @onclick="() => DeleteVideo(item)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+		                    </li>
+	                    }
+                    </ul>
+
+                </div>
+            </div>
+        </div>
     }
     else
     {
@@ -72,6 +88,7 @@
 @code {
     int usernameIdlogged = 0;
     User? userlogged;
+
     Playlist? playlistEdit;
 
     List<Video>? listVideos;
@@ -168,18 +185,46 @@
         }
     }
 
+    private async void EditPlaylistTitle()
+    {
+        string prompted = await JsRuntime.InvokeAsync<string>("prompt", "Insert new playlist title:");
+        if(!string.IsNullOrWhiteSpace(prompted))
+        {
+            if (prompted.Length > 16) return;
+            List<Playlist> userplaylists = await _dbp.GetClientPlaylists(userlogged);
+
+            playlistEdit.Title = prompted;
+            Playlist playlistNewTitle = new Playlist() {Id = playlistEdit.Id, Title = prompted};
+            bool containsItem = userplaylists.Any(item => item.Title == playlistNewTitle.Title && item.PersonId == userlogged.Id);
+            if (containsItem) return;
+            await _dbp.UpdateNewTitle(playlistNewTitle);
+        }
+    }
+
     private async void AddVideo()
     {
-        if (string.IsNullOrEmpty(newVideo)) return;
-        string newVideoId = string.Empty;
-
-        Match youtubeMatch = (new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)")).Match(newVideo);
-        if (youtubeMatch.Success)
+        if (string.IsNullOrWhiteSpace(newVideo)) return;
+        var newVideoId = string.Empty;
+        if (newVideo.Contains("www.youtube.com/watch?v="))
         {
-            newVideoId = HttpUtility.ParseQueryString(new Uri(newVideo).Query)["v"];
+            var query = HttpUtility.ParseQueryString((new Uri(newVideo)).Query);
+            if (query.AllKeys.Contains("v"))
+            {
+                string newVideoIdVerify = query["v"];
+                if(newVideoIdVerify.Length == 11)
+                {
+                    newVideoId = newVideoIdVerify;
+                }
+            }
         }
 
         if (newVideoId == string.Empty) return;
+
+        //Get Video Title, ... From newVideoId
+        List<Video> videosObtained = await IndexModel.OnGet(newVideoId);
+        if(videosObtained.Count() <= 0) return;
+        Video firstNewVideo = videosObtained.First();
+
         if (listVideos.Count() >= userlogged.MaxVideos())
         {
             await JsRuntime.InvokeVoidAsync("alert", "Maximum number of videos reached!");
@@ -187,7 +232,7 @@
         }
 
         var macro = new MacroCommand();
-        var command1 = new CommandCreateListVideo(newVideo, listVideos.Count());
+        var command1 = new CommandCreateListVideo(firstNewVideo, listVideos.Count());
         command1.Execute();
         macro.Add(command1);
         var command2 = new CommandAddListVideo(listVideos, command1.NewVideo);

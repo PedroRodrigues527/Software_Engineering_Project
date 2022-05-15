@@ -3,6 +3,8 @@ using Google.Apis.YouTube.v3;
 using Blazored.SessionStorage;
 using ClassLibrary;
 using ClassLibrary.Commands_Pattern;
+using Projeto_ES.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,11 +18,12 @@ builder.Services.AddTransient<IPlaylistData, PlaylistData>();
 builder.Services.AddSingleton<CommandManager>();
 
 
-builder.Services.AddSingleton(new YouTubeService(new BaseClientService.Initializer()
-{
-    ApiKey = "AIzaSyC1iWH5NiEltxAAftVDqCFgqhfaWYUOgcI",
-    ApplicationName = "APPLICATION_NAME"
-}));
+builder.Services.AddSingleton<IndexModel>(new IndexModel(
+    new YouTubeService(new BaseClientService.Initializer() { 
+        ApiKey = "AIzaSyC1iWH5NiEltxAAftVDqCFgqhfaWYUOgcI", 
+        ApplicationName = "APPLICATION_NAME" 
+    })));
+
 
 var app = builder.Build();
 

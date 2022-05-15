@@ -8,19 +8,19 @@ namespace ClassLibrary.Commands
 {
     public class CommandCreateListVideo : ICommand
     {
-        public CommandCreateListVideo(string url, int order)
+        public CommandCreateListVideo(Video newVideoData, int order)
         {
-            UrlInserted = url;
+            NewVideoData = newVideoData;
             NewOrder = order;
         }
 
-        public string UrlInserted { get; }
+        public Video NewVideoData { get; }
         public int NewOrder { get; }
         public Video? NewVideo { get; private set; }
 
         public void Execute()
         {
-            NewVideo = new Video { Url = UrlInserted, Order = NewOrder };
+            NewVideo = new Video { VideoId = NewVideoData.VideoId, Title = NewVideoData.Title, ChannelName = NewVideoData.ChannelName, Thumbnail = NewVideoData.Thumbnail, Order = NewOrder };
         }
 
         public void Redo()

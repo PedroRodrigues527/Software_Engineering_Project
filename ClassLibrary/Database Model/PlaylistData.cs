@@ -40,7 +40,7 @@ namespace ClassLibrary
 
         public Task<List<Playlist>> GetPlaylist(int playlistId)
         {
-            string sql = $"SELECT * FROM dbo.[Playlist] WHERE [Title] = '{playlistId}';";
+            string sql = $"SELECT * FROM dbo.[Playlist] WHERE [ID] = '{playlistId}';";
 
             return _db.LoadData<Playlist, dynamic>(sql, new { });
         }
@@ -64,6 +64,13 @@ namespace ClassLibrary
         public Task UpdateTitle(Playlist playlist)
         {
             string sql = $"UPDATE dbo.[Playlist] SET [Title] = '{playlist.Id}' WHERE [ID] = '{playlist.Id}';";
+
+            return _db.SaveData(sql, playlist);
+        }
+
+        public Task UpdateNewTitle(Playlist playlist)
+        {
+            string sql = $"UPDATE dbo.[Playlist] SET [Title] = '{playlist.Title}' WHERE [ID] = '{playlist.Id}';";
 
             return _db.SaveData(sql, playlist);
         }
