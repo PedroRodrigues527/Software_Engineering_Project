@@ -12,7 +12,7 @@
     }
 </style>
 
-<PageTitle>Changing Biography</PageTitle>
+<PageTitle>Changing Email</PageTitle>
 
 <div>
     @if (userlogged != null)
@@ -24,15 +24,15 @@
                 <div class="col-md-6 justify-content-center text-center">
                     <ul class="list-unlisted mt-2">
                         <div class="nav-item mb-2">
-                             <button type="button" class="btn btn-primary btn-lg" disabled>
-                                <i class="fa-solid fa-user-pen"></i>
+                            <button type="button" class="btn btn-primary btn-lg" @onclick="EditBio" >
+                                <i class="fa-solid fa-at"></i>
                                 Change Biography
                             </button>
                         </div>
                         <div class="nav-item mb-2">
-                            <button type="button" class="btn btn-primary btn-lg" @onclick="EditEmail" >
-                                <i class="fa-solid fa-at"></i>
-                                Change Email
+                             <button type="button" class="btn btn-primary btn-lg" disabled>
+                                <i class="fa-solid fa-user-pen"></i>
+                                Change Biography
                             </button>
                         </div>
                         <div class="nav-item mb-2">
