@@ -45,7 +45,7 @@
                     <form @onsubmit="AddVideo">
                         <div class="input-group ps-0 justify-content-center form-group has-error has-danger">
                             <input class="form-control" type="text" style="width: 70%" @bind="newVideo" placeholder="Add video url to playlist. Example: www.youtube.com/watch?v=8DNgdphLvag" />
-                            <button type="submit" class="btn btn-success">
+                            <button type="submit" class="btn btn-success" @onclick="AddVideo">
                             <i class="fa-solid fa-video"></i>
                             Add Url
                             </button>
@@ -66,10 +66,22 @@
 				                    @ondragenter="@(()=>{item.IsDragOver = true;})"
 				                    style="@(item.IsDragOver?"border-style: solid none none none; border-color:red;":"")"
 				                    @ondragstart="() => draggingModel = item"
-				                    @ondragend="()=> draggingModel = null" draggable="true">@(item.Order) - <img src="@item.Thumbnail"> @item.Title - @item.ChannelName 
-                                    <button class="btn btn-danger btn-sm" aria-label="Delete" @onclick="() => DeleteVideo(item)">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
+				                    @ondragend="()=> draggingModel = null" draggable="true">
+                                    <div class="container">
+                                        <div class="row d-flex justify-content-between align-items-center">
+                                            <div class="col-4 ">
+                                                @(item.Order)) <img src="@item.Thumbnail">
+                                            </div>
+                                            <div class="col-7">
+                                                @item.Title <br> Channel Name: @(item.ChannelName)
+                                            </div>
+                                            <div class="col-1">
+                                                <button class="btn btn-danger btn-sm" aria-label="Delete" @onclick="() => DeleteVideo(item)">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 		                    </li>
 	                    }
