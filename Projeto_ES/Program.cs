@@ -15,6 +15,7 @@ builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddTransient<IUserData, UserData>();
 builder.Services.AddTransient<IPlaylistData, PlaylistData>();
+builder.Services.AddTransient<IVideoData, VideoData>();
 builder.Services.AddSingleton<CommandManager>();
 
 

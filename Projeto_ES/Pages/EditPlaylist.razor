@@ -6,6 +6,7 @@
 @inject IJSRuntime JsRuntime
 @inject IUserData _db
 @inject IPlaylistData _dbp
+@inject IVideoData _dbv
 @inject CommandManager CommandManager
 @inject IndexModel IndexModel
 
@@ -61,7 +62,7 @@
 	                    ondragstart="event.dataTransfer.setData('', event.target.id);">
 	                    @foreach (var item in listVideos.OrderBy(x => x.Order))
 	                    {
-		                    <li @ondrop="()=>HandleDrop(item)" @key="item" class="list-group-item mb-1">
+		                    <li @ondrop="()=>HandleDrop(item)" @key="item.Id" class="list-group-item mb-1">
 			                    <div @ondragleave="@(()=> {item.IsDragOver = false;})"
 				                    @ondragenter="@(()=>{item.IsDragOver = true;})"
 				                    style="@(item.IsDragOver?"border-style: solid none none none; border-color:red;":"")"
@@ -213,7 +214,7 @@
         }
     }
 
-    private async void AddVideo()
+    private void AddVideo()
     {
         if (string.IsNullOrWhiteSpace(newVideo)) return;
         var newVideoId = string.Empty;
@@ -231,11 +232,7 @@
         }
 
         if (newVideoId == string.Empty) return;
-        if (listVideos.Count() >= userlogged.MaxVideos())
-        {
-            await JsRuntime.InvokeVoidAsync("alert", "Maximum number of videos reached!");
-            return;
-        }
+        if (listVideos.Count() >= userlogged.MaxVideos()) return;
 
         //Get Video Title, ... From newVideoId
         List<Video> videosObtained = IndexModel.OnGet(newVideoId);
@@ -243,7 +240,7 @@
         Video firstNewVideo = videosObtained.First();
         firstNewVideo.Order = listVideos.Count;
 
-        var command2 = new CommandAddListVideo(listVideos, firstNewVideo);
+        var command2 = new CommandAddListVideo(listVideos, firstNewVideo, _dbv, playlistEdit);
         CommandManager.Execute(command2);
         newVideo = null;
         
@@ -252,7 +249,7 @@
     private void DeleteVideo(Video videoToRemove)
     {
         if (videoToRemove == null) return;
-        var command1 = new CommandRemoveListVideo(listVideos, videoToRemove);
+        var command1 = new CommandRemoveListVideo(listVideos, videoToRemove, _dbv, playlistEdit);
         CommandManager.Execute(command1);
     }
 }

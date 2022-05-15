@@ -8,22 +8,28 @@ namespace ClassLibrary.Commands
 {
     public class CommandAddListVideo : ICommand
     {
-        public List<Video> Playlist { get; }
+        public List<Video> ListVideos { get; }
+        public Playlist PlaylistEdit;
         public Video UrlVideo;
+        public IVideoData VideoData;
         
-        public CommandAddListVideo(List<Video> playlist, Video urlVideo)
+        public CommandAddListVideo(List<Video> listVideos, Video urlVideo, IVideoData videoData, Playlist playlistEdit)
         {
             UrlVideo = urlVideo ?? throw new ArgumentNullException(nameof(UrlVideo));
-            Playlist = playlist;
+            ListVideos = listVideos;
+            VideoData = videoData;
+            PlaylistEdit = playlistEdit;
         }
 
         public void Execute()
         {
             //Add video to playlist
-            Playlist.Add(UrlVideo);
-            for (int i = 0; i < Playlist.Count(); i++)
+            UrlVideo = (VideoData.InsertVideo(UrlVideo)).First();
+            VideoData.InsertVideoInPlaylist(UrlVideo, PlaylistEdit);
+            ListVideos.Add(UrlVideo);
+            for (int i = 0; i < ListVideos.Count; i++)
             {
-                Playlist[i].Order = i;
+                ListVideos[i].Order = i;
             }
         }
 
@@ -36,10 +42,11 @@ namespace ClassLibrary.Commands
         public void Undo()
         {
             //Remove video from playlist
-            Playlist.Remove(UrlVideo);
-            for (int i = 0; i < Playlist.Count(); i++)
+            VideoData.RemoveVideo(UrlVideo, PlaylistEdit);
+            ListVideos.Remove(UrlVideo);
+            for (int i = 0; i < ListVideos.Count; i++)
             {
-                Playlist[i].Order = i;
+                ListVideos[i].Order = i;
             }
         }
     }
