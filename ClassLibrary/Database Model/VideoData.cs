@@ -52,5 +52,12 @@ namespace ClassLibrary
 
             _db.SaveDataSync(sql, new { });
         }
+
+        public void UpdateOrder(Video video)
+        {
+            string sql = $"UPDATE dbo.[Video] SET [Order] = '{video.Order}' WHERE [ID] = '{video.Id}';";
+
+            _db.SaveData(sql, new { });
+        }
     }
 }

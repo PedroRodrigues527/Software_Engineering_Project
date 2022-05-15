@@ -212,7 +212,8 @@
         }
 
         //update video placement
-        var command = new CommandChangeOrderListVideo(listVideos, oldListVideos, _dbp, playlistEdit);
+        if (oldListVideos.SequenceEqual(listVideos)) return; //ERRO: oldListVideos == listVideos always
+        var command = new CommandChangeOrderListVideo(listVideos, oldListVideos, _dbp, _dbv);
         CommandManager.Execute(command);
     }
 

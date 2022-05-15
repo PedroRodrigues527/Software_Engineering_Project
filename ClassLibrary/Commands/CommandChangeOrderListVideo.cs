@@ -8,26 +8,26 @@ namespace ClassLibrary.Commands
 {
     public class CommandChangeOrderListVideo : ICommand
     {
-        public List<Video> ListVideos { get; }
-        public List<Video> OldListVideos { get; }
-        public Playlist PlaylistEdit;
+        public List<Video> ListVideos;
+        public List<Video> OldListVideos;
         public IPlaylistData PlaylistData;
-        
-        public CommandChangeOrderListVideo(List<Video> listVideos, List<Video> oldListVideos, IPlaylistData playlistData, Playlist playlistEdit)
+        public IVideoData VideoData;
+
+        public CommandChangeOrderListVideo(List<Video> listVideos, List<Video> oldListVideos, IPlaylistData playlistData, IVideoData videoData)
         {
             ListVideos = listVideos;
             PlaylistData = playlistData;
-            PlaylistEdit = playlistEdit;
             OldListVideos = oldListVideos;
+            VideoData = videoData;
         }
 
         public void Execute()
         {
-            
-            for (int i = 0; i < ListVideos.Count; i++)
+            foreach(Video video in ListVideos)
             {
-                ListVideos[i].Order = i;
+                VideoData.UpdateOrder(video);
             }
+
         }
 
         public void Redo()
@@ -38,6 +38,10 @@ namespace ClassLibrary.Commands
         public void Undo()
         {
             //Set order before swap
+            foreach (Video video in OldListVideos)
+            {
+                VideoData.UpdateOrder(video);
+            }
         }
     }
 }

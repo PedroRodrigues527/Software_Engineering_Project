@@ -8,5 +8,6 @@ namespace ClassLibrary
         List<Video> InsertVideo(Video video);
         void InsertVideoInPlaylist(Video video, Playlist playlist);
         void RemoveVideo(Video video, Playlist playlist);
+        void UpdateOrder(Video video);
     }
 }
