@@ -231,25 +231,20 @@
         }
 
         if (newVideoId == string.Empty) return;
-
-        //Get Video Title, ... From newVideoId
-        List<Video> videosObtained = await IndexModel.OnGet(newVideoId);
-        if(videosObtained.Count() <= 0) return;
-        Video firstNewVideo = videosObtained.First();
-
         if (listVideos.Count() >= userlogged.MaxVideos())
         {
             await JsRuntime.InvokeVoidAsync("alert", "Maximum number of videos reached!");
             return;
         }
 
-        var macro = new MacroCommand();
-        var command1 = new CommandCreateListVideo(firstNewVideo, listVideos.Count());
-        command1.Execute();
-        macro.Add(command1);
-        var command2 = new CommandAddListVideo(listVideos, command1.NewVideo);
-        macro.Add(command2);
-        CommandManager.Execute(macro);
+        //Get Video Title, ... From newVideoId
+        List<Video> videosObtained = IndexModel.OnGet(newVideoId);
+        if(videosObtained.Count() <= 0) return;
+        Video firstNewVideo = videosObtained.First();
+        firstNewVideo.Order = listVideos.Count;
+
+        var command2 = new CommandAddListVideo(listVideos, firstNewVideo);
+        CommandManager.Execute(command2);
         newVideo = null;
         
     }

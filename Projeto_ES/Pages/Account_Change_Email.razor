@@ -32,7 +32,7 @@
                         <div class="nav-item mb-2">
                              <button type="button" class="btn btn-primary btn-lg" disabled>
                                 <i class="fa-solid fa-user-pen"></i>
-                                Change Biography
+                                Change Email
                             </button>
                         </div>
                         <div class="nav-item mb-2">
@@ -48,15 +48,15 @@
                       <DataAnnotationsValidator />
 
                       <div class="d-flex flex-row align-items-center mb-4">
-                          <label for="staticEmail" class="col-sm-2 col-form-label">Current Biography:</label>
+                          <label for="staticEmail" class="col-sm-2 col-form-label">Current Email:</label>
                             <div class="col-sm-10">
-                                @if(userlogged.Biography == null)
+                                @if(userlogged.Email == null)
                                 {
                                     <input type="text" readonly class="form-control-plaintext text-center" id="staticBiography" value="">
                                 }
                                 else
                                 {
-                                    <input type="text" readonly class="form-control-plaintext text-center" id="staticBiography" value="@userlogged.Biography">
+                                    <input type="text" readonly class="form-control-plaintext text-center" id="staticBiography" value="@userlogged.Email">
                                 }
                             </div>
                       </div>
@@ -64,7 +64,7 @@
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                         <div class="form-outline flex-fill mb-0">
-                          <InputTextArea id="form3Example1c" class="form-control" placeholder="New Email" required maxlength="150" @bind-Value="user.Biography"/>
+                          <InputTextArea id="form3Example1c" class="form-control" placeholder="New Email" required maxlength="150" @bind-Value="user.Email"/>
                           <ValidationMessage For="() => user.Email" />
                         </div>
                       </div>
@@ -141,12 +141,12 @@
         {
             user.Id = userlogged.Id;
             // Process to save user data
-            await _db.ChangeBiography(user);
+            await _db.ChangeEmail(user);
 
             await JsRuntime.InvokeVoidAsync("alert", "Email Changed!");
 
             //Redirect to login page
-            NavigationManager.NavigateTo("/account/settings/bio", true);
+            NavigationManager.NavigateTo("/account/settings/email", true);
         }
         else
         {

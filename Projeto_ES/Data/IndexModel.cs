@@ -16,13 +16,13 @@ namespace Projeto_ES.Data
             this.youTubeService = youTubeService;
         }
 
-        public async Task<List<Video>> OnGet(string videoId)
+        public List<Video> OnGet(string videoId)
         {
             var searchListRequest = youTubeService.Videos.List("snippet");
             searchListRequest.Id = videoId;
             searchListRequest.MaxResults = 1;
 
-            var searchListResponse = await searchListRequest.ExecuteAsync();
+            var searchListResponse = searchListRequest.Execute();
             List<Video> Videos = new List<Video>();
             Videos.AddRange(searchListResponse.Items.Select(video => new Video
             {

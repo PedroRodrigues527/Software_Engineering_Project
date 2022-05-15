@@ -44,6 +44,13 @@ namespace ClassLibrary
             return _db.SaveData(sql, new { });
         }
 
+        public Task ChangeEmail(User user)
+        {
+            string sql = $"update dbo.[User] set dbo.[User].[Email] = '{user.Email}' where [Id] = '{user.Id}';";
+
+            return _db.SaveData(sql, new { });
+        }
+
         public Task ChangeBiography(User userWithId)
         {
             string sql = $"update dbo.[User] set dbo.[User].[Biography] = '{userWithId.Biography}' where [Id] = '{userWithId.Id}';";
