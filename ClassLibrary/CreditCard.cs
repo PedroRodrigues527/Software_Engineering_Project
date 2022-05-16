@@ -19,10 +19,6 @@ namespace ClassLibrary
         {
             return Balance < amount;
         }
-        public void Payment(double price)
-        {
-            if(IsPaymentPositive(price))
-                Balance -= price;
-        }
+       
     }
 }

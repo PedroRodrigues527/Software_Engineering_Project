@@ -14,7 +14,5 @@
 
         bool IsPaymentPositive(double amount);
 
-        void Payment(double price);
-
     }
 }

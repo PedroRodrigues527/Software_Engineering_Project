@@ -64,5 +64,24 @@ namespace ClassLibrary
 
             return _db.SaveData(sql, new { });
         }
+
+        public List<CreditCard> GetCreditCard(CreditCard card)
+        {
+            string sql = $"select * from dbo.[CreditCard] where [Number] = '{card.Number}' AND [HolderName] = '{card.HolderName}' " +
+                $"AND [ExpirationDate] = '{card.ExpirationDate}' AND [PIN] = '{card.Pin}';";
+
+            return _db.LoadDataSync<CreditCard, dynamic>(sql, new { });
+        }
+        // _db.Payment(cardDataBase,BILL, chosenPlan, userlogged, expirationDateString);
+        public void Payment(CreditCard card  , double cost, string plan, User user ,string date)
+        {
+            double updatedBalance = card.Balance - cost;
+            string sql = $"update dbo.[CreditCard] set dbo.[CreditCard].[Balance] = '{updatedBalance}' WHERE [Number] = '{card.Number}';\n" +
+                $"update dbo.[User] set dbo.[User].[Plan] = '{plan}' AND [DateExpirationPlan]='{date}' WHERE [Id] = '{ user.Id }'; ";
+
+            return _db.SaveData(sql, new { });
+        }
+
+
     }
 }
