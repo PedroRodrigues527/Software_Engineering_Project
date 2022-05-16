@@ -1,0 +1,121 @@
+﻿@page "/account/view/{playlistId}"
+@using System.Text.RegularExpressions
+
+@inject NavigationManager NavigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject IJSRuntime JsRuntime
+@inject IUserData _db
+@inject IPlaylistData _dbp
+@inject IVideoData _dbv
+
+<style>
+    body {
+        background: linear-gradient( rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4) ), url("images/image1.png") no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
+
+<PageTitle>Watch Playlist</PageTitle>
+
+<div>
+    @if (userlogged != null && playlistView != null && videoList != null && iFramePlaylist != null)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 justify-content-center text-center">
+                    @if (videoList.Count > 0)
+                    {
+                        <iframe width="1280" height="720" src="@iFramePlaylist" frameborder="0" allowfullscreen></iframe>
+                    }
+                    else
+                    {
+                        <p> No videos in this Playlist... </p>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p> Loading... </p>
+    }
+</div>
+
+@code {
+    int usernameIdlogged = 0;
+    User? userlogged;
+
+    Playlist? playlistView;
+    List<Video>? videoList;
+    string? iFramePlaylist;
+
+    [Parameter]
+    public string? PlaylistId { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            usernameIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
+            if(usernameIdlogged==0)
+            {
+                //Redirect to login page
+                NavigationManager.NavigateTo("/login");
+            }
+            else
+            {
+                //Get User in Database
+                userlogged = (await _db.GetUser(usernameIdlogged)).First();
+                if(userlogged.Plan != PlanPayment.FREE)
+                {
+                    if(DateTime.Compare(DateTime.ParseExact(userlogged.DateExpirationPlan.Trim(),"yyyyMMdd",System.Globalization.CultureInfo.InvariantCulture), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)) <= 0)
+                        await _db.PlanFinished(usernameIdlogged);
+                }
+                //Get Playlist
+                int playlistIdInt = 0;
+                await sessionStorage.RemoveItemAsync("PlaylistChosen");
+                if (Int32.TryParse(PlaylistId, out playlistIdInt))
+                {
+                    playlistView = (await _dbp.GetPlaylist(playlistIdInt)).FirstOrDefault();
+                    if(playlistView != null)
+                    {
+                        if(playlistView.isOpen() || (!playlistView.isOpen() && userlogged.Id == playlistView.PersonId))
+                        {
+                            //get all videos data from playlist
+                            videoList = _dbp.VideosPlaylistSync(_dbp.VideosIdInPlaylistSync(playlistView));
+                            videoList.OrderBy((x) => x.Order);
+                            iFramePlaylist += "https://www.youtube.com/embed/";
+                            foreach(Video video in videoList)
+                            {
+                                iFramePlaylist += video.VideoId;
+                                break;
+                            }
+                            iFramePlaylist += "?showinfo=0&rel=0&autoplay=1&mute=1&loop=0&playlist=";
+                            foreach(Video video in videoList)
+                            {
+                                iFramePlaylist += video.VideoId + ",";
+                            }
+                            iFramePlaylist.Remove(iFramePlaylist.Length - 1);
+                        }
+                        else
+                        {
+                            NavigationManager.NavigateTo("/account/menu");
+                        }
+                    }
+                    else
+                    {
+                        NavigationManager.NavigateTo("/account/menu");
+                    }
+                }
+                else
+                {
+                    NavigationManager.NavigateTo("/account/menu");
+                }
+
+            }
+
+            StateHasChanged();
+        }
+    }
+
+}
