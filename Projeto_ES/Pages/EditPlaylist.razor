@@ -212,7 +212,7 @@
         }
 
         //update video placement
-        if ((oldListVideos.OrderBy(x=>x.Order).ToList()).SequenceEqual(listVideos.OrderBy(x=>x.Order).ToList())) return; //erro
+        if ((oldListVideos.OrderBy(x=>x.Order).ToList()).SequenceEqual(listVideos.OrderBy(x=>x.Order).ToList())) return; 
         var command = new CommandChangeOrderListVideo(listVideos.OrderBy(x=>x.Order).ToList(), oldListVideos.OrderBy(x=>x.Order).ToList(), _dbp, _dbv, listVideos, playlistEdit);
         CommandManager.Execute(command);
     }
@@ -257,7 +257,7 @@
         }
 
         if (newVideoId == string.Empty) return;
-        if (listVideos.Count() >= userlogged.MaxVideos()) return;
+        if (listVideos.Count >= userlogged.MaxVideos()) return;
 
         //Get Video Title, ... From newVideoId
         List<Video> videosObtained = IndexModel.OnGet(newVideoId);

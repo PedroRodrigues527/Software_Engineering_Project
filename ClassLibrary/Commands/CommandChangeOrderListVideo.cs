@@ -11,7 +11,7 @@ namespace ClassLibrary.Commands
     {
         public List<Video> NewListVideos;
         public List<Video> OldListVideos;
-        public List<Video> ListVideos { get; private set; }
+        public List<Video> ListVideos { get; set; }
         public IPlaylistData PlaylistData;
         public IVideoData VideoData;
         public Playlist PlaylistEdit;
@@ -33,6 +33,10 @@ namespace ClassLibrary.Commands
                 VideoData.UpdateOrder(video);
             }
             ListVideos = PlaylistData.VideosPlaylistSync(PlaylistData.VideosIdInPlaylistSync(PlaylistEdit));
+            for (int i = 0; i < ListVideos.Count; i++)
+            {
+                ListVideos[i].Order = i;
+            }
         }
 
         public void Redo()
@@ -48,6 +52,10 @@ namespace ClassLibrary.Commands
                 VideoData.UpdateOrder(video);
             }
             ListVideos = PlaylistData.VideosPlaylistSync(PlaylistData.VideosIdInPlaylistSync(PlaylistEdit));
+            for (int i = 0; i < ListVideos.Count; i++)
+            {
+                ListVideos[i].Order = i;
+            }
         }
     }
 }
