@@ -18,22 +18,43 @@
 <PageTitle>Watch Playlist</PageTitle>
 
 <div>
-    @if (userlogged != null && playlistView != null && videoList != null && iFramePlaylist != null)
+    @if (userlogged != null && playlistView != null)
     {
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 justify-content-center text-center">
-                    @if (videoList.Count > 0)
-                    {
-                        <iframe width="1280" height="720" src="@iFramePlaylist" frameborder="0" allowfullscreen></iframe>
-                    }
-                    else
-                    {
-                        <p> No videos in this Playlist... </p>
-                    }
-                </div>
-            </div>
-        </div>
+        @if (playlistView.isOpen() || (!playlistView.isOpen() && userlogged.Id == playlistView.PersonId))
+        {
+            @if (videoList != null && iFramePlaylist != null)
+            {
+                @if (videoList.Count > 0 && iFramePlaylist != "")
+                {
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 justify-content-center text-center">
+                                @if (videoList.Count > 0)
+                                {
+                                    <iframe width="1280" height="720" src="@iFramePlaylist" frameborder="0" allowfullscreen></iframe>
+                                }
+                                else
+                                {
+                                    <p> No videos in this Playlist... </p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <p> No videos in this Playlist... </p>
+                }
+            }
+            else
+            {
+                <p> Loading... </p>
+            }
+        }
+        else
+        {
+            <p> Invalid Session! </p>
+        }
     }
     else
     {
@@ -79,28 +100,35 @@
                     playlistView = (await _dbp.GetPlaylist(playlistIdInt)).FirstOrDefault();
                     if(playlistView != null)
                     {
+
                         if(playlistView.isOpen() || (!playlistView.isOpen() && userlogged.Id == playlistView.PersonId))
                         {
                             //get all videos data from playlist
-                            videoList = _dbp.VideosPlaylistSync(_dbp.VideosIdInPlaylistSync(playlistView));
-                            videoList.OrderBy((x) => x.Order);
-                            iFramePlaylist += "https://www.youtube.com/embed/";
-                            foreach(Video video in videoList)
+                            List<PlaylistVideos> tempListVideosId = _dbp.VideosIdInPlaylistSync(playlistView);
+                            if(tempListVideosId.Count > 0)
                             {
-                                iFramePlaylist += video.VideoId;
-                                break;
+                                videoList = _dbp.VideosPlaylistSync(tempListVideosId);
+                                videoList.OrderBy((x) => x.Order);
+                                iFramePlaylist += "https://www.youtube.com/embed/";
+                                foreach(Video video in videoList)
+                                {
+                                    iFramePlaylist += video.VideoId;
+                                    break;
+                                }
+                                iFramePlaylist += "?showinfo=0&rel=0&autoplay=1&mute=1&loop=0&playlist=";
+                                foreach(Video video in videoList)
+                                {
+                                    iFramePlaylist += video.VideoId + ",";
+                                }
+                                iFramePlaylist.Remove(iFramePlaylist.Length - 1);
                             }
-                            iFramePlaylist += "?showinfo=0&rel=0&autoplay=1&mute=1&loop=0&playlist=";
-                            foreach(Video video in videoList)
+                            else
                             {
-                                iFramePlaylist += video.VideoId + ",";
+                                videoList = new();
+                                iFramePlaylist = "";
                             }
-                            iFramePlaylist.Remove(iFramePlaylist.Length - 1);
                         }
-                        else
-                        {
-                            NavigationManager.NavigateTo("/account/menu");
-                        }
+
                     }
                     else
                     {
