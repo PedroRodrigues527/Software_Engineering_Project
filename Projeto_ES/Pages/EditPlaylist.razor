@@ -199,7 +199,7 @@
     private void HandleDrop(Video landingModel)
     {//landing model -> where the drop happened
         if (draggingModel is null) return;
-        List<Video> oldListVideos = (listVideos.OrderBy(x=>x.Order).ToList()).ConvertAll(video => new Video() {Id = video.Id, ChannelName = video.ChannelName, Order = video.Order, Thumbnail = video.Thumbnail, Title = video.Title, VideoId = video.VideoId, IsDragOver = video.IsDragOver});
+        List<Video> oldListVideos = (listVideos.OrderBy(x=>x.Order).ToList()).ConvertAll(video => new Video() {Id = video.Id, ChannelName = video.ChannelName, Order = video.Order, Thumbnail = video.Thumbnail, Title = video.Title, VideoId = video.VideoId, IsDragOver = false});
         int originalOrderLanding = landingModel.Order;//keep the original order for later
                                                       //increase model under by 1
         listVideos.Where(x => x.Order >= landingModel.Order).ToList().ForEach(x => x.Order++);
@@ -211,9 +211,11 @@
             model.IsDragOver = false;//remove drag over. 
         }
 
+        List<Video> newListVideos = (listVideos.OrderBy(x=>x.Order).ToList()).ConvertAll(video => new Video() {Id = video.Id, ChannelName = video.ChannelName, Order = video.Order, Thumbnail = video.Thumbnail, Title = video.Title, VideoId = video.VideoId, IsDragOver = false});
+
         //update video placement
-        if ((oldListVideos.OrderBy(x=>x.Order).ToList()).SequenceEqual(listVideos.OrderBy(x=>x.Order).ToList())) return; 
-        var command = new CommandChangeOrderListVideo(listVideos.OrderBy(x=>x.Order).ToList(), oldListVideos.OrderBy(x=>x.Order).ToList(), _dbp, _dbv, listVideos, playlistEdit);
+        if ((oldListVideos.OrderBy(x=>x.Order).ToList()).SequenceEqual(newListVideos.OrderBy(x=>x.Order).ToList())) return; 
+        var command = new CommandChangeOrderListVideo(newListVideos, oldListVideos, _dbp, _dbv, listVideos, playlistEdit);
         CommandManager.Execute(command);
     }
 

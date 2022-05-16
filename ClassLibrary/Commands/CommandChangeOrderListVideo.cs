@@ -28,15 +28,17 @@ namespace ClassLibrary.Commands
 
         public void Execute()
         {
-            foreach(Video video in NewListVideos)
+            ListVideos.Clear();
+            foreach (Video video in NewListVideos)
             {
                 VideoData.UpdateOrder(video);
+                ListVideos.Add(video);
             }
-            ListVideos = PlaylistData.VideosPlaylistSync(PlaylistData.VideosIdInPlaylistSync(PlaylistEdit));
             for (int i = 0; i < ListVideos.Count; i++)
             {
                 ListVideos[i].Order = i;
             }
+
         }
 
         public void Redo()
@@ -47,15 +49,17 @@ namespace ClassLibrary.Commands
         public void Undo()
         {
             //Set order before swap
+            ListVideos.Clear();
             foreach (Video video in OldListVideos)
             {
                 VideoData.UpdateOrder(video);
+                ListVideos.Add(video);
             }
-            ListVideos = PlaylistData.VideosPlaylistSync(PlaylistData.VideosIdInPlaylistSync(PlaylistEdit));
             for (int i = 0; i < ListVideos.Count; i++)
             {
                 ListVideos[i].Order = i;
             }
+
         }
     }
 }
