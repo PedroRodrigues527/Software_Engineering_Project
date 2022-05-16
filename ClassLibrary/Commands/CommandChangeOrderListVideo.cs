@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassLibrary.Database_Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,26 +9,30 @@ namespace ClassLibrary.Commands
 {
     public class CommandChangeOrderListVideo : ICommand
     {
-        public List<Video> ListVideos;
+        public List<Video> NewListVideos;
         public List<Video> OldListVideos;
+        public List<Video> ListVideos { get; private set; }
         public IPlaylistData PlaylistData;
         public IVideoData VideoData;
+        public Playlist PlaylistEdit;
 
-        public CommandChangeOrderListVideo(List<Video> listVideos, List<Video> oldListVideos, IPlaylistData playlistData, IVideoData videoData)
+        public CommandChangeOrderListVideo(List<Video> newListVideos, List<Video> oldListVideos, IPlaylistData playlistData, IVideoData videoData, List<Video> listVideos, Playlist playlistEdit)
         {
-            ListVideos = listVideos;
+            NewListVideos = newListVideos;
             PlaylistData = playlistData;
             OldListVideos = oldListVideos;
             VideoData = videoData;
+            ListVideos = listVideos;
+            PlaylistEdit = playlistEdit;
         }
 
         public void Execute()
         {
-            foreach(Video video in ListVideos)
+            foreach(Video video in NewListVideos)
             {
                 VideoData.UpdateOrder(video);
             }
-
+            ListVideos = PlaylistData.VideosPlaylistSync(PlaylistData.VideosIdInPlaylistSync(PlaylistEdit));
         }
 
         public void Redo()
@@ -42,6 +47,7 @@ namespace ClassLibrary.Commands
             {
                 VideoData.UpdateOrder(video);
             }
+            ListVideos = PlaylistData.VideosPlaylistSync(PlaylistData.VideosIdInPlaylistSync(PlaylistEdit));
         }
     }
 }

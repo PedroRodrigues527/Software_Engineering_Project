@@ -16,5 +16,7 @@ namespace ClassLibrary
         void UpdateType(Playlist playlist, string typePlaylist);
         Task<List<PlaylistVideos>> VideosIdInPlaylist(Playlist playlist);
         Task<List<Video>> VideosPlaylist(List<PlaylistVideos> videosIdList);
+        List<Video> VideosPlaylistSync(List<PlaylistVideos> videosIdList);
+        List<PlaylistVideos> VideosIdInPlaylistSync(Playlist playlist);
     }
 }

@@ -89,6 +89,13 @@ namespace ClassLibrary
             return _db.LoadData<PlaylistVideos, dynamic>(sql, new { });
         }
 
+        public List<PlaylistVideos> VideosIdInPlaylistSync(Playlist playlist)
+        {
+            string sql = $"SELECT * FROM dbo.[PlaylistVideo] WHERE [IDPlaylist] = '{playlist.Id}';";
+
+            return _db.LoadDataSync<PlaylistVideos, dynamic>(sql, new { });
+        }
+
         public Task<List<Video>> VideosPlaylist(List<PlaylistVideos> videosIdList)
         {
             string sql = $"SELECT * FROM dbo.[Video] WHERE [ID] IN (";
@@ -100,6 +107,19 @@ namespace ClassLibrary
             sql += ");";
 
             return _db.LoadData<Video, dynamic>(sql, new { });
+        }
+
+        public List<Video> VideosPlaylistSync(List<PlaylistVideos> videosIdList)
+        {
+            string sql = $"SELECT * FROM dbo.[Video] WHERE [ID] IN (";
+            foreach (PlaylistVideos videoInPlaylist in videosIdList)
+            {
+                sql += $"{videoInPlaylist.IdVideo}, ";
+            }
+            sql = sql.Remove(sql.Length - 2);
+            sql += ");";
+
+            return _db.LoadDataSync<Video, dynamic>(sql, new { });
         }
 
         public Task<List<Playlist>> GetResults(string keyword)

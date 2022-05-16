@@ -199,7 +199,7 @@
     private void HandleDrop(Video landingModel)
     {//landing model -> where the drop happened
         if (draggingModel is null) return;
-        List<Video> oldListVideos = listVideos;
+        List<Video> oldListVideos = listVideos.OrderBy(x=>x.Order).ToList();
         int originalOrderLanding = landingModel.Order;//keep the original order for later
                                                       //increase model under by 1
         listVideos.Where(x => x.Order >= landingModel.Order).ToList().ForEach(x => x.Order++);
@@ -212,8 +212,8 @@
         }
 
         //update video placement
-        if (oldListVideos.SequenceEqual(listVideos)) return; //ERRO: oldListVideos == listVideos always
-        var command = new CommandChangeOrderListVideo(listVideos, oldListVideos, _dbp, _dbv);
+        if (oldListVideos.SequenceEqual(listVideos.OrderBy(x=>x.Order).ToList())) return; //erro
+        var command = new CommandChangeOrderListVideo(listVideos.OrderBy(x=>x.Order).ToList(), oldListVideos, _dbp, _dbv, listVideos, playlistEdit);
         CommandManager.Execute(command);
     }
 
