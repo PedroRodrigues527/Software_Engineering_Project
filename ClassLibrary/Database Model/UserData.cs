@@ -82,6 +82,12 @@ namespace ClassLibrary
             _db.SaveData(sql, new { });
         }
 
+        public void InsertCreditCard(CreditCard card)
+        {
+            string sql = @"insert into dbo.[CreditCard] (Number, HolderName, ExpirationDate, Pin, Balance) values (@Number, @HolderName, @ExpirationDate, @Pin, @Balance);";
+
+            _db.SaveData(sql, card);
+        }
 
     }
 }
