@@ -1,0 +1,119 @@
+﻿@page "/account/search"
+@inject NavigationManager NavigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject IJSRuntime JsRuntime
+@inject IUserData _db
+@inject IPlaylistData _dbp
+
+<style>
+    body {
+        background: linear-gradient( rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4) ), url("images/image1.png") no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
+
+<PageTitle>Search Playlist</PageTitle>
+
+<div>
+    @if (userlogged != null)
+    {
+        <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Playlist Search Results</p>
+
+        <div class="justify-content-center text-center mb-2">
+            <form action="/account/search" method="get" data-toggle="validator" data-focus="false" role="form">
+                <div class="input-group ps-0 justify-content-center form-group has-error has-danger">
+                    <div id="navbar-search-autocomplete" style="width: 70%" class="form-outline">
+                    <input type="search" id="form1" name="search" class="form-control" required value="@Search" data-error="Please enter a search term"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                    </button>
+                    <div class="help-block with-errors">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="container">
+            <div class="col-md-12 justify-content-center text-center">
+                <ul class="list-group">
+                    @if (playlistsResult.Count > 0)
+                    {
+                        @for (int i = 0; i < playlistsResult.Count; i++)
+                        {
+                            var j = i;
+                            <li class="list-group-item-primary d-flex justify-content-between align-items-center ps-5 pe-5 mb-1 pt-1 pb-1">
+                            @playlistsResult[j].Title.Trim()
+                            <div>
+                                <span class="badge bg-primary">@playlistsResult[j].DateCreation.Trim().Substring(6)/@playlistsResult[j].DateCreation.Trim().Substring(4,2)/@playlistsResult[j].DateCreation.Trim().Substring(0,4)</span>
+                                <button class="btn btn-primary btn-sm" aria-label="Watch" @onclick="() => WatchPlaylist(playlistsResult[j])">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <p>No playlists found.</p>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p> Loading... </p>
+    }
+</div>
+
+@code {
+    private List<Playlist>? playlistsResult;
+    int usernameIdlogged = 0;
+    User? userlogged;
+    Playlist? playlist;
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "search")]
+    public string Search { get; set; } = "";
+
+    protected override void OnInitialized()
+    {
+        Search = Search ?? "";
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            usernameIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
+            if(usernameIdlogged==0)
+            {
+                //Redirect to login page
+                NavigationManager.NavigateTo("/login");
+            }
+            else
+            {
+                //Get User in Database
+                userlogged = (await _db.GetUser(usernameIdlogged)).First();
+                if(userlogged.Plan != PlanPayment.FREE)
+                {
+                    if(DateTime.Compare(DateTime.ParseExact(userlogged.DateExpirationPlan.Trim(),"yyyyMMdd",System.Globalization.CultureInfo.InvariantCulture), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)) <= 0)
+                        await _db.PlanFinished(usernameIdlogged);
+                }
+                await sessionStorage.RemoveItemAsync("PlaylistChosen");
+
+                playlistsResult = await _dbp.GetResults(Search);
+            }
+            StateHasChanged();
+
+        }
+    }
+
+    private void WatchPlaylist(Playlist playlistView)
+    {
+        NavigationManager.NavigateTo("/account/view/"+playlistView.Id);
+    }
+
+    
+}

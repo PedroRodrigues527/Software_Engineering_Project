@@ -124,7 +124,7 @@ namespace ClassLibrary
 
         public Task<List<Playlist>> GetResults(string keyword)
         {
-            string sql = $"Select * From dbo.[Playlist] Where [Title] LIKE '%{keyword}%'";
+            string sql = $"Select * From dbo.[Playlist] Where [Title] LIKE '%{keyword}%' AND [Type] = 'PUBLIC'";
             return _db.LoadData<Playlist, dynamic>(sql, new { });
         }
 
