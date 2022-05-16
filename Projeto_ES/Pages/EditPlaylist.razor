@@ -199,7 +199,7 @@
     private void HandleDrop(Video landingModel)
     {//landing model -> where the drop happened
         if (draggingModel is null) return;
-        List<Video> oldListVideos = new List<Video>(listVideos.OrderBy(x=>x.Order).ToList());
+        List<Video> oldListVideos = (listVideos.OrderBy(x=>x.Order).ToList()).ConvertAll(video => new Video() {Id = video.Id, ChannelName = video.ChannelName, Order = video.Order, Thumbnail = video.Thumbnail, Title = video.Title, VideoId = video.VideoId, IsDragOver = video.IsDragOver});
         int originalOrderLanding = landingModel.Order;//keep the original order for later
                                                       //increase model under by 1
         listVideos.Where(x => x.Order >= landingModel.Order).ToList().ForEach(x => x.Order++);
