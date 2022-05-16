@@ -79,7 +79,7 @@ namespace ClassLibrary
             string sql = $"update dbo.[CreditCard] set dbo.[CreditCard].[Balance] = '{updatedBalance}' WHERE [Number] = '{card.Number}';\n" +
                 $"update dbo.[User] set dbo.[User].[Plan] = '{plan}' AND [DateExpirationPlan]='{date}' WHERE [Id] = '{ user.Id }'; ";
 
-            return _db.SaveData(sql, new { });
+            _db.SaveData(sql, new { });
         }
 
 
