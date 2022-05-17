@@ -225,13 +225,12 @@
         if(!string.IsNullOrWhiteSpace(prompted))
         {
             if (prompted.Length > 16) return;
-            List<Playlist> userplaylists = await _dbp.GetClientPlaylists(userlogged);
-
             playlistEdit.Title = prompted;
+            List<Playlist> userplaylists = await _dbp.GetClientPlaylists(userlogged);
             Playlist playlistNewTitle = new Playlist() {Id = playlistEdit.Id, Title = prompted};
             bool containsItem = userplaylists.Any(item => item.Title == playlistNewTitle.Title && item.PersonId == userlogged.Id);
             if (containsItem) return;
-            await _dbp.UpdateNewTitle(playlistNewTitle);
+            _dbp.UpdateNewTitle(playlistNewTitle);
         }
     }
 

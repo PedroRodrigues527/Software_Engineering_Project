@@ -68,11 +68,11 @@ namespace ClassLibrary
             return _db.SaveData(sql, playlist);
         }
 
-        public Task UpdateNewTitle(Playlist playlist)
+        public void UpdateNewTitle(Playlist playlist)
         {
             string sql = $"UPDATE dbo.[Playlist] SET [Title] = '{playlist.Title}' WHERE [ID] = '{playlist.Id}';";
 
-            return _db.SaveData(sql, playlist);
+            _db.SaveDataSync(sql, playlist);
         }
 
         public void UpdateType(Playlist playlist, string typePlaylist)

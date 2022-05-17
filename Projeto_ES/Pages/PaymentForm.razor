@@ -180,6 +180,10 @@
                 //Redirect to login page
                 NavigationManager.NavigateTo("/account/settings/payment", true);
             }
+            else
+            {
+                await JsRuntime.InvokeVoidAsync("alert", "Insuficient Balance!");
+            }
         }
         else
         {
