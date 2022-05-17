@@ -109,7 +109,14 @@
 
 
                       <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                        <button type="submit" class="btn btn-primary btn-lg">Confirm Payment (@BILL - 1 year)</button>
+                        @if(countOptions > 1 && chosenPlan == "PREMIUMPLUS")
+                        {
+                            <button type="submit" class="btn btn-primary btn-lg">Confirm Payment (@(BILL*countOptions) - 1 year)</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary btn-lg">Confirm Payment (@BILL - 1 year)</button>
+                        }
                       </div>
 
                     </EditForm>
@@ -130,6 +137,7 @@
     User? userlogged;
     private List<User>? users;
     string? chosenPlan;
+    static int countOptions = 0;
 
     private CreditCard card = new();
 
@@ -153,6 +161,14 @@
                     if(DateTime.Compare(DateTime.ParseExact(userlogged.DateExpirationPlan.Trim(),"yyyyMMdd",System.Globalization.CultureInfo.InvariantCulture), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)) <= 0)
                         await _db.PlanFinished(usernameIdlogged);
                 }
+
+                foreach (PlanPayment value in Enum.GetValues(typeof(PlanPayment))) {
+                    if(((int)userlogged.Plan) < (int)value && value != userlogged.Plan)
+                    {
+                        countOptions++;
+                    }
+                }
+
                 await sessionStorage.RemoveItemAsync("PlaylistChosen");
             }
             StateHasChanged();
@@ -174,7 +190,14 @@
                 DateTime currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
                 currentDate.AddYears(1);
                 string expirationDateString = currentDate.ToString("yyyyMMdd");
-                _db.Payment(cardDataBase, BILL, chosenPlan, userlogged, expirationDateString);
+                if (countOptions > 1 && chosenPlan == "PREMIUMPLUS")
+                {
+                    _db.Payment(cardDataBase, BILL*countOptions, chosenPlan, userlogged, expirationDateString);
+                }
+                else
+                {
+                    _db.Payment(cardDataBase, BILL, chosenPlan, userlogged, expirationDateString);
+                }
 
                 await JsRuntime.InvokeVoidAsync("alert", "Payment succesfull!");
 
