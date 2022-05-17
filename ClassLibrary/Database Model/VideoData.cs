@@ -22,13 +22,6 @@ namespace ClassLibrary
             return _db.LoadDataSync<Video, dynamic>(sql, new { });
         }
 
-        public List<Video> FindVideo(Video video)
-        {
-            string sql = $"select * from dbo.[Video] where [VideoId] = '{video.VideoId}' AND [Order] = '{video.Order}';";
-
-            return _db.LoadDataSync<Video, dynamic>(sql, new { });
-        }
-
         public List<Video> InsertVideo(Video video)
         {
             string sql = @"insert into dbo.[Video] (VideoId, Title, ChannelName, Thumbnail, [Order])

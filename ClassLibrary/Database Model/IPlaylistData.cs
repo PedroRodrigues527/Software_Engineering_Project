@@ -18,5 +18,6 @@ namespace ClassLibrary
         Task<List<Video>> VideosPlaylist(List<PlaylistVideos> videosIdList);
         List<Video> VideosPlaylistSync(List<PlaylistVideos> videosIdList);
         List<PlaylistVideos> VideosIdInPlaylistSync(Playlist playlist);
+        void UpdateDate(Playlist playlist);
     }
 }

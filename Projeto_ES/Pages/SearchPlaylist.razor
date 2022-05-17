@@ -4,6 +4,7 @@
 @inject IJSRuntime JsRuntime
 @inject IUserData _db
 @inject IPlaylistData _dbp
+@inject IVideoData _dbv
 
 <style>
     body {
@@ -50,6 +51,12 @@
                                 <button class="btn btn-primary btn-sm" aria-label="Watch" @onclick="() => WatchPlaylist(playlistsResult[j])">
                                     <i class="fas fa-eye"></i>
                                 </button>
+                                @if(playlistsResult[j].PersonId != userlogged.Id)
+                                {
+                                    <button class="btn btn-warning btn-sm ms-1" aria-label="Favourite" @onclick="() => FavoritePlaylist(userlogged, playlistsResult[j])">
+                                        <i class="fa-solid fa-star"></i>
+                                    </button>
+                                }
                             </div>
                             </li>
                         }
@@ -74,6 +81,7 @@
     int usernameIdlogged = 0;
     User? userlogged;
     Playlist? playlist;
+    private List<Playlist>? userplaylists;
 
     [Parameter]
     [SupplyParameterFromQuery(Name = "search")]
@@ -104,6 +112,7 @@
                         await _db.PlanFinished(usernameIdlogged);
                 }
                 await sessionStorage.RemoveItemAsync("PlaylistChosen");
+                userplaylists = await _dbp.GetClientPlaylists(userlogged);
 
                 playlistsResult = await _dbp.GetResults(Search);
             }
@@ -115,6 +124,30 @@
     private void WatchPlaylist(Playlist playlistView)
     {
         NavigationManager.NavigateTo("/account/view/"+playlistView.Id);
+    }
+
+    private async void FavoritePlaylist(User userlogged, Playlist playlistFavorite)
+    {
+        if (userplaylists.Count >= userlogged.MaxPlaylists()) 
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Maximum number of playlists reached!");
+            return;
+        }
+        //Add playlist favorite
+        Playlist playlistWithId = (await _dbp.GetLatestPlaylistInserted(new Playlist(), userlogged)).First();
+        await _dbp.UpdateTitle(playlistWithId);
+        playlistWithId.DateCreation = playlistFavorite.DateCreation;
+        _dbp.UpdateDate(playlistWithId);
+
+        //Add videos
+        List<Video> listVideosDetails = _dbp.VideosPlaylistSync(_dbp.VideosIdInPlaylistSync(playlistFavorite));
+        foreach(Video video in listVideosDetails)
+        {
+            Video videoDatabase = _dbv.InsertVideo(video).First();
+            _dbv.InsertVideoInPlaylist(videoDatabase, playlistWithId);
+        }
+
+        await JsRuntime.InvokeVoidAsync("alert", "Playlist added successfully!");
     }
 
     private async void GoBack()

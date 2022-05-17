@@ -79,7 +79,7 @@ namespace ClassLibrary
         {
             string sql = $"UPDATE dbo.[Playlist] SET [Type] = '{typePlaylist}' WHERE [ID] = '{playlist.Id}';";
 
-            _db.SaveData(sql, playlist);
+            _db.SaveDataSync(sql, playlist);
         }
 
         public Task<List<PlaylistVideos>> VideosIdInPlaylist(Playlist playlist)
@@ -128,5 +128,11 @@ namespace ClassLibrary
             return _db.LoadData<Playlist, dynamic>(sql, new { });
         }
 
+        public void UpdateDate(Playlist playlist)
+        {
+            string sql = $"UPDATE dbo.[Playlist] SET [DateCreation] = '{playlist.DateCreation}' WHERE [ID] = '{playlist.Id}';";
+
+            _db.SaveDataSync(sql, playlist);
+        }
     }
 }

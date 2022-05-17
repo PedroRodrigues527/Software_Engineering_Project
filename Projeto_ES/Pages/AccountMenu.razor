@@ -40,7 +40,7 @@
                                         <span class="oi oi-trash" aria-hidden="true"></span>
                                     </button>
                                     <button class="btn btn-primary btn-sm" aria-label="Watch" @onclick="() => WatchPlaylist(userplaylists[j])">
-                                        <i class="fas fa-eye"></i>
+                                        <span class="oi oi-eye" aria-hidden="true"></span>
                                     </button>
                                 </div>
                                 </li>
@@ -144,7 +144,7 @@
     private async void CreatePlaylist(User userlogged)
     {
         //Redirect to edit playlist page
-        if (userplaylists.Count() >= userlogged.MaxPlaylists()) 
+        if (userplaylists.Count >= userlogged.MaxPlaylists()) 
         {
             await JsRuntime.InvokeVoidAsync("alert", "Maximum number of playlists reached!");
             return;
