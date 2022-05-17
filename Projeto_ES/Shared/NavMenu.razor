@@ -45,10 +45,15 @@
             <li class="nav-item dropdown">
                 <img src="https://avatars.dicebear.com/api/identicon/@(userlogged.Username).svg" class="img-fluid rounded mx-auto d-block dropdown-toggle" alt="Avatar Image" width="37" height="37" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                    <li><p class="center-text ms-2">Plan Account: @userlogged.Plan</p></li>
+                    <li><p class="center-text ms-3">Plan Account: @userlogged.Plan</p></li>
                     @if (userlogged.Plan != PlanPayment.FREE)
                     {
-                        <li><p class="center-text ms-2" >Date Expiration: @userlogged.DateExpirationPlan.Trim().Substring(6)/@userlogged.DateExpirationPlan.Trim().Substring(4,2)/@userlogged.DateExpirationPlan.Trim().Substring(0,4)</p></li>
+                        <li><p class="center-text ms-3" >Date Expiration: @userlogged.DateExpirationPlan.Trim().Substring(6)/@userlogged.DateExpirationPlan.Trim().Substring(4,2)/@userlogged.DateExpirationPlan.Trim().Substring(0,4)</p></li>
+                        <li><hr class="dropdown-divider ms-3"></li>
+                        <button class="btn btn-danger btn-sm ms-3" aria-label="Delete" @onclick="() => CancelPlan()">
+                            <i class="fa-solid fa-rectangle-xmark"></i>
+                            Cancel Plan
+                        </button>
                     }
                 </ul>
             </li>
@@ -83,6 +88,19 @@
 
             //Redirect to login page
             NavigationManager.NavigateTo("/login", true);
+        }
+    }
+
+    private async void CancelPlan()
+    {
+        bool prompted = await JsRuntime.InvokeAsync<bool>("confirm", "This will cancel your account's plan. Would you like to continue with the cancellation?");
+        if(prompted)
+        {
+            await _db.PlanFinished(userlogged.Id);
+            await JsRuntime.InvokeVoidAsync("alert", "Cancellation successfull!");
+
+            //Redirect to same page
+            NavigationManager.NavigateTo(NavigationManager.Uri.ToString(),true);
         }
     }
 
