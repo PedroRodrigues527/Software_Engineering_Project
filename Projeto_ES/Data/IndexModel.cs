@@ -34,7 +34,6 @@ namespace Projeto_ES.Data
 
             return Videos;
         }
-
         public List<Video> OnGetVideosPlaylist(string playlistId)
         {
             var searchListRequest = youTubeService.PlaylistItems.List("snippet");

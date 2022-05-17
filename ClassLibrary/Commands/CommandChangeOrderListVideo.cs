@@ -48,7 +48,6 @@ namespace ClassLibrary.Commands
 
         public void Undo()
         {
-            //Set order before swap
             ListVideos.Clear();
             foreach (Video video in OldListVideos)
             {

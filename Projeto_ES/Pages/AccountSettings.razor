@@ -63,10 +63,8 @@
 </div>
 
 @code {
-    private List<Playlist>? userplaylists;
     int usernameIdlogged = 0;
     User? userlogged;
-    Playlist? playlist;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -93,19 +91,19 @@
         }
     }
 
-    private async void EditBiography()
+    private void EditBiography()
     {
         NavigationManager.NavigateTo("/account/settings/bio");
     }
-    private async void EditEmail()
+    private void EditEmail()
     {
         NavigationManager.NavigateTo("/account/settings/email");
     }
-    private async void EditPassword()
+    private void EditPassword()
     {
         NavigationManager.NavigateTo("/account/settings/password");
     }
-    private async void UpgradePlan()
+    private void UpgradePlan()
     {
         NavigationManager.NavigateTo("/account/settings/payment");
     }

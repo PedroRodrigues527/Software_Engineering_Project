@@ -23,7 +23,6 @@ namespace ClassLibrary.Commands
 
         public void Execute()
         {
-            //Remove Video
             VideoData.RemoveVideo(UrlVideo, PlaylistEdit);
             ListVideos.Remove(UrlVideo);
             for(int i = 0; i < ListVideos.Count; i++)
@@ -34,13 +33,11 @@ namespace ClassLibrary.Commands
 
         public void Redo()
         {
-            //Remove again from playlist
             Execute();
         }
 
         public void Undo()
         {
-            //Add video to playlist
             UrlVideo = (VideoData.InsertVideo(UrlVideo)).First();
             VideoData.InsertVideoInPlaylist(UrlVideo, PlaylistEdit);
             ListVideos.Add(UrlVideo);

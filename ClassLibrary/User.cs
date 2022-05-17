@@ -35,60 +35,11 @@ namespace ClassLibrary
         [DataType(DataType.Text)]
         [StringLength(150, ErrorMessage = "Biography must be 150 characters or less.")]
         public string Biography { get; set; }
-
         public string YoutubeAccount { get; set; }
-
         public PlanPayment Plan { get; set; } = PlanPayment.FREE;
-        public int MaxVideos() => ((int) Plan) * 10;
-        public int MaxPlaylists() => ((int)Plan);
         public string DateExpirationPlan { get; set; }
 
-
-        //Interface variables 
-        /*
-        public int MaxPlaylist { get; set; }
-        public int Number { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string HolderName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string ExpirationDate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Pin { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public double Balance { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        //public User( PlanPayment plan ) => _Plan = plan;
-        /*
-        public User(string userName, string email, string password, string biography, string youtubeAccount, PlanPayment plan)
-        {
-            _userName = userName;
-            _email = email;
-            _password = password;
-            _biography = biography;
-            _youtubeAccount = youtubeAccount;
-            _Plan = plan;
-        }
-        */
-
-        public void ChangeBiography()
-        {
-            Console.WriteLine("Changing bio");
-        }
-        public void ChangePassword()
-        {
-            Console.WriteLine("Changing bio");
-        }
-        public void UpdatePlan()
-        {
-            Console.WriteLine("Updating plan");
-        }
-        public void CancelPlan()
-        {
-            Console.WriteLine("Canceling plan");
-        }
-
-        //Interface Method
-        /*
-        public void Payment()
-        {
-            throw new NotImplementedException();
-        }
-        */
+        public int MaxVideos() => ((int)Plan) * 10;
+        public int MaxPlaylists() => ((int)Plan);
     }
 }

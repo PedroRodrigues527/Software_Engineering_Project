@@ -11,9 +11,7 @@
         string Username { get; set; }
         string YoutubeAccount { get; set; }
 
-        void CancelPlan();
-        void ChangeBiography();
-        void ChangePassword();
-        void UpdatePlan();
+        public int MaxVideos();
+        public int MaxPlaylists();
     }
 }
