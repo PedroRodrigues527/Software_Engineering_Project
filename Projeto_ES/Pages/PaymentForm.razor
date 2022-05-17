@@ -185,7 +185,7 @@
 
             CreditCard cardDataBase = cardList.First();
 
-            if (cardDataBase.IsPaymentPositive(BILL))
+            if (cardDataBase.IsPaymentPositive(BILL) || (countOptions > 1 && chosenPlan == "PREMIUMPLUS" && cardDataBase.IsPaymentPositive(BILL*countOptions)))
             {
                 DateTime currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
                 currentDate.AddYears(1);
