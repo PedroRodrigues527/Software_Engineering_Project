@@ -60,6 +60,7 @@
                 </ul>
             </div>
         </div>
+        <button type="button" class="btn btn-secondary btn-md" @onclick="GoBack">&laquo; Go Back</button>
     }
     else
     {
@@ -115,5 +116,9 @@
         NavigationManager.NavigateTo("/account/view/"+playlistView.Id);
     }
 
-    
+    private async void GoBack()
+    {
+        await JsRuntime.InvokeVoidAsync("history.go", -1);
+    }
+
 }

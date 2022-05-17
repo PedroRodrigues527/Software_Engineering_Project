@@ -104,6 +104,7 @@
                 </div>
             </div>
         </div>
+        <button type="button" class="btn btn-secondary btn-md" @onclick="GoBack">&laquo; Go Back</button>
     }
     else
     {
@@ -277,5 +278,10 @@
         if (videoToRemove == null) return;
         var command1 = new CommandRemoveListVideo(listVideos, videoToRemove, _dbv, playlistEdit);
         CommandManager.Execute(command1);
+    }
+
+    private async void GoBack()
+    {
+        await JsRuntime.InvokeVoidAsync("history.go", -1);
     }
 }
