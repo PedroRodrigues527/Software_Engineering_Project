@@ -245,6 +245,7 @@
     {
         if (string.IsNullOrWhiteSpace(newVideo)) return;
         var newVideoId = string.Empty;
+        var newPlaylistId = string.Empty;
         if (newVideo.Contains("www.youtube.com/watch?v="))
         {
             var query = HttpUtility.ParseQueryString((new Uri(newVideo)).Query);
@@ -256,19 +257,44 @@
                     newVideoId = newVideoIdVerify;
                 }
             }
+            if (query.AllKeys.Contains("list"))
+            {
+                string newPlaylistIdVerify = query["list"];
+                if(newPlaylistIdVerify.Length == 34)
+                {
+                    newPlaylistId = newPlaylistIdVerify;
+                }
+            }
         }
 
         if (newVideoId == string.Empty) return;
         if (listVideos.Count >= userlogged.MaxVideos()) return;
+        if (newPlaylistId == string.Empty)
+        {
+            //Get Video Title, ... From newVideoId
+            List<Video> videosObtained = IndexModel.OnGetVideo(newVideoId);
+            if (videosObtained.Count <= 0) return;
+            Video firstNewVideo = videosObtained.First();
+            firstNewVideo.Order = listVideos.Count;
 
-        //Get Video Title, ... From newVideoId
-        List<Video> videosObtained = IndexModel.OnGet(newVideoId);
-        if(videosObtained.Count() <= 0) return;
-        Video firstNewVideo = videosObtained.First();
-        firstNewVideo.Order = listVideos.Count;
+            var command2 = new CommandAddListVideo(listVideos, firstNewVideo, _dbv, playlistEdit);
+            CommandManager.Execute(command2);
+        }
+        else
+        {
+            List<Video> videosObtained = IndexModel.OnGetVideosPlaylist(newPlaylistId);
+            if (videosObtained.Count <= 0) return;
+            var macro = new MacroCommand();
+            foreach(Video video in videosObtained)
+            {
+                if (listVideos.Count >= userlogged.MaxVideos()) break;
+                video.Order = listVideos.Count;
+                var command = new CommandAddListVideo(listVideos, video, _dbv, playlistEdit);
+                macro.Add(command);
+            }
+            CommandManager.Execute(macro);
+        }
 
-        var command2 = new CommandAddListVideo(listVideos, firstNewVideo, _dbv, playlistEdit);
-        CommandManager.Execute(command2);
         newVideo = null;
         
     }
