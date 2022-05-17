@@ -31,7 +31,8 @@
                                 <li class="list-group-item-primary d-flex justify-content-between align-items-center ps-5 pe-5 mb-1 pt-1 pb-1">
                                 @userplaylists[j].Title.Trim()
                                 <div>
-                                    <span class="badge bg-primary">@userplaylists[j].DateCreation.Trim().Substring(6)/@userplaylists[j].DateCreation.Trim().Substring(4,2)/@userplaylists[j].DateCreation.Trim().Substring(0,4)</span>
+                                    <span class="badge bg-secondary">@userplaylists[j].DateCreation.Trim().Substring(6)/@userplaylists[j].DateCreation.Trim().Substring(4,2)/@userplaylists[j].DateCreation.Trim().Substring(0,4)</span>
+                                    <span class="badge bg-primary">@((_dbp.VideosIdInPlaylistSync(userplaylists[j])).Count) videos</span>
                                     <button class="btn btn-secondary btn-sm" aria-label="Edit" @onclick="() => EditPlaylist(userplaylists[j])">
                                         <span class="oi oi-pencil" aria-hidden="true"></span>
                                     </button>
@@ -84,6 +85,7 @@
     int usernameIdlogged = 0;
     User? userlogged;
     Playlist? playlist;
+    List<PlaylistVideos>? listVideosId;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

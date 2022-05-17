@@ -72,7 +72,7 @@ namespace ClassLibrary
 
             return _db.LoadDataSync<CreditCard, dynamic>(sql, new { });
         }
-        // _db.Payment(cardDataBase,BILL, chosenPlan, userlogged, expirationDateString);
+
         public void Payment(CreditCard card  , double cost, string plan, User user ,string date)
         {
             double updatedBalance = card.Balance - cost;
@@ -89,5 +89,11 @@ namespace ClassLibrary
             _db.SaveData(sql, card);
         }
 
+        public List<User> GetUserSync(int usernameId)
+        {
+            string sql = $"select * from dbo.[User] where [ID] = {usernameId};";
+
+            return _db.LoadDataSync<User, dynamic>(sql, new { });
+        }
     }
 }

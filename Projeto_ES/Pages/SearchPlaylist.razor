@@ -43,9 +43,10 @@
                         {
                             var j = i;
                             <li class="list-group-item-primary d-flex justify-content-between align-items-center ps-5 pe-5 mb-1 pt-1 pb-1">
-                            @playlistsResult[j].Title.Trim()
+                            @playlistsResult[j].Title.Trim() - @((_db.GetUserSync(playlistsResult[j].PersonId)).First().Username)
                             <div>
-                                <span class="badge bg-primary">@playlistsResult[j].DateCreation.Trim().Substring(6)/@playlistsResult[j].DateCreation.Trim().Substring(4,2)/@playlistsResult[j].DateCreation.Trim().Substring(0,4)</span>
+                                <span class="badge bg-secondary">@playlistsResult[j].DateCreation.Trim().Substring(6)/@playlistsResult[j].DateCreation.Trim().Substring(4,2)/@playlistsResult[j].DateCreation.Trim().Substring(0,4)</span>
+                                <span class="badge bg-primary">@((_dbp.VideosIdInPlaylistSync(playlistsResult[j])).Count) videos</span>
                                 <button class="btn btn-primary btn-sm" aria-label="Watch" @onclick="() => WatchPlaylist(playlistsResult[j])">
                                     <i class="fas fa-eye"></i>
                                 </button>
