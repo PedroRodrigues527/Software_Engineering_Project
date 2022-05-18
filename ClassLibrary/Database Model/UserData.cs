@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary.Database_Model
 {
     public class UserData : IUserData
     {
@@ -49,7 +43,7 @@ namespace ClassLibrary
             $" AND [HolderName] = '{card.HolderName}'" +
             $" AND [ExpirationDate] = '{card.ExpirationDate}'" +
             $" AND [PIN] = '{card.Pin}';", new { });
-        public void Payment(CreditCard card  , double cost, string plan, User user ,string date) => _db.SaveData(
+        public void Payment(CreditCard card, double cost, string plan, User user, string date) => _db.SaveData(
             $"update dbo.[CreditCard] " +
             $"set dbo.[CreditCard].[Balance] = '{(double)(card.Balance - cost)}' " +
             $"WHERE [Number] = '{card.Number}';\n" +

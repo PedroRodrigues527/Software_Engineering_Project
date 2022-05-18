@@ -1,5 +1,4 @@
-﻿
-namespace ClassLibrary
+﻿namespace ClassLibrary.Database_Model
 {
     public interface IVideoData
     {

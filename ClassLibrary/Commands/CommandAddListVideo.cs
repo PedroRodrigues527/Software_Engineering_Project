@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClassLibrary.Commands
+﻿namespace ClassLibrary.Commands
 {
     public class CommandAddListVideo : ICommand
     {
@@ -12,7 +6,7 @@ namespace ClassLibrary.Commands
         public Playlist PlaylistEdit;
         public Video VideoAdded;
         public IVideoData VideoDatabase;
-        
+
         public CommandAddListVideo(List<Video> listVideos, Video videoAdded, IVideoData videoDatabase, Playlist playlistEdit)
         {
             VideoAdded = videoAdded ?? throw new ArgumentNullException(nameof(VideoAdded));
@@ -34,7 +28,7 @@ namespace ClassLibrary.Commands
             VideoAdded = (VideoDatabase.InsertVideo(VideoAdded)).First();
             VideoDatabase.InsertVideoInPlaylist(VideoAdded, PlaylistEdit);
             ListVideos.Insert(VideoAdded.Order, VideoAdded);
-            
+
             for (int i = 0; i < ListVideos.Count; i++)
             {
                 ListVideos[i].Order = i;
@@ -67,7 +61,7 @@ namespace ClassLibrary.Commands
             {
                 ListVideos[i].Order = i;
                 VideoDatabase.UpdateOrder(ListVideos[i]);
-                if(VideoAdded.Id == ListVideos[i].Id)
+                if (VideoAdded.Id == ListVideos[i].Id)
                     VideoAdded.Order = i;
             }
 

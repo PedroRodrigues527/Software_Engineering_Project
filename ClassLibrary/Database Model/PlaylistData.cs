@@ -1,11 +1,4 @@
-﻿using ClassLibrary.Database_Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary.Database_Model
 {
     public class PlaylistData : IPlaylistData
     {
@@ -75,11 +68,11 @@ namespace ClassLibrary
         public Task<List<Video>> VideosPlaylist(List<PlaylistVideos> videosIdList)
         {
             string sql = $"SELECT * FROM dbo.[Video] WHERE [ID] IN (";
-            foreach(PlaylistVideos videoInPlaylist in videosIdList)
+            foreach (PlaylistVideos videoInPlaylist in videosIdList)
             {
                 sql += $"{videoInPlaylist.IdVideo}, ";
             }
-            sql = sql.Remove(sql.Length-2);
+            sql = sql.Remove(sql.Length - 2);
             sql += ");";
 
             return _db.LoadData<Video, dynamic>(sql, new { });

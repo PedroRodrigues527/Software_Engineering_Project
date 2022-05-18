@@ -1,11 +1,4 @@
-﻿using ClassLibrary.Database_Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClassLibrary.Commands
+﻿namespace ClassLibrary.Commands
 {
     public class CommandChangeOrderListVideo : ICommand
     {

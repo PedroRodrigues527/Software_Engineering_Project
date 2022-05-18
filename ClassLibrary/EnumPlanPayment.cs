@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
     public enum PlanPayment
     {
-        FREE=10,
-        PREMIUM=50,
-        PREMIUMPLUS=100
+        FREE = 10,
+        PREMIUM = 50,
+        PREMIUMPLUS = 100
     }
 }

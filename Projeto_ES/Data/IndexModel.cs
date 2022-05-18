@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Diagnostics;
-using Google.Apis.Services;
+﻿using ClassLibrary;
 using Google.Apis.YouTube.v3;
-using ClassLibrary;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Projeto_ES.Data
 {

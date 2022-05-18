@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace ClassLibrary
+namespace ClassLibrary.Database_Model
 {
     public class SqlDataAccess : ISqlDataAccess
     {
