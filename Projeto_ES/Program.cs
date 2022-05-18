@@ -4,8 +4,8 @@ using Blazored.SessionStorage;
 using ClassLibrary;
 using ClassLibrary.Commands_Pattern;
 using Projeto_ES.Data;
-using Microsoft.Extensions.DependencyInjection;
 using Blazored.Modal;
+using ClassLibrary.Database_Model;
 
 var builder = WebApplication.CreateBuilder(args);
 

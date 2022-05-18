@@ -1,4 +1,6 @@
-﻿namespace ClassLibrary.Commands
+﻿using ClassLibrary.Database_Model;
+
+namespace ClassLibrary.Commands
 {
     public class CommandAddListVideo : ICommand
     {
