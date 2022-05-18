@@ -215,7 +215,10 @@
         List<Video> newListVideos = (listVideos.OrderBy(x=>x.Order).ToList()).ConvertAll(video => new Video() {Id = video.Id, ChannelName = video.ChannelName, Order = video.Order, Thumbnail = video.Thumbnail, Title = video.Title, VideoId = video.VideoId, IsDragOver = false});
 
         //update video placement
-        if ((oldListVideos.OrderBy(x=>x.Order).ToList()).SequenceEqual(newListVideos.OrderBy(x=>x.Order).ToList())) return; 
+        if ((oldListVideos.OrderBy(x=>x.Order).ToList()).SequenceEqual(newListVideos.OrderBy(x=>x.Order).ToList())) return;
+        listVideos.Sort((x, y) => x.Order.CompareTo(y.Order));
+        oldListVideos.Sort((x, y) => x.Order.CompareTo(y.Order));
+        newListVideos.Sort((x, y) => x.Order.CompareTo(y.Order));
         var command = new CommandChangeOrderListVideo(newListVideos, oldListVideos, _dbp, _dbv, listVideos, playlistEdit);
         CommandManager.Execute(command);
     }
@@ -276,7 +279,7 @@
             if (videosObtained.Count <= 0) return;
             Video firstNewVideo = videosObtained.First();
             firstNewVideo.Order = listVideos.Count;
-
+            listVideos.Sort((x, y) => x.Order.CompareTo(y.Order));
             var command2 = new CommandAddListVideo(listVideos, firstNewVideo, _dbv, playlistEdit);
             CommandManager.Execute(command2);
         }
@@ -289,6 +292,7 @@
             {
                 if (listVideos.Count >= userlogged.MaxVideos()) break;
                 video.Order = listVideos.Count;
+                listVideos.Sort((x, y) => x.Order.CompareTo(y.Order));
                 var command = new CommandAddListVideo(listVideos, video, _dbv, playlistEdit);
                 macro.Add(command);
             }
@@ -302,6 +306,7 @@
     private void DeleteVideo(Video videoToRemove)
     {
         if (videoToRemove == null) return;
+        listVideos.Sort((x, y) => x.Order.CompareTo(y.Order));
         var command1 = new CommandRemoveListVideo(listVideos, videoToRemove, _dbv, playlistEdit);
         CommandManager.Execute(command1);
     }

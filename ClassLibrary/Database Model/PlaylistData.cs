@@ -34,9 +34,13 @@ namespace ClassLibrary
             $"FROM dbo.[Playlist] " +
             $"WHERE [ID] = '{playlistId}';", new { });
 
-        public void DeletePlaylist(Playlist playlist) => _db.SaveData(
+        public void DeletePlaylist(Playlist playlist) => _db.SaveDataSync(
             $"DELETE FROM dbo.[Playlist] " +
             $"WHERE [ID]='{playlist.Id}';", playlist);
+
+        public void DeletePlaylistVideos(Playlist playlist) => _db.SaveDataSync(
+            $"DELETE FROM dbo.[PlaylistVideo] " +
+            $"WHERE [IDPlaylist] = '{playlist.Id}';", playlist);
 
         public Task<List<Playlist>> GetLatestPlaylistInserted(Playlist playlist, User user) => _db.LoadData<Playlist, dynamic>(
             $"insert into dbo.[Playlist] (Title, PersonId, DateCreation) " +

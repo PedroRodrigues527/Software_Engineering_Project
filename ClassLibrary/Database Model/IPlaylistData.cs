@@ -19,5 +19,6 @@ namespace ClassLibrary
         List<Video> VideosPlaylistSync(List<PlaylistVideos> videosIdList);
         List<PlaylistVideos> VideosIdInPlaylistSync(Playlist playlist);
         void UpdateDate(Playlist playlist);
+        void DeletePlaylistVideos(Playlist playlist);
     }
 }

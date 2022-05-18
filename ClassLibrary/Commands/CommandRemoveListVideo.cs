@@ -10,24 +10,34 @@ namespace ClassLibrary.Commands
     {
         public List<Video> ListVideos { get; }
         public Video UrlVideo;
-        public IVideoData VideoData;
+        public IVideoData VideoDatabase;
         public Playlist PlaylistEdit;
 
-        public CommandRemoveListVideo(List<Video> Listvideos, Video urlVideo, IVideoData videoData, Playlist playlistEdit)
+        public CommandRemoveListVideo(List<Video> listVideos, Video urlVideo, IVideoData videoDatabase, Playlist playlistEdit)
         {
-            ListVideos = Listvideos;
+            ListVideos = listVideos;
             UrlVideo = urlVideo;
-            VideoData = videoData;
+            VideoDatabase = videoDatabase;
             PlaylistEdit = playlistEdit;
         }
 
         public void Execute()
         {
-            VideoData.RemoveVideo(UrlVideo, PlaylistEdit);
-            ListVideos.Remove(UrlVideo);
-            for(int i = 0; i < ListVideos.Count; i++)
+            for (int i = 0; i < ListVideos.Count; i++)
             {
                 ListVideos[i].Order = i;
+                VideoDatabase.UpdateOrder(ListVideos[i]);
+                if (UrlVideo.Id == ListVideos[i].Id)
+                    UrlVideo.Order = i;
+            }
+
+            VideoDatabase.RemoveVideo(UrlVideo, PlaylistEdit);
+            ListVideos.RemoveAt(UrlVideo.Order);
+
+            for (int i = 0; i < ListVideos.Count; i++)
+            {
+                ListVideos[i].Order = i;
+                VideoDatabase.UpdateOrder(ListVideos[i]);
             }
         }
         public void Redo()
@@ -36,14 +46,24 @@ namespace ClassLibrary.Commands
         }
         public void Undo()
         {
-            UrlVideo = (VideoData.InsertVideo(UrlVideo)).First();
-            VideoData.InsertVideoInPlaylist(UrlVideo, PlaylistEdit);
-            ListVideos.Add(UrlVideo);
             for (int i = 0; i < ListVideos.Count; i++)
             {
                 ListVideos[i].Order = i;
+                VideoDatabase.UpdateOrder(ListVideos[i]);
+                if (UrlVideo.Id == ListVideos[i].Id)
+                    UrlVideo.Order = i;
+            }
+
+            UrlVideo = (VideoDatabase.InsertVideoUndo(UrlVideo)).First();
+            VideoDatabase.InsertVideoInPlaylist(UrlVideo, PlaylistEdit);
+            ListVideos.Insert(UrlVideo.Order, UrlVideo);
+
+            for (int i = 0; i < ListVideos.Count; i++)
+            {
+                ListVideos[i].Order = i;
+                VideoDatabase.UpdateOrder(ListVideos[i]);
             }
         }
-        
+
     }
 }

@@ -23,12 +23,22 @@ namespace ClassLibrary.Commands
 
         public void Execute()
         {
-            VideoAdded = (VideoDatabase.InsertVideo(VideoAdded)).First();
-            VideoDatabase.InsertVideoInPlaylist(VideoAdded, PlaylistEdit);
-            ListVideos.Add(VideoAdded);
             for (int i = 0; i < ListVideos.Count; i++)
             {
                 ListVideos[i].Order = i;
+                VideoDatabase.UpdateOrder(ListVideos[i]);
+                if (VideoAdded.Id == ListVideos[i].Id)
+                    VideoAdded.Order = i;
+            }
+
+            VideoAdded = (VideoDatabase.InsertVideo(VideoAdded)).First();
+            VideoDatabase.InsertVideoInPlaylist(VideoAdded, PlaylistEdit);
+            ListVideos.Insert(VideoAdded.Order, VideoAdded);
+            
+            for (int i = 0; i < ListVideos.Count; i++)
+            {
+                ListVideos[i].Order = i;
+                VideoDatabase.UpdateOrder(ListVideos[i]);
             }
         }
         public void Redo()
@@ -38,11 +48,21 @@ namespace ClassLibrary.Commands
         }
         public void Undo()
         {
-            VideoDatabase.RemoveVideo(VideoAdded, PlaylistEdit);
-            ListVideos.Remove(VideoAdded);
             for (int i = 0; i < ListVideos.Count; i++)
             {
                 ListVideos[i].Order = i;
+                VideoDatabase.UpdateOrder(ListVideos[i]);
+                if(VideoAdded.Id == ListVideos[i].Id)
+                    VideoAdded.Order = i;
+            }
+
+            VideoDatabase.RemoveVideo(VideoAdded, PlaylistEdit);
+            ListVideos.RemoveAt(VideoAdded.Order);
+
+            for (int i = 0; i < ListVideos.Count; i++)
+            {
+                ListVideos[i].Order = i;
+                VideoDatabase.UpdateOrder(ListVideos[i]);
             }
         }
     }

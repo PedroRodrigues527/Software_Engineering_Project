@@ -4,6 +4,7 @@
 @inject IJSRuntime JsRuntime
 @inject IUserData _db
 @inject IPlaylistData _dbp
+@inject IVideoData _dbv
 @inject IModalService modal 
 
 <style>
@@ -129,6 +130,12 @@
             //Remove playlist 
             _dbp.DeletePlaylist(playlistremoved);
             userplaylists.Remove(playlistremoved);
+
+            //Remove playlistVideos
+            _dbp.DeletePlaylistVideos(playlistremoved);
+
+            //Remove Videos associated Playlist
+            _dbv.DeleteUnusedVideos();
 
             NavigationManager.NavigateTo("/account/menu", true);
         }

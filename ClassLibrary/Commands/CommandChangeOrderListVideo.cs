@@ -28,15 +28,23 @@ namespace ClassLibrary.Commands
 
         public void Execute()
         {
+            for (int i = 0; i < ListVideos.Count; i++)
+            {
+                ListVideos[i].Order = i;
+                VideoData.UpdateOrder(ListVideos[i]);
+            }
+
             ListVideos.Clear();
             foreach (Video video in NewListVideos)
             {
                 VideoData.UpdateOrder(video);
                 ListVideos.Add(video);
             }
+
             for (int i = 0; i < ListVideos.Count; i++)
             {
                 ListVideos[i].Order = i;
+                VideoData.UpdateOrder(ListVideos[i]);
             }
 
         }
@@ -46,15 +54,23 @@ namespace ClassLibrary.Commands
         }
         public void Undo()
         {
+            for (int i = 0; i < ListVideos.Count; i++)
+            {
+                ListVideos[i].Order = i;
+                VideoData.UpdateOrder(ListVideos[i]);
+            }
+
             ListVideos.Clear();
             foreach (Video video in OldListVideos)
             {
                 VideoData.UpdateOrder(video);
                 ListVideos.Add(video);
             }
+
             for (int i = 0; i < ListVideos.Count; i++)
             {
                 ListVideos[i].Order = i;
+                VideoData.UpdateOrder(ListVideos[i]);
             }
 
         }
