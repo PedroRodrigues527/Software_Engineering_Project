@@ -16,85 +16,57 @@ namespace ClassLibrary
             _db = db;
         }
 
-        public Task<List<Playlist>> GetPlaylists()
-        {
-            string sql = "select * from dbo.[Playlist]";
+        public Task<List<Playlist>> GetPlaylists() => _db.LoadData<Playlist, dynamic>(
+            "select * " +
+            "from dbo.[Playlist]", new { });
 
-            return _db.LoadData<Playlist, dynamic>(sql, new { });
-        }
+        public Task InsertPlaylist(Playlist playlist, User user) => _db.SaveData(
+            $"insert into dbo.[Playlist] (Title, PersonId, DateCreation) " +
+            $"values ('{playlist.Title}', '{user.Id}', '{DateTime.Now.Date.ToString("yyyyMMdd")}');", playlist);
 
-        public Task InsertPlaylist(Playlist playlist, User user)
-        {
-            string localDate = DateTime.Now.Date.ToString("yyyyMMdd");
-            string sql = $"insert into dbo.[Playlist] (Title, PersonId, DateCreation) values ('{playlist.Title}', '{user.Id}', '{localDate}');";
+        public Task<List<Playlist>> GetClientPlaylists(User user) => _db.LoadData<Playlist, dynamic>(
+            $"SELECT * " +
+            $"FROM dbo.[Playlist] " +
+            $"WHERE [PersonId] = '{user.Id}';", new { });
 
-            return _db.SaveData(sql, playlist);
-        }
+        public Task<List<Playlist>> GetPlaylist(int playlistId) => _db.LoadData<Playlist, dynamic>(
+            $"SELECT * " +
+            $"FROM dbo.[Playlist] " +
+            $"WHERE [ID] = '{playlistId}';", new { });
 
-        public Task<List<Playlist>> GetClientPlaylists(User user)
-        {
-            string sql = $"SELECT * FROM dbo.[Playlist] WHERE [PersonId] = '{user.Id}';";
+        public void DeletePlaylist(Playlist playlist) => _db.SaveData(
+            $"DELETE FROM dbo.[Playlist] " +
+            $"WHERE [ID]='{playlist.Id}';", playlist);
 
-            return _db.LoadData<Playlist, dynamic>(sql, new { });
-        }
+        public Task<List<Playlist>> GetLatestPlaylistInserted(Playlist playlist, User user) => _db.LoadData<Playlist, dynamic>(
+            $"insert into dbo.[Playlist] (Title, PersonId, DateCreation) " +
+            $"values ('{playlist.Title}', '{user.Id}', '{DateTime.Now.Date.ToString("yyyyMMdd")}');\n" +
+            $"SELECT * FROM dbo.[Playlist] WHERE [ID] = SCOPE_IDENTITY();", new { });
 
-        public Task<List<Playlist>> GetPlaylist(int playlistId)
-        {
-            string sql = $"SELECT * FROM dbo.[Playlist] WHERE [ID] = '{playlistId}';";
+        public Task UpdateTitle(Playlist playlist) => _db.SaveData(
+            $"UPDATE dbo.[Playlist] " +
+            $"SET [Title] = '{playlist.Id}' " +
+            $"WHERE [ID] = '{playlist.Id}';", playlist);
 
-            return _db.LoadData<Playlist, dynamic>(sql, new { });
-        }
+        public void UpdateNewTitle(Playlist playlist) => _db.SaveDataSync(
+            $"UPDATE dbo.[Playlist] " +
+            $"SET [Title] = '{playlist.Title}' " +
+            $"WHERE [ID] = '{playlist.Id}';", playlist);
 
-        public void DeletePlaylist(Playlist playlist)
-        {
-            string sql = $"DELETE FROM dbo.[Playlist] WHERE [ID]='{playlist.Id}';";
+        public void UpdateType(Playlist playlist, string typePlaylist) => _db.SaveDataSync(
+            $"UPDATE dbo.[Playlist] " +
+            $"SET [Type] = '{typePlaylist}' " +
+            $"WHERE [ID] = '{playlist.Id}';", playlist);
 
-            _db.SaveData(sql, playlist);
-        }
+        public Task<List<PlaylistVideos>> VideosIdInPlaylist(Playlist playlist) => _db.LoadData<PlaylistVideos, dynamic>(
+            $"SELECT * " +
+            $"FROM dbo.[PlaylistVideo] " +
+            $"WHERE [IDPlaylist] = '{playlist.Id}';", new { });
 
-        public Task<List<Playlist>> GetLatestPlaylistInserted(Playlist playlist, User user)
-        {
-            string localDate = DateTime.Now.Date.ToString("yyyyMMdd");
-            string sql = $"insert into dbo.[Playlist] (Title, PersonId, DateCreation) values ('{playlist.Title}', '{user.Id}', '{localDate}');\n" +
-                $"SELECT * FROM dbo.[Playlist] WHERE [ID] = SCOPE_IDENTITY();";
-
-            return _db.LoadData<Playlist, dynamic>(sql, new { });
-        }
-
-        public Task UpdateTitle(Playlist playlist)
-        {
-            string sql = $"UPDATE dbo.[Playlist] SET [Title] = '{playlist.Id}' WHERE [ID] = '{playlist.Id}';";
-
-            return _db.SaveData(sql, playlist);
-        }
-
-        public void UpdateNewTitle(Playlist playlist)
-        {
-            string sql = $"UPDATE dbo.[Playlist] SET [Title] = '{playlist.Title}' WHERE [ID] = '{playlist.Id}';";
-
-            _db.SaveDataSync(sql, playlist);
-        }
-
-        public void UpdateType(Playlist playlist, string typePlaylist)
-        {
-            string sql = $"UPDATE dbo.[Playlist] SET [Type] = '{typePlaylist}' WHERE [ID] = '{playlist.Id}';";
-
-            _db.SaveDataSync(sql, playlist);
-        }
-
-        public Task<List<PlaylistVideos>> VideosIdInPlaylist(Playlist playlist)
-        {
-            string sql = $"SELECT * FROM dbo.[PlaylistVideo] WHERE [IDPlaylist] = '{playlist.Id}';";
-
-            return _db.LoadData<PlaylistVideos, dynamic>(sql, new { });
-        }
-
-        public List<PlaylistVideos> VideosIdInPlaylistSync(Playlist playlist)
-        {
-            string sql = $"SELECT * FROM dbo.[PlaylistVideo] WHERE [IDPlaylist] = '{playlist.Id}';";
-
-            return _db.LoadDataSync<PlaylistVideos, dynamic>(sql, new { });
-        }
+        public List<PlaylistVideos> VideosIdInPlaylistSync(Playlist playlist) => _db.LoadDataSync<PlaylistVideos, dynamic>(
+            $"SELECT * " +
+            $"FROM dbo.[PlaylistVideo] " +
+            $"WHERE [IDPlaylist] = '{playlist.Id}';", new { });
 
         public Task<List<Video>> VideosPlaylist(List<PlaylistVideos> videosIdList)
         {
@@ -122,17 +94,14 @@ namespace ClassLibrary
             return _db.LoadDataSync<Video, dynamic>(sql, new { });
         }
 
-        public Task<List<Playlist>> GetResults(string keyword)
-        {
-            string sql = $"Select * From dbo.[Playlist] Where [Title] LIKE '%{keyword}%' AND [Type] = 'PUBLIC'";
-            return _db.LoadData<Playlist, dynamic>(sql, new { });
-        }
+        public Task<List<Playlist>> GetResults(string keyword) => _db.LoadData<Playlist, dynamic>(
+            $"Select * " +
+            $"From dbo.[Playlist] " +
+            $"Where [Title] LIKE '%{keyword}%' AND [Type] = 'PUBLIC'", new { });
 
-        public void UpdateDate(Playlist playlist)
-        {
-            string sql = $"UPDATE dbo.[Playlist] SET [DateCreation] = '{playlist.DateCreation}' WHERE [ID] = '{playlist.Id}';";
-
-            _db.SaveDataSync(sql, playlist);
-        }
+        public void UpdateDate(Playlist playlist) => _db.SaveDataSync(
+            $"UPDATE dbo.[Playlist] " +
+            $"SET [DateCreation] = '{playlist.DateCreation}' " +
+            $"WHERE [ID] = '{playlist.Id}';", playlist);
     }
 }

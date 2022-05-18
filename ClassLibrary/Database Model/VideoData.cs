@@ -15,42 +15,22 @@ namespace ClassLibrary
             _db = db;
         }
 
-        public List<Video> GetVideos()
-        {
-            string sql = "select * from dbo.[Video]";
-
-            return _db.LoadDataSync<Video, dynamic>(sql, new { });
-        }
-
-        public List<Video> InsertVideo(Video video)
-        {
-            string sql = @"insert into dbo.[Video] (VideoId, Title, ChannelName, Thumbnail, [Order])
-                           values (@VideoId, @Title, @ChannelName, @Thumbnail, @Order); " +
-                           $"SELECT * FROM dbo.[Video] WHERE [ID] = SCOPE_IDENTITY();";
-
-            return _db.LoadDataSync<Video, dynamic>(sql, video);
-        }
-
-        public void InsertVideoInPlaylist(Video video, Playlist playlist)
-        {
-            string sql = $"insert into dbo.[PlaylistVideo] (IDPlaylist, IDVideo) values ('{playlist.Id}','{video.Id}');";
-
-            _db.SaveDataSync(sql, new { });
-        }
-
-        public void RemoveVideo(Video video, Playlist playlist)
-        {
-            string sql = $"DELETE FROM dbo.[PlaylistVideo] WHERE [IDPlaylist]='{playlist.Id}' AND [IDVideo]='{video.Id}';\n" +
-                $"DELETE FROM dbo.[Video] WHERE [ID] ='{video.Id}';";
-
-            _db.SaveDataSync(sql, new { });
-        }
-
-        public void UpdateOrder(Video video)
-        {
-            string sql = $"UPDATE dbo.[Video] SET [Order] = '{video.Order}' WHERE [ID] = '{video.Id}';";
-
-            _db.SaveData(sql, new { });
-        }
+        public List<Video> GetVideos() => _db.LoadDataSync<Video, dynamic>(
+            "select * " +
+            "from dbo.[Video]", new { });
+        public List<Video> InsertVideo(Video video) => _db.LoadDataSync<Video, dynamic>(
+            @"insert into dbo.[Video] (VideoId, Title, ChannelName, Thumbnail, [Order]) 
+            values (@VideoId, @Title, @ChannelName, @Thumbnail, @Order); " +
+            $"SELECT * FROM dbo.[Video] WHERE [ID] = SCOPE_IDENTITY();", video);
+        public void InsertVideoInPlaylist(Video video, Playlist playlist) => _db.SaveDataSync(
+            $"insert into dbo.[PlaylistVideo] (IDPlaylist, IDVideo)" +
+            $" values ('{playlist.Id}','{video.Id}');", new { });
+        public void RemoveVideo(Video video, Playlist playlist) => _db.SaveDataSync(
+            $"DELETE FROM dbo.[PlaylistVideo] " +
+            $" WHERE [IDPlaylist]='{playlist.Id}' AND [IDVideo]='{video.Id}';\n" +
+            $"DELETE FROM dbo.[Video] WHERE [ID] ='{video.Id}';", new { });
+        public void UpdateOrder(Video video) => _db.SaveData(
+            $"UPDATE dbo.[Video]" +
+            $" SET [Order] = '{video.Order}' WHERE [ID] = '{video.Id}';", new { });
     }
 }
