@@ -43,8 +43,23 @@ namespace ClassLibrary.Commands
         }
         public void Redo()
         {
-            //Add Video again from playlist
-            Execute();
+            for (int i = 0; i < ListVideos.Count; i++)
+            {
+                ListVideos[i].Order = i;
+                VideoDatabase.UpdateOrder(ListVideos[i]);
+                if (VideoAdded.Id == ListVideos[i].Id)
+                    VideoAdded.Order = i;
+            }
+
+            VideoAdded = (VideoDatabase.InsertVideoUndo(VideoAdded)).First();
+            VideoDatabase.InsertVideoInPlaylist(VideoAdded, PlaylistEdit);
+            ListVideos.Insert(VideoAdded.Order, VideoAdded);
+
+            for (int i = 0; i < ListVideos.Count; i++)
+            {
+                ListVideos[i].Order = i;
+                VideoDatabase.UpdateOrder(ListVideos[i]);
+            }
         }
         public void Undo()
         {
