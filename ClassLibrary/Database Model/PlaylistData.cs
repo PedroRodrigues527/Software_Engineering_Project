@@ -17,7 +17,7 @@
             $"insert into dbo.[Playlist] (Title, PersonId, DateCreation) " +
             $"values ('{playlist.Title}', '{user.Id}', '{DateTime.Now.Date.ToString("yyyyMMdd")}');", playlist);
 
-        public Task<List<Playlist>> GetClientPlaylists(User user) => _db.LoadData<Playlist, dynamic>(
+        public List<Playlist> GetClientPlaylists(User user) => _db.LoadDataSync<Playlist, dynamic>(
             $"SELECT * " +
             $"FROM dbo.[Playlist] " +
             $"WHERE [PersonId] = '{user.Id}';", new { });

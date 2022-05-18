@@ -28,9 +28,28 @@
             <div class="row">
                 <div class="col-md-6 justify-content-center text-center">
 
-                    <button class="btn btn-secondary btn-md mb-2" aria-label="Edit Playlist Title" @onclick="() => EditPlaylistTitle()">
+                    <button class="btn btn-secondary btn-md mb-2" aria-label="Edit Playlist Title" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <span class="oi oi-pencil" aria-hidden="true"></span> Edit Title
                     </button>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Playlist Title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <p>Insert new playlist title:</p>
+                            <input type="text" maxlength="16" @bind="TitleRename">
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @onclick="EditPlaylistTitle">Save changes</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
         
                     <div class="btn-group mb-2">
                         <button class="btn btn-secondary" disabled="@(!canUndo)" @onclick="Undo">
@@ -121,6 +140,7 @@
     List<Video>? listVideos;
     private Video? draggingModel;
     private string? newVideo;
+    private string? TitleRename;
 
     private bool canUndo;
     private bool canRedo;
@@ -223,19 +243,16 @@
         CommandManager.Execute(command);
     }
 
-    private async void EditPlaylistTitle()
+    private void EditPlaylistTitle()
     {
-        string prompted = await JsRuntime.InvokeAsync<string>("prompt", "Insert new playlist title:");
-        if(!string.IsNullOrWhiteSpace(prompted))
-        {
-            if (prompted.Length > 16) return;
-            playlistEdit.Title = prompted;
-            List<Playlist> userplaylists = await _dbp.GetClientPlaylists(userlogged);
-            Playlist playlistNewTitle = new Playlist() {Id = playlistEdit.Id, Title = prompted};
-            bool containsItem = userplaylists.Any(item => item.Title == playlistNewTitle.Title && item.PersonId == userlogged.Id);
-            if (containsItem) return;
-            _dbp.UpdateNewTitle(playlistNewTitle);
-        }
+        if (string.IsNullOrWhiteSpace(TitleRename)) return;
+        List<Playlist> userplaylists = _dbp.GetClientPlaylists(userlogged);
+        Playlist playlistNewTitle = new Playlist() {Id = playlistEdit.Id, Title = TitleRename};
+        bool containsItem = userplaylists.Any(item => item.Title.Trim() == playlistNewTitle.Title);
+        if (containsItem) return;
+        _dbp.UpdateNewTitle(playlistNewTitle);
+        playlistEdit.Title = TitleRename;
+
     }
 
     private void OnValueChanged(ChangeEventArgs e)

@@ -105,7 +105,7 @@
                         await _db.PlanFinished(usernameIdlogged);
                 }
                 //Get User's Playlists
-                userplaylists = await _dbp.GetClientPlaylists(userlogged);
+                userplaylists = _dbp.GetClientPlaylists(userlogged);
 
                 await sessionStorage.RemoveItemAsync("PlaylistChosen");
             }

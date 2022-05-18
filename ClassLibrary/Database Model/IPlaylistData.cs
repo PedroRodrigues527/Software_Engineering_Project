@@ -5,7 +5,7 @@ namespace ClassLibrary
     public interface IPlaylistData
     {
         void DeletePlaylist(Playlist playlist);
-        Task<List<Playlist>> GetClientPlaylists(User user);
+        List<Playlist> GetClientPlaylists(User user);
         Task<List<Playlist>> GetPlaylists();
         Task<List<Playlist>> GetResults(string keyword);
         Task InsertPlaylist(Playlist playlist, User user);

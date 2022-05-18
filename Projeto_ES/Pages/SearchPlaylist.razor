@@ -111,7 +111,7 @@
                         await _db.PlanFinished(usernameIdlogged);
                 }
                 await sessionStorage.RemoveItemAsync("PlaylistChosen");
-                userplaylists = await _dbp.GetClientPlaylists(userlogged);
+                userplaylists = _dbp.GetClientPlaylists(userlogged);
 
                 playlistsResult = await _dbp.GetResults(Search);
             }
