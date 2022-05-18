@@ -40,12 +40,10 @@ namespace ClassLibrary.Commands
             }
 
         }
-
         public void Redo()
         {
             Execute();
         }
-
         public void Undo()
         {
             ListVideos.Clear();

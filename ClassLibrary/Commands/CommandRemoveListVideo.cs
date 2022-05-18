@@ -30,12 +30,10 @@ namespace ClassLibrary.Commands
                 ListVideos[i].Order = i;
             }
         }
-
         public void Redo()
         {
             Execute();
         }
-
         public void Undo()
         {
             UrlVideo = (VideoData.InsertVideo(UrlVideo)).First();

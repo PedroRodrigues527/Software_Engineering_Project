@@ -8,10 +8,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassLibrary
 {
-    public class User : IUser, IItem
+    public class User : Item, IUser
     {
         [Required]
-        public int Id { get; set; }
+        public new int Id { get; set; }
         [Required]
         [StringLength(16, ErrorMessage = "Username must be 16 characters or less.")]
         [DataType(DataType.Text)]
@@ -35,7 +35,6 @@ namespace ClassLibrary
         [DataType(DataType.Text)]
         [StringLength(150, ErrorMessage = "Biography must be 150 characters or less.")]
         public string Biography { get; set; }
-        public string YoutubeAccount { get; set; }
         public PlanPayment Plan { get; set; } = PlanPayment.FREE;
         public string DateExpirationPlan { get; set; }
 

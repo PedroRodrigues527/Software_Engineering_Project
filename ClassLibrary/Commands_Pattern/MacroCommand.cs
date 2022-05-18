@@ -20,7 +20,6 @@ namespace ClassLibrary.Commands_Pattern
                 command.Execute();
             }
         }
-
         public void Redo()
         {
             foreach (var command in _commands)
@@ -28,7 +27,6 @@ namespace ClassLibrary.Commands_Pattern
                 command.Redo();
             }
         }
-
         public void Undo()
         {
             _commands.Reverse();

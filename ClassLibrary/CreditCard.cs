@@ -8,9 +8,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassLibrary
 {
-    public class CreditCard : ICreditCard, IItem
+    public class CreditCard : Item, ICreditCard
     {
-        public int Id { get; set; }
         [Required]
         public int Number { get; set; }
         [Required]
@@ -24,10 +23,6 @@ namespace ClassLibrary
         [Required]
         public double Balance { get; set; }
 
-        public bool IsPaymentPositive(double amount)
-        {
-            return Balance < amount;
-        }
-       
+        public bool IsPaymentPositive(double amount) => Balance < amount;
     }
 }

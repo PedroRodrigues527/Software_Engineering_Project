@@ -9,7 +9,6 @@
         string Password { get; set; }
         PlanPayment Plan { get; set; }
         string Username { get; set; }
-        string YoutubeAccount { get; set; }
 
         public int MaxVideos();
         public int MaxPlaylists();

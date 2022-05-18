@@ -27,7 +27,6 @@ namespace ClassLibrary.Commands_Pattern
             _position++;
             Notify?.Invoke(this, EventArgs.Empty);
         }
-
         public void Undo()
         {
             if (!HasUndo) return;
@@ -36,7 +35,6 @@ namespace ClassLibrary.Commands_Pattern
             _position--;
             Notify?.Invoke(this, EventArgs.Empty);
         }
-
         public void Redo()
         {
             if (!HasRedo) return;
@@ -44,7 +42,6 @@ namespace ClassLibrary.Commands_Pattern
             command.Redo();
             Notify?.Invoke(this, EventArgs.Empty);
         }
-
         public void Reset()
         {
             _commands.Clear();

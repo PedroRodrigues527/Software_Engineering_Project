@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    public class Video : IItem
+    public class Video : Item
     {
-        public int Id { get; set; }
         public string ChannelName { get; set; }
         public string VideoId { get; set; }
         public string Title { get; set; }

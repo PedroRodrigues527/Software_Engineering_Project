@@ -8,10 +8,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassLibrary
 {
-    public class Playlist : IItem
+    public class Playlist : Item
     {
         [Required]
-        public int Id { get; set; }
+        public new int Id { get; set; }
         public int NumberOfVideos { get; set; }
         public int MaximumOfVideos { get; set; }
         [Required]
@@ -26,9 +26,6 @@ namespace ClassLibrary
         [Required]
         public EnumPlaylistType Type { get; set; } = EnumPlaylistType.PRIVATE;
 
-        public bool isOpen()
-        {
-            return Type == EnumPlaylistType.PUBLIC;
-        }
+        public bool isOpen() => Type == EnumPlaylistType.PUBLIC;
     }
 }
