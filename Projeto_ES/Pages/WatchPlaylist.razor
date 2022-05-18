@@ -45,6 +45,7 @@
                 else
                 {
                     <p> No videos in this Playlist... </p>
+                    <button type="button" class="btn btn-secondary btn-md" @onclick="GoBack">&laquo; Go Back</button>
                 }
             }
             else
@@ -55,6 +56,7 @@
         else
         {
             <p> Invalid Session! </p>
+            <button type="button" class="btn btn-secondary btn-md" @onclick="GoBack">&laquo; Go Back</button>
         }
     }
     else
