@@ -41,7 +41,7 @@
                           </div>
                           <div class="modal-body">
                             <p>Insert new playlist title:</p>
-                            <input type="text" maxlength="16" @bind="TitleRename">
+                            <input type="text" maxlength="16" placeholder="New title" @bind="TitleRename">
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -246,6 +246,7 @@
     private void EditPlaylistTitle()
     {
         if (string.IsNullOrWhiteSpace(TitleRename)) return;
+        if (TitleRename == playlistEdit.Title) return;
         List<Playlist> userplaylists = _dbp.GetClientPlaylists(userlogged);
         Playlist playlistNewTitle = new Playlist() {Id = playlistEdit.Id, Title = TitleRename};
         bool containsItem = userplaylists.Any(item => item.Title.Trim() == playlistNewTitle.Title);
