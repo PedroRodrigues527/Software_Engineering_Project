@@ -37,9 +37,26 @@
                                     <button class="btn btn-secondary btn-sm" aria-label="Edit" @onclick="() => EditPlaylist(userplaylists[j])">
                                         <span class="oi oi-pencil" aria-hidden="true"></span>
                                     </button>
-                                    <button class="btn btn-danger btn-sm" aria-label="Delete" @onclick="() => RemovePlaylist(userplaylists[j])">
+                                    <button class="btn btn-danger btn-sm" aria-label="Delete" data-bs-toggle="modal" data-bs-target="#modalDeletePlaylist@(userplaylists[j].Id)">
                                         <span class="oi oi-trash" aria-hidden="true"></span>
                                     </button>
+                                    <div class="modal fade" id="modalDeletePlaylist@(userplaylists[j].Id)" tabindex="-1" aria-labelledby="modalDeletePlaylist@(userplaylists[j].Id)Label" aria-hidden="true">
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="modalEditPLaylistTitleLabel">Delete Playlist</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <p>Are you sure you want to delete playlist '@(userplaylists[j].Title.Trim())' ?</p>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @onclick="() => RemovePlaylist(userplaylists[j])">Yes</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
                                     <button class="btn btn-primary btn-sm" aria-label="Watch" @onclick="() => WatchPlaylist(userplaylists[j])">
                                         <span class="oi oi-eye" aria-hidden="true"></span>
                                     </button>
@@ -85,6 +102,7 @@
     private List<Playlist>? userplaylists;
     int usernameIdlogged = 0;
     User? userlogged;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -122,23 +140,17 @@
         NavigationManager.NavigateTo("/account/playlist/edit");
     }
 
-    private async void RemovePlaylist(Playlist playlistremoved)
+    private void RemovePlaylist(Playlist playlistremoved)
     {
-        bool confirmlogout = await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete playlist {playlistremoved.Title.Trim()}?");
-        if(confirmlogout == true)
-        {
-            //Remove playlist 
-            _dbp.DeletePlaylist(playlistremoved);
-            userplaylists.Remove(playlistremoved);
+        //Remove playlist 
+        _dbp.DeletePlaylist(playlistremoved);
+        userplaylists.Remove(playlistremoved);
 
-            //Remove playlistVideos
-            _dbp.DeletePlaylistVideos(playlistremoved);
+        //Remove playlistVideos
+        _dbp.DeletePlaylistVideos(playlistremoved);
 
-            //Remove Videos associated Playlist
-            _dbv.DeleteUnusedVideos();
-
-            NavigationManager.NavigateTo("/account/menu", true);
-        }
+        //Remove Videos associated Playlist
+        _dbv.DeleteUnusedVideos();
     }
 
     private void WatchPlaylist(Playlist playlistView)
