@@ -12,7 +12,7 @@
     }
 </style>
 
-<PageTitle>Changing Biography</PageTitle>
+<PageTitle>Plan Payment Form Page</PageTitle>
 
 <div>
     @if (userlogged != null)
@@ -94,7 +94,7 @@
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-calendar fa-lg me-3 fa-fw"></i>
                         <div class="form-outline flex-fill mb-0">
-                          <InputText id="form3Example1c" class="form-control" placeholder="Expiration Date. Example: 04/2040" required maxlength="7" @bind-Value="card.ExpirationDate"/>
+                          <InputText id="form3Example1c" class="form-control" placeholder="Expiration Date. Format: MM/yyyy" required maxlength="7" @bind-Value="card.ExpirationDate"/>
                           <ValidationMessage For="() => card.ExpirationDate" />
                         </div>
                       </div>
