@@ -68,4 +68,7 @@
     <Build Include="dbo\Tables\PlaylistVideo.sql" />
     <Build Include="dbo\Tables\CreditCard.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ESDatabase.publish.xml" />
+  </ItemGroup>
 </Project>
