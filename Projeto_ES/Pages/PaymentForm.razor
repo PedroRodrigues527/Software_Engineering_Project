@@ -12,7 +12,7 @@
     }
 </style>
 
-<PageTitle>Plan Payment Form Page</PageTitle>
+<PageTitle>Plan Payment</PageTitle>
 
 <div>
     @if (userlogged != null)
@@ -56,18 +56,12 @@
                       <div class="d-flex flex-row align-items-center mb-4">
                           <label for="staticEmail" class="col-sm-2 col-form-label">Plan Account:</label>
                             <div class="col-sm-10">
-                                @if(userlogged.Plan == null)
-                                {
-                                    <input type="text" readonly class="form-control-plaintext text-center" id="staticBiography" value="">
-                                }
-                                else
-                                {
-                                    <input type="text" readonly class="form-control-plaintext text-center" id="staticBiography" value="@userlogged.Plan">
-                                }
+                                <input type="text" readonly class="form-control-plaintext text-center" id="staticPlanAccount" value="@userlogged.Plan">
                             </div>
                       </div>
 
                       <select @onchange="OnValueChanged" class="form-select mb-4" aria-label="SelectPlan" required>
+                          <option value=""></option>
                         @foreach (PlanPayment value in Enum.GetValues(typeof(PlanPayment))) {
                             if(((int)userlogged.Plan) < (int)value && value != userlogged.Plan)
                             {
@@ -109,13 +103,13 @@
 
 
                       <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                        @if(countOptions > 1 && chosenPlan == "PREMIUMPLUS")
+                        @if(countOptions > 0 && chosenPlanString != null)
                         {
-                            <button type="submit" class="btn btn-primary btn-lg">Confirm Payment (@(BILL*countOptions) - 1 year)</button>
+                            <button type="submit" class="btn btn-primary btn-lg">Confirm Payment (@(BILL*((int)chosenPlan - (int)userlogged.Plan)) - 1 year)</button>
                         }
                         else
                         {
-                            <button type="submit" class="btn btn-primary btn-lg">Confirm Payment (@BILL - 1 year)</button>
+                            <button type="submit" class="btn btn-primary btn-lg" disabled>Choose Type of Plan</button>
                         }
                       </div>
 
@@ -136,7 +130,8 @@
     int usernameIdlogged = 0;
     User? userlogged;
     private List<User>? users;
-    string? chosenPlan;
+    string? chosenPlanString;
+    PlanPayment chosenPlan;
     static int countOptions = 0;
 
     private CreditCard card = new();
@@ -178,26 +173,19 @@
 
     private async void HandleValidSubmit()
     {
+        if (string.IsNullOrWhiteSpace(chosenPlanString)) return;
         List<CreditCard> cardList = _db.GetCreditCard(card);
-
-        if (cardList.Count > 0)
+        CreditCard cardDataBase = cardList.FirstOrDefault();
+        if (cardDataBase != null)
         {
-
-            CreditCard cardDataBase = cardList.First();
-
-            if (cardDataBase.IsPaymentPositive(BILL) || (countOptions > 1 && chosenPlan == "PREMIUMPLUS" && cardDataBase.IsPaymentPositive(BILL*countOptions)))
+            if (cardDataBase.IsPaymentPositive(BILL*((int)chosenPlan - (int)userlogged.Plan)))
             {
                 DateTime currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-                currentDate.AddYears(1);
+                currentDate = currentDate.AddYears(1);
                 string expirationDateString = currentDate.ToString("yyyyMMdd");
-                if (countOptions > 1 && chosenPlan == "PREMIUMPLUS")
-                {
-                    _db.Payment(cardDataBase, BILL*countOptions, chosenPlan, userlogged, expirationDateString);
-                }
-                else
-                {
-                    _db.Payment(cardDataBase, BILL, chosenPlan, userlogged, expirationDateString);
-                }
+                double remainingBalance = (cardDataBase.Balance - (double)(BILL * ((int)chosenPlan - (int)userlogged.Plan)));
+
+                _db.Payment(cardDataBase, Convert.ToDecimal(remainingBalance), chosenPlanString, userlogged, expirationDateString);
 
                 await JsRuntime.InvokeVoidAsync("alert", "Payment succesfull!");
 
@@ -217,7 +205,15 @@
 
     private void OnValueChanged(ChangeEventArgs e)
     {
-        chosenPlan = e.Value.ToString();
+        if(string.IsNullOrWhiteSpace(e.Value.ToString()))
+        {
+            chosenPlanString = null;
+        }
+        else
+        {
+            chosenPlanString = e.Value.ToString();
+            chosenPlan = (PlanPayment)System.Enum.Parse(typeof(PlanPayment), chosenPlanString);
+        }
     }
 
     private void EditEmail()

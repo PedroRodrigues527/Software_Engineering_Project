@@ -1,4 +1,6 @@
-﻿namespace ClassLibrary.Database_Model
+﻿using System.Globalization;
+
+namespace ClassLibrary.Database_Model
 {
     public class UserData : IUserData
     {
@@ -43,15 +45,22 @@
             $" AND [HolderName] = '{card.HolderName}'" +
             $" AND [ExpirationDate] = '{card.ExpirationDate}'" +
             $" AND [PIN] = '{card.Pin}';", new { });
-        public void Payment(CreditCard card, double cost, string plan, User user, string date) => _db.SaveData(
+        public void Payment(CreditCard card, decimal cost, string plan, User user, string date)
+        {
+            CultureInfo customCulture = (CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
+            customCulture.NumberFormat.NumberDecimalSeparator = ".";
+            Thread.CurrentThread.CurrentCulture = customCulture;
+
+            _db.SaveDataSync(
             $"update dbo.[CreditCard] " +
-            $"set dbo.[CreditCard].[Balance] = '{(double)(card.Balance - cost)}' " +
-            $"WHERE [Number] = '{card.Number}';\n" +
+            $"set [Balance] = {Convert.ToDecimal(cost, CultureInfo.CurrentCulture)} " +
+            $"WHERE [Id] = '{ card.Id }';\n" +
             $"update dbo.[User] " +
-            $"set dbo.[User].[Plan] = '{plan}'" +
-            $" AND [DateExpirationPlan]='{date}' " +
-            $"WHERE [Id] = '{ user.Id }'; ", new { });
-        public void InsertCreditCard(CreditCard card) => _db.SaveData(
+            $"set dbo.[User].[Plan] = '{plan}', " +
+            $"dbo.[User].[DateExpirationPlan] = '{date}' " +
+            $"WHERE dbo.[User].[Id] = '{ user.Id }'; ", new { });
+        }
+        public void InsertCreditCard(CreditCard card) => _db.SaveDataSync(
             @"insert into dbo.[CreditCard] (Number, HolderName, ExpirationDate, Pin, Balance) 
             values (@Number, @HolderName, @ExpirationDate, @Pin, @Balance);", card);
 

@@ -2,8 +2,8 @@
 {
     public enum PlanPayment
     {
-        FREE = 10,
-        PREMIUM = 50,
-        PREMIUMPLUS = 100
+        FREE = 0,
+        PREMIUM = 1,
+        PREMIUMPLUS = 2
     }
 }

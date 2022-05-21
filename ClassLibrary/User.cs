@@ -32,7 +32,7 @@ namespace ClassLibrary
         public PlanPayment Plan { get; set; } = PlanPayment.FREE;
         public string DateExpirationPlan { get; set; }
 
-        public int MaxVideos() => ((int)Plan) * 10;
-        public int MaxPlaylists() => ((int)Plan);
+        public int MaxVideos() => ((int)(5 * Math.Pow((int)Plan, 2) + 35 * ((int)Plan) + 10)) * 10;
+        public int MaxPlaylists() => (int)(5 * Math.Pow((int)Plan, 2) + 35 * ((int)Plan) + 10);
     }
 }

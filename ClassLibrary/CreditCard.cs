@@ -17,6 +17,6 @@ namespace ClassLibrary
         [Required]
         public double Balance { get; set; }
 
-        public bool IsPaymentPositive(double amount) => Balance < amount;
+        public bool IsPaymentPositive(double amount) => Balance > amount;
     }
 }

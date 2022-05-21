@@ -4,7 +4,7 @@
     [HolderName]    NVARCHAR(MAX) COLLATE Latin1_General_CS_AS NOT NULL,
     [ExpirationDate] NVARCHAR(7) NOT NULL, 
     [Pin] SMALLINT NOT NULL, 
-    [Balance] DECIMAL NOT NULL, 
+    [Balance] DECIMAL(18, 2) NOT NULL, 
     CONSTRAINT [PK_CreditCard] PRIMARY KEY CLUSTERED ([ID] ASC),
 );
 
