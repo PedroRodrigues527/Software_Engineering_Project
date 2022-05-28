@@ -6,6 +6,8 @@ using ClassLibrary.Commands_Pattern;
 using Projeto_ES.Data;
 using Blazored.Modal;
 using ClassLibrary.Database_Model;
+using ClassLibrary.Database_Context;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,10 @@ builder.Services.AddTransient<IUserData, UserData>();
 builder.Services.AddTransient<IPlaylistData, PlaylistData>();
 builder.Services.AddTransient<IVideoData, VideoData>();
 builder.Services.AddSingleton<CommandManager>();
+builder.Services.AddDbContext<AllDatabaseContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+});
 
 
 builder.Services.AddSingleton<IndexModel>(new IndexModel(

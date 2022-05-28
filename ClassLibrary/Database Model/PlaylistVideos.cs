@@ -1,9 +1,11 @@
-﻿namespace ClassLibrary.Database_Model
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace ClassLibrary.Database_Model
 {
-    public class PlaylistVideos
+    [Keyless]
+    public class PlaylistVideos : IPlaylistVideos
     {
         public int IdPlaylist { get; set; }
         public int IdVideo { get; set; }
-        public int Order { get; set; }
     }
 }

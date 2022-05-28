@@ -11,10 +11,7 @@ namespace ClassLibrary.Database_Model
 
         public string ConnectionStringName { get; set; } = "Default";
 
-        public SqlDataAccess(IConfiguration config)
-        {
-            _config = config;
-        }
+        public SqlDataAccess(IConfiguration config) => _config = config;
 
         public async Task<List<T>> LoadData<T, U>(string sql, U parameters)
         {
