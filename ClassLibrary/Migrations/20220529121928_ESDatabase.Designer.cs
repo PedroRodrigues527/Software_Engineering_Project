@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassLibrary.Migrations
 {
     [DbContext(typeof(AllDatabaseContext))]
-    [Migration("20220528201046_ESDatabase")]
+    [Migration("20220529121928_ESDatabase")]
     partial class ESDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,7 +40,8 @@ namespace ClassLibrary.Migrations
 
                     b.Property<string>("HolderName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
                     b.Property<int>("Number")
                         .HasColumnType("int");
@@ -81,14 +82,18 @@ namespace ClassLibrary.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nchar(16)");
+                        .HasColumnType("nchar(16)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("nchar(16)");
+                        .HasColumnType("nchar(16)")
+                        .HasDefaultValue("PRIVATE");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Title");
 
                     b.ToTable("Playlist");
                 });
@@ -102,34 +107,38 @@ namespace ClassLibrary.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Biography")
-                        .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("DateExpirationPlan")
-                        .IsRequired()
                         .HasColumnType("nchar(10)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(16)
-                        .HasColumnType("nchar(16)");
+                        .HasColumnType("nchar(16)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
                     b.Property<string>("Plan")
                         .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("nchar(16)");
+                        .HasColumnType("nchar(16)")
+                        .HasDefaultValue("FREE");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(16)
-                        .HasColumnType("nchar(16)");
+                        .HasColumnType("nchar(16)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Username");
 
                     b.ToTable("User");
                 });
@@ -143,23 +152,24 @@ namespace ClassLibrary.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ChannelName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
                     b.Property<string>("Thumbnail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
                     b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
                     b.Property<string>("VideoId")
                         .IsRequired()
-                        .HasColumnType("nchar(11)");
+                        .HasColumnType("nchar(11)")
+                        .UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
                     b.HasKey("Id");
 

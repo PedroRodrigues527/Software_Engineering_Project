@@ -23,11 +23,26 @@ namespace ClassLibrary.Database_Context
             modelBuilder.Entity<User>().Property(m => m.Biography).IsRequired(false);
             modelBuilder.Entity<User>().Property(m => m.DateExpirationPlan).IsRequired(false);
             modelBuilder.Entity<User>().HasAlternateKey(r => r.Username);
-            modelBuilder.Entity<Playlist>().Property(m => m.Title).IsRequired(false);
+            modelBuilder.Entity<User>().Property(m => m.Username).UseCollation("SQL_Latin1_General_CP1_CS_AS");
+            modelBuilder.Entity<User>().Property(m => m.Email).UseCollation("SQL_Latin1_General_CP1_CS_AS");
+            modelBuilder.Entity<User>().Property(m => m.Password).UseCollation("SQL_Latin1_General_CP1_CS_AS");
+            modelBuilder.Entity<User>().Property(m => m.Plan).HasDefaultValue(PlanPayment.FREE);
+            modelBuilder.Entity<Playlist>().Property(m => m.Title)
+                .IsRequired(false)
+                .UseCollation("SQL_Latin1_General_CP1_CS_AS");
             modelBuilder.Entity<Playlist>().HasAlternateKey(r => r.Title);
-            modelBuilder.Entity<Video>().Property(m => m.Title).IsRequired(false);
-            modelBuilder.Entity<Video>().Property(m => m.ChannelName).IsRequired(false);
-            modelBuilder.Entity<Video>().Property(m => m.Thumbnail).IsRequired(false);
+            modelBuilder.Entity<Playlist>().Property(m => m.Type).HasDefaultValue(EnumPlaylistType.PRIVATE);
+            modelBuilder.Entity<Video>().Property(m => m.Title)
+                .IsRequired(false)
+                .UseCollation("SQL_Latin1_General_CP1_CS_AS");
+            modelBuilder.Entity<Video>().Property(m => m.ChannelName)
+                .IsRequired(false)
+                .UseCollation("SQL_Latin1_General_CP1_CS_AS");
+            modelBuilder.Entity<Video>().Property(m => m.Thumbnail)
+                .IsRequired(false)
+                .UseCollation("SQL_Latin1_General_CP1_CS_AS");
+            modelBuilder.Entity<Video>().Property(m => m.VideoId).UseCollation("SQL_Latin1_General_CP1_CS_AS");
+            modelBuilder.Entity<CreditCard>().Property(m => m.HolderName).UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
             base.OnModelCreating(modelBuilder);
         }
