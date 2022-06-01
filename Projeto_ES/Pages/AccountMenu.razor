@@ -110,19 +110,16 @@
             usernameIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
             if(usernameIdlogged==0)
             {
-                //Redirect to login page
                 NavigationManager.NavigateTo("/login");
             }
             else
             {
-                //Get User in Database
                 userlogged = (await _db.GetUser(usernameIdlogged)).First();
                 if(userlogged.Plan != PlanPayment.FREE)
                 {
                     if(DateTime.Compare(DateTime.ParseExact(userlogged.DateExpirationPlan.Trim(),"yyyyMMdd",System.Globalization.CultureInfo.InvariantCulture), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)) <= 0)
                         await _db.PlanFinished(usernameIdlogged);
                 }
-                //Get User's Playlists
                 userplaylists = _dbp.GetClientPlaylists(userlogged);
 
                 await sessionStorage.RemoveItemAsync("PlaylistChosen");
@@ -134,22 +131,17 @@
 
     private async void EditPlaylist(Playlist playlistedit)
     {
-        //Add playlist in session storage
         await sessionStorage.SetItemAsync("PlaylistChosen", playlistedit.Id);
-        //Redirect to edit playlist page
         NavigationManager.NavigateTo("/account/playlist/edit");
     }
 
     private void RemovePlaylist(Playlist playlistremoved)
     {
-        //Remove playlist 
         _dbp.DeletePlaylist(playlistremoved);
         userplaylists.Remove(playlistremoved);
 
-        //Remove playlistVideos
         _dbp.DeletePlaylistVideos(playlistremoved);
 
-        //Remove Videos associated Playlist
         _dbv.DeleteUnusedVideos();
     }
 
@@ -160,7 +152,6 @@
 
     private async void CreatePlaylist(User userlogged)
     {
-        //Redirect to edit playlist page
         if (userplaylists.Count >= userlogged.MaxPlaylists()) 
         {
             await JsRuntime.InvokeVoidAsync("alert", "Maximum number of playlists reached!");

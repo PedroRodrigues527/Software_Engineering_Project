@@ -143,13 +143,11 @@
             usernameIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
             if(usernameIdlogged==0)
             {
-                //Redirect to login page
                 NavigationManager.NavigateTo("/login");
             }
             else
             {
                 users = await _db.GetUsers();
-                //Get User in Database
                 userlogged = (await _db.GetUser(usernameIdlogged)).First();
                 if(userlogged.Plan != PlanPayment.FREE)
                 {
@@ -189,7 +187,6 @@
 
                 await JsRuntime.InvokeVoidAsync("alert", "Payment succesfull!");
 
-                //Redirect to login page
                 NavigationManager.NavigateTo("/account/settings/payment", true);
             }
             else

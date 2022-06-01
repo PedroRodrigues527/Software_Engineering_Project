@@ -65,7 +65,6 @@
             usernameIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
             if(usernameIdlogged!=0)
             {
-                //Redirect to account menu page
                 NavigationManager.NavigateTo("/account/menu");
             }
 
@@ -75,7 +74,6 @@
 
     private async void HandleValidSubmit()
     {
-        // Process to validate user database
         User isUserValid = null;
         users = await _db.GetUsers();
         foreach(var usercolumn in users)
@@ -89,10 +87,8 @@
 
         if(isUserValid != null)
         {
-            //Add session validation
             await sessionStorage.SetItemAsync("UsernameLogged", isUserValid.Id);
 
-            //Redirect to account menu page
             NavigationManager.NavigateTo("/account/menu", true);
         }
         else

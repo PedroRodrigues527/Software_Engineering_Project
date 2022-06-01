@@ -82,11 +82,9 @@
         bool confirmlogout = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to logout?");
         if(confirmlogout)
         {
-            //Remove session validation
             await sessionStorage.RemoveItemAsync("UsernameLogged");
             await sessionStorage.RemoveItemAsync("PlaylistChosen");
 
-            //Redirect to login page
             NavigationManager.NavigateTo("/login", true);
         }
     }
@@ -99,7 +97,6 @@
             await _db.PlanFinished(userlogged.Id);
             await JsRuntime.InvokeVoidAsync("alert", "Cancellation successfull!");
 
-            //Redirect to same page
             NavigationManager.NavigateTo(NavigationManager.Uri.ToString(),true);
         }
     }

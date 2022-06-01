@@ -98,12 +98,10 @@
             usernameIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
             if(usernameIdlogged==0)
             {
-                //Redirect to login page
                 NavigationManager.NavigateTo("/login");
             }
             else
             {
-                //Get User in Database
                 userlogged = (await _db.GetUser(usernameIdlogged)).First();
                 if(userlogged.Plan != PlanPayment.FREE)
                 {
@@ -132,13 +130,11 @@
             await JsRuntime.InvokeVoidAsync("alert", "Maximum number of playlists reached!");
             return;
         }
-        //Add playlist favorite
         Playlist playlistWithId = (await _dbp.GetLatestPlaylistInserted(new Playlist(), userlogged)).First();
         await _dbp.UpdateTitle(playlistWithId);
         playlistWithId.DateCreation = playlistFavorite.DateCreation;
         _dbp.UpdateDate(playlistWithId);
 
-        //Add videos
         List<Video> listVideosDetails = _dbp.VideosPlaylistSync(_dbp.VideosIdInPlaylistSync(playlistFavorite));
         foreach(Video video in listVideosDetails)
         {

@@ -72,12 +72,10 @@
             usernameIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
             if(usernameIdlogged==0)
             {
-                //Redirect to login page
                 NavigationManager.NavigateTo("/login");
             }
             else
             {
-                //Get User in Database
                 userlogged = (await _db.GetUser(usernameIdlogged)).First();
                 if(userlogged.Plan != PlanPayment.FREE)
                 {

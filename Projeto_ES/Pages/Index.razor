@@ -61,7 +61,6 @@
             usernameIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
             if(usernameIdlogged!=0)
             {
-                //Redirect to account menu page
                 NavigationManager.NavigateTo("/account/menu");
             }
 

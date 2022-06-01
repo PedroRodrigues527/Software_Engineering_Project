@@ -122,13 +122,11 @@
             usernameIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
             if(usernameIdlogged==0)
             {
-                //Redirect to login page
                 NavigationManager.NavigateTo("/login");
             }
             else
             {
                 users = await _db.GetUsers();
-                //Get User in Database
                 userlogged = (await _db.GetUser(usernameIdlogged)).First();
                 if(userlogged.Plan != PlanPayment.FREE)
                 {
@@ -147,12 +145,10 @@
         if (user.Password.Equals(user.ConfirmPassword) && userlogged.Password.Trim() == user.Password.Trim()  && !string.IsNullOrWhiteSpace(user.Email) )
         {
             user.Id = userlogged.Id;
-            // Process to save user data
             await _db.ChangeEmail(user);
 
             await JsRuntime.InvokeVoidAsync("alert", "Email Changed!");
 
-            //Redirect to login page
             NavigationManager.NavigateTo("/account/settings/email", true);
         }
         else

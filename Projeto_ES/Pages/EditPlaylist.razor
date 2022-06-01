@@ -165,12 +165,10 @@
             usernameIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
             if(usernameIdlogged==0)
             {
-                //Redirect to account menu page
                 NavigationManager.NavigateTo("/login");
             }
             else
             {
-                //Get User in Database
                 userlogged = (await _db.GetUser(usernameIdlogged)).First();
 
                 if(userlogged.Plan != PlanPayment.FREE)
@@ -178,11 +176,9 @@
                     if(DateTime.Compare(DateTime.ParseExact(userlogged.DateExpirationPlan.Trim(),"yyyyMMdd",System.Globalization.CultureInfo.InvariantCulture), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)) <= 0)
                         await _db.PlanFinished(usernameIdlogged);
                 }
-                //Get Playlist in Database
                 int playlistStorage = await sessionStorage.GetItemAsync<int>("PlaylistChosen");
                 if(playlistStorage == -1)
                 {
-                    //Create Playlist
                     Playlist playlistWithId = (await _dbp.GetLatestPlaylistInserted(new Playlist(), userlogged)).First();
                     await _dbp.UpdateTitle(playlistWithId);
                     playlistEdit = (await _dbp.GetPlaylist(playlistWithId.Id)).First();
@@ -192,10 +188,8 @@
                 }
                 else if(playlistStorage != 0)
                 {
-                    //Edit Playlist
                     playlistEdit = (await _dbp.GetPlaylist(playlistStorage)).First();
 
-                    //Get Videos of Playlist
                     List<PlaylistVideos> videosAssociatedPlaylist = await _dbp.VideosIdInPlaylist(playlistEdit);
                     if(videosAssociatedPlaylist.Count == 0)
                     {
@@ -208,7 +202,6 @@
                 }
                 else
                 {
-                    //Redirect to account menu page
                     NavigationManager.NavigateTo("/login");
                 }
             }
@@ -218,23 +211,21 @@
     }
 
     private void HandleDrop(Video landingModel)
-    {//landing model -> where the drop happened
+    {
         if (draggingModel is null) return;
         List<Video> oldListVideos = (listVideos.OrderBy(x=>x.Order).ToList()).ConvertAll(video => new Video() {Id = video.Id, ChannelName = video.ChannelName, Order = video.Order, Thumbnail = video.Thumbnail, Title = video.Title, VideoId = video.VideoId, IsDragOver = false});
-        int originalOrderLanding = landingModel.Order;//keep the original order for later
-                                                      //increase model under by 1
+        int originalOrderLanding = landingModel.Order;
         listVideos.Where(x => x.Order >= landingModel.Order).ToList().ForEach(x => x.Order++);
-        draggingModel.Order = originalOrderLanding;//replace landing model
+        draggingModel.Order = originalOrderLanding;
         int ii = 0;
         foreach (var model in listVideos.OrderBy(x=>x.Order).ToList())
         {
-            model.Order = ii++;//keep the numbers from 0 to size-1
-            model.IsDragOver = false;//remove drag over. 
+            model.Order = ii++;
+            model.IsDragOver = false; 
         }
 
         List<Video> newListVideos = (listVideos.OrderBy(x=>x.Order).ToList()).ConvertAll(video => new Video() {Id = video.Id, ChannelName = video.ChannelName, Order = video.Order, Thumbnail = video.Thumbnail, Title = video.Title, VideoId = video.VideoId, IsDragOver = false});
 
-        //update video placement
         if ((oldListVideos.OrderBy(x=>x.Order).ToList()).SequenceEqual(newListVideos.OrderBy(x=>x.Order).ToList())) return;
         listVideos.Sort((x, y) => x.Order.CompareTo(y.Order));
         oldListVideos.Sort((x, y) => x.Order.CompareTo(y.Order));
@@ -292,7 +283,6 @@
         if (listVideos.Count >= userlogged.MaxVideos()) return;
         if (newPlaylistId == string.Empty)
         {
-            //Get Video Title, ... From newVideoId
             List<Video> videosObtained = IndexModel.OnGetVideo(newVideoId);
             if (videosObtained.Count <= 0) return;
             Video firstNewVideo = videosObtained.First();

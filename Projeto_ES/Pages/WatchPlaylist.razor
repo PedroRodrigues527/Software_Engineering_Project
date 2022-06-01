@@ -84,19 +84,17 @@
             usernameIdlogged = await sessionStorage.GetItemAsync<int>("UsernameLogged");
             if(usernameIdlogged==0)
             {
-                //Redirect to login page
                 NavigationManager.NavigateTo("/login");
             }
             else
             {
-                //Get User in Database
                 userlogged = (await _db.GetUser(usernameIdlogged)).First();
                 if(userlogged.Plan != PlanPayment.FREE)
                 {
                     if(DateTime.Compare(DateTime.ParseExact(userlogged.DateExpirationPlan.Trim(),"yyyyMMdd",System.Globalization.CultureInfo.InvariantCulture), new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)) <= 0)
                         await _db.PlanFinished(usernameIdlogged);
                 }
-                //Get Playlist
+
                 int playlistIdInt = 0;
                 await sessionStorage.RemoveItemAsync("PlaylistChosen");
                 if (Int32.TryParse(PlaylistId, out playlistIdInt))
@@ -107,7 +105,6 @@
 
                         if(playlistView.isOpen() || (!playlistView.isOpen() && userlogged.Id == playlistView.PersonId))
                         {
-                            //get all videos data from playlist
                             List<PlaylistVideos> tempListVideosId = _dbp.VideosIdInPlaylistSync(playlistView);
                             if(tempListVideosId.Count > 0)
                             {
