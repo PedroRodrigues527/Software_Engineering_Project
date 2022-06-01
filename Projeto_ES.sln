@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary", "ClassLibrar
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ESDatabase", "ESDatabase\ESDatabase.sqlproj", "{DF097316-2DB8-4B4A-8EE5-127E8A407FAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test_Projeto_ES", "Test_Projeto_ES\Test_Projeto_ES.csproj", "{65E8D6F2-4376-48BF-BF29-D8768DF9797A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,10 +29,6 @@ Global
 		{DF097316-2DB8-4B4A-8EE5-127E8A407FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF097316-2DB8-4B4A-8EE5-127E8A407FAB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DF097316-2DB8-4B4A-8EE5-127E8A407FAB}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{65E8D6F2-4376-48BF-BF29-D8768DF9797A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65E8D6F2-4376-48BF-BF29-D8768DF9797A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65E8D6F2-4376-48BF-BF29-D8768DF9797A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65E8D6F2-4376-48BF-BF29-D8768DF9797A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
