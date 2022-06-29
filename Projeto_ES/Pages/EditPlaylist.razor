@@ -87,6 +87,31 @@
                         </div>
                     </form>
 
+                    @if (listSearchedVideos != null)
+                    {
+                        <div class="col-md-12 justify-content-center text-center">
+                        @foreach (var searchedItem in listSearchedVideos)
+                        {
+                            <div class="container">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-4 mt-2">
+                                        <img src="@searchedItem.Thumbnail">
+                                    </div>
+                                    <div class="col-5 mt-2">
+                                        @searchedItem.Title <br> Channel Name: @(searchedItem.ChannelName)
+                                    </div>
+                                    <div class="col-3 mt-2">
+                                        <button class="btn btn-success btn-sm" aria-label="Add" @onclick="() => AddSearchedVideo(searchedItem)">
+                                            <i class="fa fa-plus"></i>
+                                            Add To Playlist
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        </div>
+                    }
+
                 </div>
                 <div class="col-md-6 justify-content-center text-center">
 
@@ -138,6 +163,7 @@
     Playlist? playlistEdit;
 
     List<Video>? listVideos;
+    List<Video>? listSearchedVideos;
     private Video? draggingModel;
     private string? newVideo;
     private string? TitleRename;
@@ -279,9 +305,15 @@
             }
         }
 
-        if (newVideoId == string.Empty) return;
         if (listVideos.Count >= userlogged.MaxVideos()) return;
-        if (newPlaylistId == string.Empty)
+
+        if (newVideoId == string.Empty && newPlaylistId == string.Empty)
+        {
+            List<Video> videosObtained = IndexModel.OnGetSearchList(newVideo);
+            if (videosObtained.Count <= 0) return;
+            listSearchedVideos = videosObtained;
+        }
+        else if (newVideoId != string.Empty && newPlaylistId == string.Empty)
         {
             List<Video> videosObtained = IndexModel.OnGetVideo(newVideoId);
             if (videosObtained.Count <= 0) return;
@@ -308,7 +340,15 @@
         }
 
         newVideo = null;
-        
+
+    }
+
+    private void AddSearchedVideo(Video searchedVideo)
+    {
+        searchedVideo.Order = listVideos.Count;
+        listVideos.Sort((x, y) => x.Order.CompareTo(y.Order));
+        var command2 = new CommandAddListVideo(listVideos, searchedVideo, _dbv, playlistEdit);
+        CommandManager.Execute(command2);
     }
 
     private void DeleteVideo(Video videoToRemove)

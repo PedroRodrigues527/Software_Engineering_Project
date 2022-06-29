@@ -49,6 +49,25 @@ namespace Projeto_ES.Data
 
             return Videos;
         }
+
+        public List<Video> OnGetSearchList(string listQ)
+        {
+            var searchListRequest = youTubeService.Search.List("snippet");
+            searchListRequest.Q = listQ;
+            searchListRequest.MaxResults = 6;
+
+            var searchListResponse = searchListRequest.Execute();
+            List<Video> Videos = new List<Video>();
+            Videos.AddRange(searchListResponse.Items.Select(video => new Video
+            {
+                Thumbnail = video.Snippet.Thumbnails.Default__.Url,
+                Title = video.Snippet.Title,
+                ChannelName = video.Snippet.ChannelTitle,
+                VideoId = video.Id.VideoId,
+            }));
+
+            return Videos;
+        }
     }
 
 }
