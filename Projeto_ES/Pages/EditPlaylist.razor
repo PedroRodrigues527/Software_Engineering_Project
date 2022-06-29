@@ -304,6 +304,18 @@
                 }
             }
         }
+        else if (newVideo.Contains("www.youtube.com/playlist?list="))
+        {
+            var query = HttpUtility.ParseQueryString((new Uri(newVideo)).Query);
+            if (query.AllKeys.Contains("list"))
+            {
+                string newPlaylistIdVerify = query["list"];
+                if(newPlaylistIdVerify.Length == 34)
+                {
+                    newPlaylistId = newPlaylistIdVerify;
+                }
+            }
+        }
 
         if (listVideos.Count >= userlogged.MaxVideos()) return;
 
@@ -323,7 +335,7 @@
             var command2 = new CommandAddListVideo(listVideos, firstNewVideo, _dbv, playlistEdit);
             CommandManager.Execute(command2);
         }
-        else
+        else if (newPlaylistId != string.Empty)
         {
             List<Video> videosObtained = IndexModel.OnGetVideosPlaylist(newPlaylistId);
             if (videosObtained.Count <= 0) return;
