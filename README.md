@@ -1,1 +1,1 @@
-ONLINE DEMO: https://www.createtoview.azurewebsites.net
+ONLINE DEMO: https://createtoview.azurewebsites.net
